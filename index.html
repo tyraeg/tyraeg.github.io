@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bio & Music</title>
     <!-- Google Fonts & Font Awesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -17,7 +17,6 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            /* Nền không gian sao lấp lánh (Bạn có thể thay bằng ảnh động hoặc video nền của bạn ở đây) */
             background-color: #050505;
             background-image: radial-gradient(white 1px, transparent 0);
             background-size: 40px 40px;
@@ -31,7 +30,6 @@
             overflow-x: hidden;
         }
 
-        /* Khung chính chứa toàn bộ Bio */
         .wrapper {
             width: 100%;
             max-width: 420px;
@@ -40,7 +38,6 @@
             gap: 16px;
         }
 
-        /* Thẻ kính mờ (Glassmorphism Card) */
         .glass-card {
             background: rgba(20, 20, 20, 0.65);
             backdrop-filter: blur(16px);
@@ -52,12 +49,11 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
-        /* Avatar và khung trang trí */
         .avatar-container {
             position: relative;
             width: 100px;
             height: 100px;
-            margin: 0 auto 16px auto;
+            margin: 0 auto 12px auto;
         }
 
         .avatar {
@@ -68,12 +64,18 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Icon mạng xã hội thu gọn kiểu nút tròn ngang */
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
         .social-icons {
             display: flex;
             justify-content: center;
             gap: 18px;
-            margin-top: 18px;
         }
 
         .social-icon-btn {
@@ -96,7 +98,6 @@
             transform: translateY(-2px);
         }
 
-        /* Trình phát nhạc (Music Player Card) */
         .player-card {
             background: rgba(20, 20, 20, 0.65);
             backdrop-filter: blur(16px);
@@ -133,7 +134,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Nút Play/Pause nhỏ gọn bên phải */
         .play-btn {
             background: none;
             border: none;
@@ -153,7 +153,6 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Thanh tua nhạc (Timeline Slider) */
         .player-progress-area {
             display: flex;
             align-items: center;
@@ -180,23 +179,6 @@
             background: #ffffff;
             cursor: pointer;
         }
-
-        /* Thống kê nhỏ dưới cùng (Lượt xem / Địa điểm) */
-        .meta-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.75rem;
-            color: #71717a;
-            margin-top: 4px;
-        }
-
-        .meta-info span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
     </style>
 </head>
 <body>
@@ -205,33 +187,26 @@
         <!-- Khung Bio chính -->
         <div class="glass-card">
             <div class="avatar-container">
-                <!-- THAY LINK ẢNH CỦA BẠN VÀO ĐÂY -->
                 <img src="https://via.placeholder.com/150" alt="Avatar" class="avatar">
             </div>
 
-            <!-- Các nút icon mạng xã hội ngang -->
+            <div class="profile-name">Lê Trung</div>
+
             <div class="social-icons">
-                <!-- Facebook -->
                 <a href="https://facebook.com" target="_blank" class="social-icon-btn" title="Facebook">
                     <i class="fa-brands fa-facebook-f"></i>
                 </a>
-                <!-- TikTok -->
                 <a href="https://tiktok.com" target="_blank" class="social-icon-btn" title="TikTok">
                     <i class="fa-brands fa-tiktok"></i>
-                </a>
-                <!-- Instagram / Discord -->
-                <a href="https://discord.com" target="_blank" class="social-icon-btn" title="Discord">
-                    <i class="fa-brands fa-discord"></i>
                 </a>
             </div>
         </div>
 
-        <!-- Khung Trình phát nhạc (Music Player) -->
+        <!-- Khung Trình phát nhạc -->
         <div class="player-card">
             <div class="player-top">
                 <div class="song-info">
                     <i class="fa-solid fa-compact-disc" id="discIcon"></i>
-                    <!-- THAY TÊN BÀI HÁT TẠI ĐÂY -->
                     <span class="song-title" id="songTitle">anhyeuem</span>
                 </div>
                 <button class="play-btn" onclick="togglePlay()">
@@ -245,19 +220,11 @@
                 <span id="durationTime">0:00</span>
             </div>
         </div>
-
-        <!-- Thông tin phụ dưới cùng -->
-        <div class="meta-info">
-            <span><i class="fa-regular fa-eye"></i> 12</span>
-            <span>•</span>
-            <span><i class="fa-solid fa-location-dot"></i> TP.HCM</span>
-        </div>
     </div>
 
-    <!-- THAY LINK NHẠC MP3 CỦA BẠN VÀO THẺ AUDIO DƯỚI ĐÂY -->
-    <audio id="audioElement" src="https://necessary-maroon-afod0mik.edgeone.dev/" preload="metadata" loop></audio>
+    <!-- Thẻ Audio có autoplay -->
+    <audio id="audioElement" src="https://necessary-maroon-afod0mik.edgeone.dev/" preload="metadata" loop autoplay></audio>
 
-    <!-- Script điều khiển phát nhạc và thanh tua thời gian -->
     <script>
         const audio = document.getElementById('audioElement');
         const playIcon = document.getElementById('playIcon');
@@ -283,7 +250,6 @@
             }
         }
 
-        // Định dạng phút:giây
         function formatTime(seconds) {
             let mins = Math.floor(seconds / 60);
             let secs = Math.floor(seconds % 60);
@@ -294,7 +260,6 @@
             durationTimeEl.innerText = formatTime(audio.duration);
         });
 
-        // Cập nhật thanh tua theo thời gian bài hát
         audio.addEventListener('timeupdate', () => {
             currentTimeEl.innerText = formatTime(audio.currentTime);
             if(audio.duration) {
@@ -302,19 +267,17 @@
             }
         });
 
-        // Tua nhạc khi người dùng kéo thanh trượt
         progressBar.addEventListener('input', () => {
             if(audio.duration) {
                 audio.currentTime = (progressBar.value / 100) * audio.duration;
             }
         });
 
-        // Hiệu ứng xoay đĩa nhạc
         const styleSheet = document.createElement("style");
         styleSheet.innerText = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
         document.head.appendChild(styleSheet);
 
-        // Tự động phát khi tải trang (nếu trình duyệt cho phép)
+        // Tự động phát nhạc ngay khi vào web
         window.addEventListener('DOMContentLoaded', () => {
             audio.volume = 0.5;
             audio.play().then(() => {
@@ -322,16 +285,18 @@
                 discIcon.style.animation = "spin 3s linear infinite";
                 isPlaying = true;
             }).catch(() => {
-                // Nếu bị chặn, tự động kích hoạt khi có cú chạm/click đầu tiên từ người dùng
+                // Nếu trình duyệt chặn tự động phát, tự bật khi người dùng có hành động chạm/click đầu tiên
                 const unlock = () => {
                     audio.play().then(() => {
                         playIcon.className = "fa-solid fa-pause";
                         discIcon.style.animation = "spin 3s linear infinite";
                         isPlaying = true;
                         document.removeEventListener('click', unlock);
+                        document.removeEventListener('touchstart', unlock);
                     });
                 };
                 document.addEventListener('click', unlock);
+                document.addEventListener('touchstart', unlock);
             });
         });
     </script>
