@@ -20,9 +20,10 @@
       align-items: center;
       justify-content: center;
       background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
-      padding: 2rem 1rem;
-      overflow-x: hidden;
-      perspective: 1000px;
+      padding: 2rem 1rem; /* Tăng padding để có thể cuộn nếu màn hình nhỏ */
+      overflow-x: hidden; /* Chống tràn ngang */
+      /* Đã xoá overflow: hidden để cho phép cuộn lên xuống */
+      perspective: 1000px; /* Tạo không gian 3D cho thẻ */
     }
 
     /* =========================================
@@ -165,7 +166,7 @@
     }
 
     /* =========================================
-       CARD CHÍNH
+       CARD CHÍNH (3D TILT EFFECT)
        ========================================= */
     .bio-card {
       position: relative;
@@ -179,21 +180,23 @@
       padding: 2.5rem 2rem;
       width: 100%;
       max-width: 620px;
+      
       opacity: 0;
       transform: translateY(30px) scale(0.96);
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
-      transform-style: preserve-3d;
+      transform-style: preserve-3d; /* Cho phép hiệu ứng 3D */
     }
 
+    /* Khi hiển thị, transform sẽ được điều khiển bởi JS */
     .bio-card.show {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0) scale(1); /* Mặc định khi chưa di chuột */
     }
 
     /* Hiệu ứng xuất hiện lần lượt */
     .fade-item {
       opacity: 0;
-      transform: translateY(15px) translateZ(30px);
+      transform: translateY(15px) translateZ(30px); /* Đẩy các item nổi lên trên mặt phẳng */
       transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
@@ -208,7 +211,6 @@
     .bio-card.show .bio-content { transition-delay: 0.4s; }
     .bio-card.show .social-links { transition-delay: 0.5s; }
     .bio-card.show .music-player { transition-delay: 0.6s; }
-    .bio-card.show .extra-section-terminal { opacity: 1; transform: translateY(0) translateZ(30px); transition-delay: 0.8s; }
 
     /* Avatar */
     .avatar-section {
@@ -448,80 +450,6 @@
       margin-left: 0; 
     }
 
-    /* =========================================
-       TERMINAL SECTION (ĐÃ NÂNG CẤP)
-       ========================================= */
-    .extra-section-terminal {
-      opacity: 0;
-      transform: translateY(15px) translateZ(30px);
-      transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
-      margin-top: 1.5rem;
-    }
-
-    .terminal-window {
-      background: rgba(10, 15, 20, 0.8);
-      border-radius: 0.8rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      font-family: 'Consolas', 'Courier New', monospace;
-      text-align: left;
-      height: 140px; /* Cố định chiều cao để không bị giật layout */
-    }
-
-    .terminal-header {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 0.6rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .dot.red { background: #ff5f56; }
-    .dot.yellow { background: #ffbd2e; }
-    .dot.green { background: #27c93f; }
-
-    .terminal-title {
-      color: #6a7fa0;
-      font-size: 0.75rem;
-      margin-left: auto;
-      letter-spacing: 1px;
-    }
-
-    .terminal-body {
-      padding: 1rem;
-      font-size: 0.8rem;
-      line-height: 1.6;
-      color: #cddfff;
-      height: calc(100% - 35px);
-      overflow-y: hidden;
-    }
-
-    .term-line { margin-bottom: 0.4rem; }
-    .prompt { color: #5d9eff; margin-right: 0.5rem; font-weight: bold; }
-    .cmd { color: #fff; }
-    .output { color: #8fa5cc; margin-left: 1.2rem; }
-
-    .cursor-blink {
-      display: inline-block;
-      width: 8px;
-      height: 14px;
-      background: #5d9eff;
-      margin-left: 2px;
-      vertical-align: middle;
-      animation: blink 1s step-end infinite;
-    }
-    
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
     /* Responsive Mobile */
     @media (max-width: 520px) {
       .bio-card {
@@ -556,7 +484,6 @@
   <!-- MÀN HÌNH CHỜ -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-text">click to enter...</div>
-    <div class="splash-subtext">Dev Lê Trung</div>
     <div class="splash-dot"></div>
   </div>
 
@@ -598,11 +525,10 @@
       </a>
     </div>
 
-    <!-- Music Player -->
     <div class="music-player fade-item">
       <div class="music-info">
         <i class="fas fa-music"></i>
-        <span id="trackName">InLove</span>
+        <span id="trackName">Kẻ Điên Tin Vào Tình Yêu</span>
       </div>
 
       <div class="progress-wrapper">
@@ -622,29 +548,12 @@
         </button>
       </div>
     </div>
-
-    <!-- KHỐI TERMINAL TỰ ĐỘNG GÕ */
-    <div class="extra-section-terminal">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="terminal-title">pawdev@bio:~</span>
-        </div>
-        <div class="terminal-body" id="terminalBody">
-          <!-- Nội dung sẽ được JS tự động điền vào đây -->
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Audio -->
-  <audio id="bgMusic" loop preload="auto" src="https://wily-silver-gwxkcolc.edgeone.dev/"></audio>
+  <audio id="bgMusic" loop preload="auto" src="https://excellent-coffee-hy1itsie.edgeone.dev/"></audio>
 
   <script>
-    // --- TẠO ĐOM ĐÓM BAY (PARTICLES) ---
+    // --- TẠO ĐOM ĐÓM BAY ---
     const particlesContainer = document.getElementById('particles');
     const particleCount = 30;
     for (let i = 0; i < particleCount; i++) {
@@ -664,15 +573,23 @@
 
     // --- HIỆU ỨNG 3D NGHIÊNG THẺ THEO CHUỘT (TILT EFFECT) ---
     const bioCard = document.getElementById('bioCard');
+    
+    // Chỉ áp dụng hiệu ứng 3D khi màn hình lớn (tránh giật lag trên đt)
     if (window.innerWidth > 768) {
       document.addEventListener('mousemove', (e) => {
-        if (!bioCard.classList.contains('show')) return;
+        if (!bioCard.classList.contains('show')) return; // Chưa hiện thì không làm gì
+        
         const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
         const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+        
+        // Nghiêng thẻ theo trục X và Y
         bioCard.style.transform = `translateY(0) scale(1) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        
+        // Làm các hạt đom đóm di chuyển ngược hướng tạo cảm giác chiều sâu
         particlesContainer.style.transform = `translate(${xAxis * -1.5}px, ${yAxis * -1.5}px)`;
       });
 
+      // Khi chuột rời khỏi trang, thẻ trở về vị trí cân bằng
       document.addEventListener('mouseleave', () => {
         bioCard.style.transform = `translateY(0) scale(1) rotateY(0deg) rotateX(0deg)`;
         particlesContainer.style.transform = `translate(0, 0)`;
@@ -756,9 +673,6 @@
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
         bioCard.classList.add('show');
-        
-        // Bắt đầu chạy hiệu ứng Terminal SAU KHI thẻ hiện ra
-        setTimeout(startTerminalAnimation, 1000);
       });
 
       progressContainer.addEventListener('click', (e) => {
@@ -801,88 +715,6 @@
         }
       });
     })();
-
-    // =========================================
-    // LOGIC TERMINAL TỰ ĐỘNG GÕ (TYPEWRITER)
-    // =========================================
-    const terminalBody = document.getElementById('terminalBody');
-    
-    // Danh sách các câu lệnh và kết quả
-    const commands = [
-      { cmd: "whoami", output: "Lê Trung (High School Dev)" },
-      { cmd: "cat location.txt", output: "Gia Lai, Việt Nam" },
-      { cmd: "node -v", output: "v20.11.0" },
-      { cmd: "echo 'Have a nice day!'", output: "Have a nice day!" }
-    ];
-
-    let currentCmdIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isWaiting = false;
-
-    function startTerminalAnimation() {
-      terminalBody.innerHTML = ''; // Xoá trắng lúc đầu
-      runCommand();
-    }
-
-    function runCommand() {
-      if (isWaiting) return;
-      
-      const currentCmd = commands[currentCmdIndex];
-      
-      // Nếu đang ở dòng mới, tạo thẻ div mới
-      if (charIndex === 0 && !isDeleting) {
-        const line = document.createElement('div');
-        line.classList.add('term-line');
-        line.innerHTML = `<span class="prompt">$</span> <span class="cmd"></span><span class="cursor-blink">|</span>`;
-        terminalBody.appendChild(line);
-        terminalBody.scrollTop = terminalBody.scrollHeight; // Cuộn xuống dưới
-      }
-
-      // Lấy thẻ chứa lệnh hiện tại
-      const lastLine = terminalBody.lastElementChild;
-      const cmdSpan = lastLine.querySelector('.cmd');
-      
-      // LOGIC GÕ CHỮ
-      if (!isDeleting && charIndex < currentCmd.cmd.length) {
-        // Đang gõ
-        cmdSpan.textContent += currentCmd.cmd.charAt(charIndex);
-        charIndex++;
-        setTimeout(runCommand, 100); // Tốc độ gõ (100ms/ký tự)
-      } 
-      else if (!isDeleting && charIndex === currentCmd.cmd.length) {
-        // Gõ xong lệnh -> Hiện kết quả
-        isWaiting = true;
-        lastLine.querySelector('.cursor-blink').style.display = 'none'; // Ẩn con trỏ
-        
-        setTimeout(() => {
-          const outputLine = document.createElement('div');
-          outputLine.classList.add('term-line', 'output');
-          outputLine.textContent = "> " + currentCmd.output;
-          terminalBody.appendChild(outputLine);
-          terminalBody.scrollTop = terminalBody.scrollHeight;
-          
-          // Đợi 1.5 giây rồi chuyển sang lệnh tiếp theo
-          setTimeout(() => {
-            isWaiting = false;
-            isDeleting = false;
-            charIndex = 0;
-            currentCmdIndex++;
-            
-            // Nếu hết lệnh thì xoá màn hình và chạy lại từ đầu
-            if (currentCmdIndex >= commands.length) {
-              setTimeout(() => {
-                terminalBody.innerHTML = '';
-                currentCmdIndex = 0;
-                runCommand();
-              }, 2000); // Đợi 2s rồi reset
-            } else {
-              runCommand();
-            }
-          }, 1500);
-        }, 300);
-      }
-    }
   </script>
 </body>
 </html>
