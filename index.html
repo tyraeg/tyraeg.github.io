@@ -21,7 +21,7 @@
       justify-content: center;
       background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
       padding: 1rem;
-      overflow: hidden; /* Ngăn cuộn khi đang hiện màn hình chờ */
+      overflow: hidden;
     }
 
     /* =========================================
@@ -68,7 +68,6 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
-    /* ========================================= */
 
     /* Hiệu ứng ánh sáng nền */
     .glow {
@@ -115,7 +114,7 @@
       padding: 2.5rem 2rem;
       width: 100%;
       max-width: 620px;
-      opacity: 0; /* Ẩn ban đầu, đợi click */
+      opacity: 0;
       transform: translateY(30px) scale(0.96);
       transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
@@ -123,11 +122,6 @@
     .bio-card.show {
       opacity: 1;
       transform: translateY(0) scale(1);
-    }
-
-    .bio-card:hover {
-      border-color: rgba(150, 200, 255, 0.25);
-      box-shadow: 0 30px 55px -12px #000000cc, 0 0 0 1px rgba(120, 200, 255, 0.25) inset;
     }
 
     /* Avatar */
@@ -146,11 +140,6 @@
       padding: 3px;
       margin-bottom: 1rem;
       box-shadow: 0 0 25px rgba(100, 180, 255, 0.4);
-      transition: transform 0.3s ease;
-    }
-
-    .avatar-wrapper:hover {
-      transform: scale(1.02);
     }
 
     .avatar {
@@ -159,10 +148,6 @@
       border-radius: 50%;
       background: #1e2433 url('https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg') center/cover no-repeat;
       background-size: cover; 
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
@@ -249,157 +234,126 @@
     }
 
     /* =========================================
-       GIAO DIỆN MUSIC PLAYER MỚI
+       MUSIC PLAYER (ĐÃ TINH CHỈNH LẠI)
        ========================================= */
     .music-player {
-      background: rgba(10, 15, 25, 0.7);
-      border-radius: 3rem;
-      padding: 0.8rem 1rem 0.8rem 1.5rem;
+      background: rgba(15, 20, 30, 0.6);
+      border-radius: 1.2rem;
+      padding: 0.8rem 1rem;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      border: 1px solid rgba(100, 160, 255, 0.25);
-      box-shadow: 0 8px 20px -10px #000000, 0 0 0 1px rgba(80, 140, 255, 0.2) inset;
-      backdrop-filter: blur(8px);
-      transition: border-color 0.3s;
+      justify-content: space-between;
+      gap: 1rem;
+      border: 1px solid rgba(100, 160, 255, 0.15);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .music-player:hover {
-      border-color: rgba(130, 190, 255, 0.55);
     }
 
     .music-info {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      color: #b8ceff;
-      font-size: 0.95rem;
-      font-weight: 500;
+      gap: 0.6rem;
+      color: #d0e0ff;
+      font-size: 0.9rem;
+      font-weight: 600;
       white-space: nowrap;
+      min-width: 90px;
     }
 
     .music-info i {
-      color: #5d9eff;
-      font-size: 1.2rem;
-      animation: pulseNote 1.8s infinite;
+      color: #6ea8ff;
+      font-size: 1.1rem;
     }
 
-    @keyframes pulseNote {
-      0% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.1); }
-      100% { opacity: 0.8; transform: scale(1); }
-    }
-
-    /* Thanh tiến trình & Thời gian */
     .progress-wrapper {
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      flex: 1 1 150px;
+      flex: 1;
+      min-width: 140px;
     }
 
     .time-display {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #8fa5cc;
       font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-      font-weight: 500;
+      min-width: 32px;
+      text-align: center;
     }
 
     .progress-container {
       flex: 1;
-      height: 5px;
+      height: 4px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
+      border-radius: 4px;
       cursor: pointer;
-      transition: height 0.2s;
-    }
-
-    .progress-container:hover {
-      height: 7px;
+      position: relative;
     }
 
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #4f9eff, #b06eff);
-      border-radius: 10px;
-      transition: width 0.1s linear;
+      background: linear-gradient(90deg, #6ea8ff, #b06eff);
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
     }
 
-    /* Cụm nút điều khiển */
     .music-controls {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      margin-left: 0.5rem;
+      gap: 0.6rem;
     }
 
+    /* Cả 2 nút đều vuông vức, bo góc tròn trịa */
     .music-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
-      border: none;
+      width: 2.6rem;
+      height: 2.6rem;
       border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.06);
+      color: #a0b8d5;
+      font-size: 1rem;
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
     }
 
     .music-btn:active {
-      transform: scale(0.9);
+      transform: scale(0.92);
     }
 
-    /* Nút Play/Pause (Nổi bật) */
+    /* Nút Play nổi bật */
     #playPauseBtn {
-      width: 2.8rem;
-      height: 2.8rem;
       background: linear-gradient(135deg, #3a7bd5, #9d4edd);
       color: #ffffff;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 15px rgba(100, 140, 255, 0.4);
+      border: none;
+      box-shadow: 0 4px 12px rgba(100, 140, 255, 0.3);
     }
 
     #playPauseBtn:hover {
-      box-shadow: 0 6px 20px rgba(100, 140, 255, 0.6);
-      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(100, 140, 255, 0.5);
     }
 
     #playPauseBtn i {
       margin-left: 2px; 
     }
-    
     #playPauseBtn i.fa-pause {
       margin-left: 0; 
     }
 
-    /* Nút Âm lượng (Nhỏ gọn) */
-    #muteBtn {
-      width: 2.4rem;
-      height: 2.4rem;
-      background: rgba(255, 255, 255, 0.05);
-      color: #a0b8d5;
-      font-size: 1.1rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    #muteBtn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      transform: translateY(-2px);
-    }
-
-    .music-note {
-      font-size: 0.7rem;
-      color: #6a7fa0;
-      text-align: center;
-      margin-top: 1rem;
-      letter-spacing: 0.5px;
-    }
-
-    /* Responsive */
+    /* Responsive Mobile */
     @media (max-width: 520px) {
       .bio-card {
         padding: 1.8rem 1.2rem;
@@ -412,30 +366,20 @@
         width: 100px;
         height: 100px;
       }
-      .music-player {
-        padding: 0.8rem;
-        gap: 0.6rem;
-      }
-      .music-info {
-        font-size: 0.85rem;
-        gap: 0.4rem;
-      }
+      
+      /* Thanh tiến trình rớt xuống hàng dưới cho rộng rãi */
       .progress-wrapper {
         order: 3;
         width: 100%;
-        flex: 1 1 100%;
-        margin-top: 0.8rem;
+        margin-top: 0.6rem;
+      }
+      
+      /* Nút nằm bên phải */
+      .music-info {
+        flex: 1;
       }
       .music-controls {
-        margin-left: 0;
-      }
-      #playPauseBtn {
-        width: 2.6rem;
-        height: 2.6rem;
-      }
-      #muteBtn {
-        width: 2.2rem;
-        height: 2.2rem;
+        margin-left: auto;
       }
     }
   </style>
@@ -506,9 +450,6 @@
         </button>
       </div>
     </div>
-    <div class="music-note">
-      <i class="fas fa-circle-info"></i> Nhấn nút Play để điều khiển nhạc
-    </div>
   </div>
 
   <!-- Audio -->
@@ -526,7 +467,6 @@
       const volumeIcon = document.getElementById('volumeIcon');
       const progressBar = document.getElementById('progressBar');
       const progressContainer = document.getElementById('progressContainer');
-      const trackName = document.getElementById('trackName');
       const currentTimeEl = document.getElementById('currentTime');
       const durationEl = document.getElementById('duration');
 
@@ -575,9 +515,7 @@
 
       function togglePlay() {
         if (audio.paused) {
-          audio.play().catch(error => {
-            console.warn('Không thể phát: ', error);
-          });
+          audio.play().catch(error => console.warn('Lỗi phát nhạc: ', error));
         } else {
           audio.pause();
         }
@@ -589,21 +527,17 @@
         updateVolumeIcon();
       }
 
-      // Sự kiện click vào Màn hình chờ
+      // Xử lý click màn hình chờ
       splashScreen.addEventListener('click', () => {
-        // 1. Phát nhạc
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
-        
-        // 2. Ẩn màn hình chờ
         splashScreen.classList.add('hidden');
-        
-        // 3. Hiện thẻ Bio
         bioCard.classList.add('show');
       });
 
+      // Click thanh tiến trình để tua nhạc
       progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
+        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
         if (audio.duration) {
           audio.currentTime = pos * audio.duration;
         }
@@ -626,7 +560,7 @@
 
       audio.addEventListener('error', (e) => {
         console.warn('Lỗi âm thanh:', e);
-        trackName.textContent = 'Không tải được nhạc';
+        document.getElementById('trackName').textContent = 'Không tải được nhạc';
         progressBar.style.width = '0%';
         currentTimeEl.textContent = "0:00";
         durationEl.textContent = "0:00";
