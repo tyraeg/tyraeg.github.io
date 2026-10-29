@@ -20,12 +20,14 @@
       align-items: center;
       justify-content: center;
       background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
-      padding: 1rem;
-      overflow: hidden;
+      padding: 2rem 1rem; /* Tăng padding để có thể cuộn nếu màn hình nhỏ */
+      overflow-x: hidden; /* Chống tràn ngang */
+      /* Đã xoá overflow: hidden để cho phép cuộn lên xuống */
+      perspective: 1000px; /* Tạo không gian 3D cho thẻ */
     }
 
     /* =========================================
-       MÀN HÌNH CHỜ (SPLASH SCREEN) - ĐÃ CÂN ĐỐI LẠI
+       MÀN HÌNH CHỜ (SPLASH SCREEN)
        ========================================= */
     .splash-screen {
       position: fixed;
@@ -33,7 +35,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%); /* Đồng bộ màu nền */
+      background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -48,7 +50,6 @@
       visibility: hidden;
     }
 
-    /* Thêm ánh sáng mờ ảo cho màn hình chờ */
     .splash-screen::before {
       content: '';
       position: absolute;
@@ -62,13 +63,12 @@
       z-index: -1;
     }
 
-    /* Hiệu ứng chữ hiện ra mượt mà */
     .splash-text {
       color: #fff;
-      font-size: 2rem; /* To hơn một chút */
+      font-size: 2rem;
       font-weight: 700;
       letter-spacing: 2px;
-      margin-bottom: 15px; /* Khoảng cách vừa phải với dòng dưới */
+      margin-bottom: 15px;
       opacity: 0;
       transform: translateY(20px) scale(0.9);
       animation: smoothAppear 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
@@ -85,7 +85,6 @@
       animation: smoothAppear 1s cubic-bezier(0.2, 0.9, 0.3, 1) 0.3s forwards;
     }
 
-    /* Chấm tròn nhấp nháy báo hiệu click */
     .splash-dot {
       margin-top: 40px;
       width: 8px;
@@ -167,7 +166,7 @@
     }
 
     /* =========================================
-       CARD CHÍNH
+       CARD CHÍNH (3D TILT EFFECT)
        ========================================= */
     .bio-card {
       position: relative;
@@ -181,29 +180,31 @@
       padding: 2.5rem 2rem;
       width: 100%;
       max-width: 620px;
+      
       opacity: 0;
       transform: translateY(30px) scale(0.96);
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+      transform-style: preserve-3d; /* Cho phép hiệu ứng 3D */
     }
 
+    /* Khi hiển thị, transform sẽ được điều khiển bởi JS */
     .bio-card.show {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0) scale(1); /* Mặc định khi chưa di chuột */
     }
 
-    /* Hiệu ứng xuất hiện lần lượt cho các thành phần con */
+    /* Hiệu ứng xuất hiện lần lượt */
     .fade-item {
       opacity: 0;
-      transform: translateY(15px);
+      transform: translateY(15px) translateZ(30px); /* Đẩy các item nổi lên trên mặt phẳng */
       transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
     .bio-card.show .fade-item {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(30px);
     }
 
-    /* Tạo độ trễ (delay) cho từng thành phần để nó hiện lần lượt */
     .bio-card.show .avatar-wrapper { transition-delay: 0.1s; }
     .bio-card.show .bio-name { transition-delay: 0.2s; }
     .bio-card.show .bio-tagline { transition-delay: 0.3s; }
@@ -226,7 +227,6 @@
       background: linear-gradient(135deg, #3a7bd5, #9d4edd);
       padding: 3px;
       margin-bottom: 1rem;
-      /* Hiệu ứng Avatar "thở" */
       animation: breathing 3s infinite ease-in-out;
     }
 
@@ -426,7 +426,6 @@
       transform: scale(0.92);
     }
 
-    /* Nút Play nổi bật + Hiệu ứng nhịp đập */
     #playPauseBtn {
       background: linear-gradient(135deg, #3a7bd5, #9d4edd);
       color: #ffffff;
@@ -441,7 +440,7 @@
 
     #playPauseBtn:hover {
       box-shadow: 0 6px 16px rgba(100, 140, 255, 0.5);
-      animation: none; /* Dừng đập khi hover để dễ bấm */
+      animation: none; 
     }
 
     #playPauseBtn i {
@@ -489,7 +488,7 @@
     <div class="splash-dot"></div>
   </div>
 
-  <!-- Lớp đom đóm bay (Tạo bằng JS) -->
+  <!-- Lớp đom đóm bay -->
   <div class="particles" id="particles"></div>
 
   <!-- Hiệu ứng nền -->
@@ -527,7 +526,6 @@
       </a>
     </div>
 
-    <!-- Music Player -->
     <div class="music-player fade-item">
       <div class="music-info">
         <i class="fas fa-music"></i>
@@ -553,39 +551,56 @@
     </div>
   </div>
 
-  <!-- Audio -->
   <audio id="bgMusic" loop preload="auto" src="https://wily-silver-gwxkcolc.edgeone.dev/"></audio>
 
   <script>
-    // --- TẠO ĐOM ĐÓM BAY (PARTICLES) ---
+    // --- TẠO ĐOM ĐÓM BAY ---
     const particlesContainer = document.getElementById('particles');
     const particleCount = 30;
-
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
       particle.classList.add('particle');
-      
       const size = Math.random() * 3 + 2;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
-      
       particle.style.left = `${Math.random() * 100}vw`;
       particle.style.top = `${Math.random() * 100}vh`;
-      
       const duration = Math.random() * 10 + 10;
       particle.style.animationDuration = `${duration}s`;
       particle.style.animationDelay = `${Math.random() * -20}s`;
-      
       particle.style.backgroundColor = Math.random() > 0.5 ? '#6ea8ff' : '#b06eff';
-      
       particlesContainer.appendChild(particle);
+    }
+
+    // --- HIỆU ỨNG 3D NGHIÊNG THẺ THEO CHUỘT (TILT EFFECT) ---
+    const bioCard = document.getElementById('bioCard');
+    
+    // Chỉ áp dụng hiệu ứng 3D khi màn hình lớn (tránh giật lag trên đt)
+    if (window.innerWidth > 768) {
+      document.addEventListener('mousemove', (e) => {
+        if (!bioCard.classList.contains('show')) return; // Chưa hiện thì không làm gì
+        
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+        
+        // Nghiêng thẻ theo trục X và Y
+        bioCard.style.transform = `translateY(0) scale(1) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        
+        // Làm các hạt đom đóm di chuyển ngược hướng tạo cảm giác chiều sâu
+        particlesContainer.style.transform = `translate(${xAxis * -1.5}px, ${yAxis * -1.5}px)`;
+      });
+
+      // Khi chuột rời khỏi trang, thẻ trở về vị trí cân bằng
+      document.addEventListener('mouseleave', () => {
+        bioCard.style.transform = `translateY(0) scale(1) rotateY(0deg) rotateX(0deg)`;
+        particlesContainer.style.transform = `translate(0, 0)`;
+      });
     }
 
     // --- LOGIC NHẠC VÀ MÀN HÌNH CHỜ ---
     (function() {
       const audio = document.getElementById('bgMusic');
       const splashScreen = document.getElementById('splashScreen');
-      const bioCard = document.getElementById('bioCard');
       
       const playPauseBtn = document.getElementById('playPauseBtn');
       const playIcon = document.getElementById('playIcon');
