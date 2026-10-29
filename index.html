@@ -1,247 +1,531 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bio & Music</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bio • Nhạc nền</title>
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
 
-        /* Khung hình nền động / ảnh nền */
-        #customBg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            background-color: #050505;
-            background-image: 
-                radial-gradient(white 1.5px, transparent 1.5px), 
-                radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
-            background-size: 50px 50px, 30px 30px;
-            background-position: 0 0, 25px 25px;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
+      padding: 1rem;
+    }
 
-        .wrapper { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; z-index: 1; }
-        
-        .glass-card {
-            background: rgba(20, 20, 20, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
+    /* Hiệu ứng ánh sáng nền */
+    .glow {
+      position: fixed;
+      width: 60vmax;
+      height: 60vmax;
+      background: radial-gradient(circle, rgba(100, 210, 255, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -20vmax;
+      left: -20vmax;
+      z-index: 0;
+      pointer-events: none;
+      animation: floatGlow 14s infinite alternate ease-in-out;
+    }
 
-        .avatar-container { position: relative; width: 100px; height: 100px; margin: 0 auto 12px auto; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.2); }
-        .profile-name { font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 16px; letter-spacing: 0.5px; }
-        
-        .social-icons { display: flex; justify-content: center; gap: 18px; }
-        .social-icon-btn {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex; align-items: center; justify-content: center;
-            color: #ffffff; font-size: 1.1rem; text-decoration: none; transition: all 0.2s ease;
-        }
-        .social-icon-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+    .glow2 {
+      position: fixed;
+      width: 70vmax;
+      height: 70vmax;
+      background: radial-gradient(circle, rgba(200, 100, 255, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      bottom: -30vmax;
+      right: -20vmax;
+      z-index: 0;
+      pointer-events: none;
+      animation: floatGlow 18s infinite alternate-reverse ease-in-out;
+    }
 
-        .player-card {
-            background: rgba(20, 20, 20, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px; padding: 16px 20px;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-        .player-top { display: flex; align-items: center; justify-content: space-between; }
-        .song-info { display: flex; align-items: center; gap: 10px; }
-        .song-info i { color: #f43f5e; font-size: 1rem; }
-        .song-title { font-size: 0.9rem; font-weight: 500; color: #e2e8f0; letter-spacing: 0.5px; }
-        .play-btn {
-            background: none; border: none; color: #ffffff; font-size: 1rem;
-            cursor: pointer; width: 32px; height: 32px; display: flex;
-            align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s;
-        }
-        .play-btn:hover { background: rgba(255, 255, 255, 0.1); }
-        .player-progress-area { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; color: #94a3b8; }
-        .progress-bar {
-            flex: 1; height: 4px; background: rgba(255, 255, 255, 0.15);
-            border-radius: 2px; outline: none; appearance: none; cursor: pointer;
-        }
-        .progress-bar::-webkit-slider-thumb {
-            appearance: none; width: 10px; height: 10px; border-radius: 50%; background: #ffffff; cursor: pointer;
-        }
-    </style>
+    @keyframes floatGlow {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(6vmax, 4vmax) scale(1.1); }
+    }
+
+    /* Card chính */
+    .bio-card {
+      position: relative;
+      z-index: 10;
+      background: rgba(20, 25, 35, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 3rem 1rem 3rem 1rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(120, 180, 255, 0.1) inset;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 620px;
+      transition: all 0.3s ease;
+      animation: cardAppear 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    @keyframes cardAppear {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .bio-card:hover {
+      border-color: rgba(150, 200, 255, 0.25);
+      box-shadow: 0 30px 55px -12px #000000cc, 0 0 0 1px rgba(120, 200, 255, 0.25) inset;
+    }
+
+    /* Avatar */
+    .avatar-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .avatar-wrapper {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3a7bd5, #9d4edd);
+      padding: 3px;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 25px rgba(100, 180, 255, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .avatar-wrapper:hover {
+      transform: scale(1.02);
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #1e2433 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="22" fill="%236c8ef5"/><circle cx="50" cy="50" r="38" fill="none" stroke="%236c8ef5" stroke-width="2" stroke-dasharray="6 6"/><circle cx="50" cy="40" r="12" fill="%23222a3a"/><circle cx="50" cy="40" r="8" fill="%239d4edd"/></svg>') center/cover no-repeat;
+      background-size: 75%;
+      background-position: 50% 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .bio-name {
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #ffffff, #b0d0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(100, 180, 255, 0.3);
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+
+    .bio-tagline {
+      color: #8fa5cc;
+      font-size: 1rem;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .bio-tagline i {
+      color: #5d9eff;
+      font-size: 0.9rem;
+    }
+
+    /* Thông tin bio */
+    .bio-content {
+      margin: 1.8rem 0 2rem;
+      color: #d0ddf5;
+      font-size: 1rem;
+      line-height: 1.7;
+      text-align: center;
+      padding: 0 0.5rem;
+    }
+
+    .bio-content p {
+      margin-bottom: 0.7rem;
+    }
+
+    .bio-content i {
+      color: #7aa9ff;
+      margin-right: 6px;
+      width: 1.2rem;
+      text-align: center;
+    }
+
+    .highlight {
+      color: #fff;
+      font-weight: 600;
+      background: linear-gradient(120deg, #1e3a5f, transparent);
+      padding: 0.1rem 0.4rem;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    /* Social icons */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 2.2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      color: #cddfff;
+      font-size: 1.4rem;
+      transition: all 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      text-decoration: none;
+    }
+
+    .social-icon:hover {
+      background: #2a3b5a;
+      color: #ffffff;
+      transform: translateY(-4px);
+      border-color: #5d9eff;
+      box-shadow: 0 12px 18px -8px #2a6bc0;
+    }
+
+    /* Music player */
+    .music-player {
+      background: rgba(10, 15, 25, 0.7);
+      border-radius: 3rem;
+      padding: 0.6rem 0.6rem 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid rgba(100, 160, 255, 0.25);
+      box-shadow: 0 8px 20px -10px #000000, 0 0 0 1px rgba(80, 140, 255, 0.2) inset;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.3s;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .music-player:hover {
+      border-color: rgba(130, 190, 255, 0.55);
+    }
+
+    .music-info {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex: 1 1 180px;
+      color: #b8ceff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .music-info i {
+      color: #5d9eff;
+      font-size: 1.4rem;
+      animation: pulseNote 1.8s infinite;
+    }
+
+    @keyframes pulseNote {
+      0% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.8; transform: scale(1); }
+    }
+
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .music-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: none;
+      color: #d0e0ff;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .music-btn:hover {
+      background: #2a4b7a;
+      color: white;
+      border-color: #6ea8ff;
+    }
+
+    .music-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* Thanh tiến trình mini */
+    .progress-container {
+      flex: 2 2 140px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 0.5rem;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4f9eff, #b06eff);
+      border-radius: 10px;
+      transition: width 0.2s linear;
+    }
+
+    /* Lưu ý nhỏ */
+    .music-note {
+      font-size: 0.7rem;
+      color: #6a7fa0;
+      text-align: center;
+      margin-top: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      .bio-card {
+        padding: 1.8rem 1.2rem;
+        border-radius: 2rem 0.8rem 2rem 0.8rem;
+      }
+      .bio-name {
+        font-size: 1.7rem;
+      }
+      .avatar-wrapper {
+        width: 100px;
+        height: 100px;
+      }
+      .music-player {
+        padding: 0.8rem 1rem;
+        gap: 0.8rem;
+      }
+      .music-info {
+        font-size: 0.85rem;
+        gap: 0.4rem;
+      }
+      .music-btn {
+        width: 2.4rem;
+        height: 2.4rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Background động/ảnh từ thiết bị -->
-    <div id="customBg"></div>
+  <!-- Hiệu ứng nền -->
+  <div class="glow"></div>
+  <div class="glow2"></div>
 
-    <div class="wrapper">
-        <div class="glass-card">
-            <div class="avatar-container">
-                <img id="viewAvatar" src="https://via.placeholder.com/150" alt="Avatar" class="avatar">
-            </div>
-            <div class="profile-name" id="viewName">Tên Của Bạn</div>
-            <div class="social-icons">
-                <a id="viewFb" href="https://facebook.com" target="_blank" class="social-icon-btn" title="Facebook">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
-                <a id="viewTiktok" href="https://tiktok.com" target="_blank" class="social-icon-btn" title="TikTok">
-                    <i class="fa-brands fa-tiktok"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="player-card">
-            <div class="player-top">
-                <div class="song-info">
-                    <i class="fa-solid fa-compact-disc" id="discIcon"></i>
-                    <span class="song-title" id="viewSongName">anhyeuem</span>
-                </div>
-                <button class="play-btn" onclick="togglePlay()">
-                    <i class="fa-solid fa-play" id="playIcon"></i>
-                </button>
-            </div>
-            <div class="player-progress-area">
-                <span id="currentTime">0:00</span>
-                <input type="range" min="0" max="100" value="0" class="progress-bar" id="progressBar">
-                <span id="durationTime">0:00</span>
-            </div>
-        </div>
+  <div class="bio-card">
+    <!-- Avatar + Tên -->
+    <div class="avatar-section">
+      <div class="avatar-wrapper">
+        <div class="avatar"></div>
+      </div>
+      <h1 class="bio-name">Alex Rivers</h1>
+      <div class="bio-tagline">
+        <i class="fas fa-headphones"></i> Sound designer & developer 
+        <i class="fas fa-code"></i>
+      </div>
     </div>
 
-    <audio id="audioElement" preload="metadata" loop autoplay muted></audio>
+    <!-- Nội dung bio -->
+    <div class="bio-content">
+      <p><i class="fas fa-location-dot"></i> Đà Nẵng, Việt Nam</p>
+      <p><i class="fas fa-briefcase"></i> Sáng tạo <span class="highlight">âm thanh tương tác</span> & web</p>
+      <p><i class="fas fa-heart"></i> Đam mê: nhạc chill, UI tối giản, cà phê sáng</p>
+      <p style="font-size:0.95rem; opacity:0.9; margin-top:0.6rem;">“Tạo ra trải nghiệm – từ giai điệu đến từng dòng code.”</p>
+    </div>
 
-    <script>
-        const defaultData = {
-            name: "Lê Bảo Trung",
-            avatar: "",
-            bgImage: "",
-            fb: "https://facebook.com",
-            tiktok: "https://tiktok.com",
-            songName: "anhyeuem",
-            songUrl: "https://www.bensound.com/bensound-music/bensound-cute.mp3"
-        };
+    <!-- Social -->
+    <div class="social-links">
+      <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="#" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+    </div>
 
-        const data = JSON.parse(localStorage.getItem('bioData')) || defaultData;
+    <!-- Music player (có nhạc nền) -->
+    <div class="music-player">
+      <div class="music-info">
+        <i class="fas fa-music"></i>
+        <span id="trackName">Ambient Waves</span>
+      </div>
 
-        // Đổ dữ liệu ra giao diện
-        document.getElementById('viewName').innerText = data.name;
-        if(data.avatar) document.getElementById('viewAvatar').src = data.avatar;
-        document.getElementById('viewFb').href = data.fb;
-        document.getElementById('viewTiktok').href = data.tiktok;
-        document.getElementById('viewSongName').innerText = data.songName;
-        
-        // Xử lý background tùy chỉnh
-        if(data.bgImage) {
-            const bgDiv = document.getElementById('customBg');
-            bgDiv.style.backgroundImage = `url('${data.bgImage}')`;
-            bgDiv.style.backgroundSize = 'cover';
-            bgDiv.style.backgroundPosition = 'center';
-            bgDiv.style.animation = 'none';
+      <!-- Thanh tiến trình nhỏ -->
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="music-controls">
+        <button class="music-btn" id="playPauseBtn" aria-label="Play/Pause">
+          <i class="fas fa-play" id="playIcon"></i>
+        </button>
+        <button class="music-btn" id="muteBtn" aria-label="Mute/Unmute">
+          <i class="fas fa-volume-up" id="volumeIcon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="music-note">
+      <i class="fas fa-circle-info"></i> Nhạc nền tự động phát (nhấn play nếu trình duyệt chặn)
+    </div>
+  </div>
+
+  <!-- Audio element: sử dụng file nhạc mẫu từ archive.org (creative commons) -->
+  <audio id="bgMusic" loop preload="auto" src="https://ia800905.us.archive.org/14/items/Ambient_Sounds/Ambient_Sounds/ambient_waves.mp3"></audio>
+
+  <script>
+    (function() {
+      const audio = document.getElementById('bgMusic');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const playIcon = document.getElementById('playIcon');
+      const muteBtn = document.getElementById('muteBtn');
+      const volumeIcon = document.getElementById('volumeIcon');
+      const progressBar = document.getElementById('progressBar');
+      const trackName = document.getElementById('trackName');
+
+      // Đặt âm lượng mặc định 0.7 (nhạc nền nhẹ)
+      audio.volume = 0.7;
+
+      // Cập nhật icon play/pause
+      function updatePlayIcon() {
+        if (audio.paused) {
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+        } else {
+          playIcon.classList.remove('fa-play');
+          playIcon.classList.add('fa-pause');
         }
+      }
 
-        const audio = document.getElementById('audioElement');
-        audio.src = data.songUrl;
-
-        const playIcon = document.getElementById('playIcon');
-        const discIcon = document.getElementById('discIcon');
-        const progressBar = document.getElementById('progressBar');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationTimeEl = document.getElementById('durationTime');
-        
-        let isPlaying = false;
-
-        function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-                playIcon.className = "fa-solid fa-play";
-                discIcon.style.animation = "none";
-                isPlaying = false;
-            } else {
-                audio.muted = false;
-                audio.play().then(() => {
-                    playIcon.className = "fa-solid fa-pause";
-                    discIcon.style.animation = "spin 3s linear infinite";
-                    isPlaying = true;
-                }).catch(e => console.log(e));
-            }
+      // Cập nhật icon volume
+      function updateVolumeIcon() {
+        if (audio.muted || audio.volume === 0) {
+          volumeIcon.classList.remove('fa-volume-up', 'fa-volume-down');
+          volumeIcon.classList.add('fa-volume-mute');
+        } else if (audio.volume < 0.5) {
+          volumeIcon.classList.remove('fa-volume-up', 'fa-volume-mute');
+          volumeIcon.classList.add('fa-volume-down');
+        } else {
+          volumeIcon.classList.remove('fa-volume-down', 'fa-volume-mute');
+          volumeIcon.classList.add('fa-volume-up');
         }
+      }
 
-        function formatTime(seconds) {
-            let mins = Math.floor(seconds / 60);
-            let secs = Math.floor(seconds % 60);
-            return mins + ":" + (secs < 10 ? "0" : "") + secs;
+      // Cập nhật thanh tiến trình
+      function updateProgress() {
+        if (audio.duration) {
+          const percent = (audio.currentTime / audio.duration) * 100;
+          progressBar.style.width = percent + '%';
+        } else {
+          progressBar.style.width = '0%';
         }
+      }
 
-        audio.addEventListener('loadedmetadata', () => {
-            durationTimeEl.innerText = formatTime(audio.duration);
+      // Xử lý play/pause
+      function togglePlay() {
+        if (audio.paused) {
+          audio.play().catch(error => {
+            console.warn('Không thể tự động phát: ', error);
+            // Nếu bị chặn, vẫn giữ icon play
+            playIcon.classList.remove('fa-pause');
+            playIcon.classList.add('fa-play');
+          });
+        } else {
+          audio.pause();
+        }
+        updatePlayIcon();
+      }
+
+      // Xử lý mute
+      function toggleMute() {
+        audio.muted = !audio.muted;
+        updateVolumeIcon();
+      }
+
+      // Gán sự kiện
+      playPauseBtn.addEventListener('click', togglePlay);
+      muteBtn.addEventListener('click', toggleMute);
+
+      // Cập nhật icon khi trạng thái audio thay đổi
+      audio.addEventListener('play', () => {
+        updatePlayIcon();
+        updateVolumeIcon();
+      });
+
+      audio.addEventListener('pause', () => {
+        updatePlayIcon();
+      });
+
+      audio.addEventListener('volumechange', updateVolumeIcon);
+
+      audio.addEventListener('timeupdate', updateProgress);
+
+      audio.addEventListener('loadedmetadata', () => {
+        updateProgress();
+        updateVolumeIcon();
+        updatePlayIcon();
+      });
+
+      // Cố gắng tự động phát (nếu trình duyệt cho phép)
+      window.addEventListener('load', () => {
+        // Một số trình duyệt yêu cầu tương tác, nhưng ta vẫn thử
+        audio.play().catch(err => {
+          console.log('Tự động phát bị chặn. Nhấn nút play để bắt đầu.');
+          updatePlayIcon(); // Giữ icon play
         });
+        updateVolumeIcon();
+      });
 
-        audio.addEventListener('timeupdate', () => {
-            currentTimeEl.innerText = formatTime(audio.currentTime);
-            if(audio.duration) {
-                progressBar.value = (audio.currentTime / audio.duration) * 100;
-            }
-        });
+      // Cập nhật thanh tiến trình mỗi khi có timeupdate
+      // Xử lý tua (nếu cần) - không có tua để giữ đơn giản
 
-        progressBar.addEventListener('input', () => {
-            if(audio.duration) {
-                audio.currentTime = (progressBar.value / 100) * audio.duration;
-            }
-        });
+      // Nếu audio bị lỗi
+      audio.addEventListener('error', (e) => {
+        console.warn('Lỗi âm thanh:', e);
+        trackName.textContent = 'Không tải được nhạc';
+        progressBar.style.width = '0%';
+      });
 
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
-        document.head.appendChild(styleSheet);
-
-        // Tự động phát nhạc tối ưu
-        window.addEventListener('DOMContentLoaded', () => {
-            audio.volume = 0.5;
-            audio.play().then(() => {
-                playIcon.className = "fa-solid fa-pause";
-                discIcon.style.animation = "spin 3s linear infinite";
-                isPlaying = true;
-                setTimeout(() => { audio.muted = false; }, 500);
-            }).catch(() => {
-                const unlock = () => {
-                    audio.muted = false;
-                    audio.play().then(() => {
-                        playIcon.className = "fa-solid fa-pause";
-                        discIcon.style.animation = "spin 3s linear infinite";
-                        isPlaying = true;
-                        document.removeEventListener('click', unlock);
-                        document.removeEventListener('touchstart', unlock);
-                    });
-                };
-                document.addEventListener('click', unlock);
-                document.addEventListener('touchstart', unlock);
-            });
-        });
-    </script>
+      // Đảm bảo icon đúng sau khi tải xong
+      audio.addEventListener('canplay', () => {
+        updatePlayIcon();
+        updateVolumeIcon();
+        if (audio.duration) {
+          updateProgress();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
