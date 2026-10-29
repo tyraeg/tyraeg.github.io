@@ -76,6 +76,7 @@
       overflow-x: hidden;
       perspective: 1000px;
       position: relative;
+      cursor: crosshair; /* Đổi con trỏ thành crosshair cho ngầu */
     }
 
     /* =========================================
@@ -105,6 +106,7 @@
       font-size: 1.1rem;
       box-shadow: 0 4px 15px var(--shadow-color);
       transition: all 0.3s ease;
+      pointer-events: auto;
     }
 
     .control-btn:hover {
@@ -130,6 +132,7 @@
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s ease;
+      pointer-events: auto;
     }
 
     .theme-palette.active {
@@ -285,7 +288,6 @@
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
       transform-style: preserve-3d;
       overflow: hidden;
-      cursor: pointer; /* Thêm cursor pointer để biết có thể click */
     }
 
     .bio-card::before {
@@ -872,15 +874,18 @@
     }
 
     // =========================================
-    // 2. HIỆU ỨNG CLICK: DẤU CHÂN MÈO (PAW PRINT)
+    // 2. HIỆU ỨNG CLICK TOÀN MÀN HÌNH: DẤU CHÂN MÈO
     // =========================================
     const bioCard = document.getElementById('bioCard');
-    const pawEmojis = ['🐾', '🐾', '🐾', '🐈', '🐈‍⬛', '🐱']; // Đa dạng một chút nhưng chủ yếu là 🐾
 
-    bioCard.addEventListener('click', function(e) {
-      // Bỏ qua nếu click vào nút bấm, link, thanh tiến trình hoặc tooltip
+    // Lắng nghe sự kiện click trên toàn bộ document (body)
+    document.addEventListener('click', function(e) {
+      // Bỏ qua nếu click vào nút bấm, link, thanh tiến trình, tooltip hoặc nút điều khiển
       if (e.target.closest('button') || e.target.closest('a') || 
-          e.target.closest('.progress-container') || e.target.closest('.verified-wrapper')) {
+          e.target.closest('.progress-container') || 
+          e.target.closest('.verified-wrapper') ||
+          e.target.closest('.top-controls') ||
+          e.target.closest('.splash-screen')) {
         return;
       }
 
@@ -895,7 +900,6 @@
       paw.style.left = `${e.clientX}px`;
       paw.style.top = `${e.clientY}px`;
       
-      // Màu sắc: lấy accent color nếu là SVG, còn emoji thì để tự nhiên
       // Xoay ngẫu nhiên từ -30 đến 30 độ
       const rot = (Math.random() * 60 - 30).toFixed(0);
       paw.style.setProperty('--rot', `${rot}deg`);
@@ -945,7 +949,7 @@
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
 
     // =========================================
-    // 5. TYPEWRITER TAGLINE
+    // 5. TYPEWRITER TAGLINE (Đã fix lỗi typo)
     // =========================================
     const typewriterEl = document.getElementById('typewriterText');
     const textToType = "High school student & Developer ";
@@ -953,7 +957,7 @@
     
     function typeWriter() {
       if (typeIndex < textToType.length) {
-        typewriterEl.textContent += textToText = textToType.charAt(typeIndex);
+        typewriterEl.textContent += textToType.charAt(typeIndex); // Đã sửa thành textToType
         typeIndex++;
         setTimeout(typeWriter, 80);
       }
