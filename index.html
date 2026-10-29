@@ -354,17 +354,16 @@
       </div>
       <h1 class="bio-name">Alex Rivers</h1>
       <div class="bio-tagline">
-        <i class="fas fa-headphones"></i> Sound designer & developer 
+        <!-- Đã đổi thành icon tốt nghiệp -->
+        <i class="fas fa-user-graduate"></i> Sound designer & developer 
         <i class="fas fa-code"></i>
       </div>
     </div>
 
-    <!-- Nội dung bio -->
+    <!-- Nội dung bio (Đã xoá 2 dòng) -->
     <div class="bio-content">
       <p><i class="fas fa-location-dot"></i> Đà Nẵng, Việt Nam</p>
-      <p><i class="fas fa-briefcase"></i> Sáng tạo <span class="highlight">âm thanh tương tác</span> & web</p>
-      <p><i class="fas fa-heart"></i> Đam mê: nhạc chill, UI tối giản, cà phê sáng</p>
-      <p style="font-size:0.95rem; opacity:0.9; margin-top:0.6rem;">“Tạo ra trải nghiệm – từ giai điệu đến từng dòng code.”</p>
+      <p style="font-size:0.95rem; opacity:0.9; margin-top:1rem;">“Tạo ra trải nghiệm – từ giai điệu đến từng dòng code.”</p>
     </div>
 
     <!-- Social -->
@@ -375,7 +374,7 @@
       <a href="#" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
     </div>
 
-    <!-- Music player (có nhạc nền) -->
+    <!-- Music player -->
     <div class="music-player">
       <div class="music-info">
         <i class="fas fa-music"></i>
@@ -401,7 +400,7 @@
     </div>
   </div>
 
-  <!-- Audio element: sử dụng file nhạc mẫu từ archive.org (creative commons) -->
+  <!-- Audio element -->
   <audio id="bgMusic" loop preload="auto" src="https://ia800905.us.archive.org/14/items/Ambient_Sounds/Ambient_Sounds/ambient_waves.mp3"></audio>
 
   <script>
@@ -414,10 +413,8 @@
       const progressBar = document.getElementById('progressBar');
       const trackName = document.getElementById('trackName');
 
-      // Đặt âm lượng mặc định 0.7 (nhạc nền nhẹ)
       audio.volume = 0.7;
 
-      // Cập nhật icon play/pause
       function updatePlayIcon() {
         if (audio.paused) {
           playIcon.classList.remove('fa-pause');
@@ -428,7 +425,6 @@
         }
       }
 
-      // Cập nhật icon volume
       function updateVolumeIcon() {
         if (audio.muted || audio.volume === 0) {
           volumeIcon.classList.remove('fa-volume-up', 'fa-volume-down');
@@ -442,7 +438,6 @@
         }
       }
 
-      // Cập nhật thanh tiến trình
       function updateProgress() {
         if (audio.duration) {
           const percent = (audio.currentTime / audio.duration) * 100;
@@ -452,12 +447,10 @@
         }
       }
 
-      // Xử lý play/pause
       function togglePlay() {
         if (audio.paused) {
           audio.play().catch(error => {
             console.warn('Không thể tự động phát: ', error);
-            // Nếu bị chặn, vẫn giữ icon play
             playIcon.classList.remove('fa-pause');
             playIcon.classList.add('fa-play');
           });
@@ -467,17 +460,14 @@
         updatePlayIcon();
       }
 
-      // Xử lý mute
       function toggleMute() {
         audio.muted = !audio.muted;
         updateVolumeIcon();
       }
 
-      // Gán sự kiện
       playPauseBtn.addEventListener('click', togglePlay);
       muteBtn.addEventListener('click', toggleMute);
 
-      // Cập nhật icon khi trạng thái audio thay đổi
       audio.addEventListener('play', () => {
         updatePlayIcon();
         updateVolumeIcon();
@@ -488,7 +478,6 @@
       });
 
       audio.addEventListener('volumechange', updateVolumeIcon);
-
       audio.addEventListener('timeupdate', updateProgress);
 
       audio.addEventListener('loadedmetadata', () => {
@@ -497,27 +486,20 @@
         updatePlayIcon();
       });
 
-      // Cố gắng tự động phát (nếu trình duyệt cho phép)
       window.addEventListener('load', () => {
-        // Một số trình duyệt yêu cầu tương tác, nhưng ta vẫn thử
         audio.play().catch(err => {
           console.log('Tự động phát bị chặn. Nhấn nút play để bắt đầu.');
-          updatePlayIcon(); // Giữ icon play
+          updatePlayIcon(); 
         });
         updateVolumeIcon();
       });
 
-      // Cập nhật thanh tiến trình mỗi khi có timeupdate
-      // Xử lý tua (nếu cần) - không có tua để giữ đơn giản
-
-      // Nếu audio bị lỗi
       audio.addEventListener('error', (e) => {
         console.warn('Lỗi âm thanh:', e);
         trackName.textContent = 'Không tải được nhạc';
         progressBar.style.width = '0%';
       });
 
-      // Đảm bảo icon đúng sau khi tải xong
       audio.addEventListener('canplay', () => {
         updatePlayIcon();
         updateVolumeIcon();
