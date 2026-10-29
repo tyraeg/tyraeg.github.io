@@ -33,7 +33,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #000; /* Màu đen giống ảnh */
+      background-color: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -43,7 +43,6 @@
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
-    /* Hiệu ứng mờ dần khi click */
     .splash-screen.hidden {
       opacity: 0;
       visibility: hidden;
@@ -116,12 +115,11 @@
       padding: 2.5rem 2rem;
       width: 100%;
       max-width: 620px;
-      opacity: 0; /* Ẩn card ban đầu */
+      opacity: 0; /* Ẩn ban đầu, đợi click */
       transform: translateY(30px) scale(0.96);
       transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
-    /* Khi màn hình chờ biến mất, card hiện lên */
     .bio-card.show {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -218,15 +216,6 @@
       text-align: center;
     }
 
-    .highlight {
-      color: #fff;
-      font-weight: 600;
-      background: linear-gradient(120deg, #1e3a5f, transparent);
-      padding: 0.1rem 0.4rem;
-      border-radius: 6px;
-      display: inline-block;
-    }
-
     /* Social icons */
     .social-links {
       display: flex;
@@ -259,11 +248,13 @@
       box-shadow: 0 12px 18px -8px #2a6bc0;
     }
 
-    /* Music player */
+    /* =========================================
+       GIAO DIỆN MUSIC PLAYER MỚI
+       ========================================= */
     .music-player {
       background: rgba(10, 15, 25, 0.7);
       border-radius: 3rem;
-      padding: 0.6rem 0.6rem 0.6rem 1.5rem;
+      padding: 0.8rem 1rem 0.8rem 1.5rem;
       display: flex;
       align-items: center;
       gap: 0.8rem;
@@ -301,11 +292,11 @@
       100% { opacity: 0.8; transform: scale(1); }
     }
 
-    /* Khối thanh tiến trình + thời gian */
+    /* Thanh tiến trình & Thời gian */
     .progress-wrapper {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
       flex: 1 1 150px;
     }
 
@@ -314,16 +305,21 @@
       color: #8fa5cc;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
+      font-weight: 500;
     }
 
-    /* Thanh tiến trình mini */
     .progress-container {
       flex: 1;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.08);
+      height: 5px;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
+      transition: height 0.2s;
+    }
+
+    .progress-container:hover {
+      height: 7px;
     }
 
     .progress-bar {
@@ -334,39 +330,67 @@
       transition: width 0.1s linear;
     }
 
+    /* Cụm nút điều khiển */
     .music-controls {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.8rem;
+      margin-left: 0.5rem;
     }
 
     .music-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: none;
-      color: #d0e0ff;
-      width: 2.6rem;
-      height: 2.6rem;
-      border-radius: 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
       cursor: pointer;
-      transition: all 0.2s;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .music-btn:hover {
-      background: #2a4b7a;
-      color: white;
-      border-color: #6ea8ff;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+      border: none;
+      border-radius: 50%;
     }
 
     .music-btn:active {
-      transform: scale(0.94);
+      transform: scale(0.9);
     }
 
-    /* Lưu ý nhỏ */
+    /* Nút Play/Pause (Nổi bật) */
+    #playPauseBtn {
+      width: 2.8rem;
+      height: 2.8rem;
+      background: linear-gradient(135deg, #3a7bd5, #9d4edd);
+      color: #ffffff;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(100, 140, 255, 0.4);
+    }
+
+    #playPauseBtn:hover {
+      box-shadow: 0 6px 20px rgba(100, 140, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    #playPauseBtn i {
+      margin-left: 2px; 
+    }
+    
+    #playPauseBtn i.fa-pause {
+      margin-left: 0; 
+    }
+
+    /* Nút Âm lượng (Nhỏ gọn) */
+    #muteBtn {
+      width: 2.4rem;
+      height: 2.4rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: #a0b8d5;
+      font-size: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #muteBtn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
     .music-note {
       font-size: 0.7rem;
       color: #6a7fa0;
@@ -389,41 +413,47 @@
         height: 100px;
       }
       .music-player {
-        padding: 0.8rem 1rem;
+        padding: 0.8rem;
         gap: 0.6rem;
       }
       .music-info {
         font-size: 0.85rem;
         gap: 0.4rem;
       }
-      .music-btn {
-        width: 2.4rem;
-        height: 2.4rem;
-        font-size: 1rem;
-      }
       .progress-wrapper {
         order: 3;
         width: 100%;
         flex: 1 1 100%;
-        margin-top: 0.5rem;
+        margin-top: 0.8rem;
+      }
+      .music-controls {
+        margin-left: 0;
+      }
+      #playPauseBtn {
+        width: 2.6rem;
+        height: 2.6rem;
+      }
+      #muteBtn {
+        width: 2.2rem;
+        height: 2.2rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- MÀN HÌNH CHỜ (CLICK TO ENTER) -->
+  <!-- MÀN HÌNH CHỜ -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-text">click to enter...</div>
-    <div class="splash-subtext">Dev Lê Trung</div>
+    <div class="splash-subtext">By: Lê Trung</div>
   </div>
 
   <!-- Hiệu ứng nền -->
   <div class="glow"></div>
   <div class="glow2"></div>
 
+  <!-- NỘI DUNG CHÍNH -->
   <div class="bio-card" id="bioCard">
-    <!-- Avatar + Tên -->
     <div class="avatar-section">
       <div class="avatar-wrapper">
         <div class="avatar"></div>
@@ -435,13 +465,11 @@
       </div>
     </div>
 
-    <!-- Nội dung bio -->
     <div class="bio-content">
       <p><i class="fas fa-location-dot"></i> Gia Lai, Việt Nam</p>
       <p style="font-size:0.95rem; opacity:0.9; margin-top:1rem;">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
 
-    <!-- Social -->
     <div class="social-links">
       <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
         <i class="fab fa-facebook-f"></i>
@@ -454,14 +482,13 @@
       </a>
     </div>
 
-    <!-- Music player -->
+    <!-- Music Player -->
     <div class="music-player">
       <div class="music-info">
         <i class="fas fa-music"></i>
         <span id="trackName">InLove</span>
       </div>
 
-      <!-- Thanh tiến trình + Thời gian -->
       <div class="progress-wrapper">
         <span class="time-display" id="currentTime">0:00</span>
         <div class="progress-container" id="progressContainer">
@@ -480,11 +507,11 @@
       </div>
     </div>
     <div class="music-note">
-      <i class="fas fa-circle-info"></i> Nhạc đang phát...
+      <i class="fas fa-circle-info"></i> Nhấn nút Play để điều khiển nhạc
     </div>
   </div>
 
-  <!-- Audio element -->
+  <!-- Audio -->
   <audio id="bgMusic" loop preload="auto" src="https://wily-silver-gwxkcolc.edgeone.dev/"></audio>
 
   <script>
@@ -570,7 +597,7 @@
         // 2. Ẩn màn hình chờ
         splashScreen.classList.add('hidden');
         
-        // 3. Hiện thẻ Bio lên
+        // 3. Hiện thẻ Bio
         bioCard.classList.add('show');
       });
 
