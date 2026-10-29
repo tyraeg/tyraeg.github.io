@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Trị Bio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .admin-box {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        h2 { margin-bottom: 20px; font-size: 1.2rem; text-align: center; color: #38bdf8; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: #94a3b8; }
+        input {
+            width: 100%; padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px; color: #fff; font-size: 0.9rem; outline: none;
+        }
+        input:focus { border-color: #38bdf8; }
+        .btn-save {
+            width: 100%; margin-top: 10px; padding: 12px;
+            background: #38bdf8; color: #0b0f19; border: none;
+            border-radius: 10px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-save:hover { background: #0ea5e9; }
+        .back-link { display: block; text-align: center; margin-top: 14px; font-size: 0.85rem; color: #94a3b8; text-decoration: none; }
+        .back-link:hover { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-box">
+        <h2>⚙️ Quản Trị Bio & Nhạc</h2>
+        
+        <div class="form-group">
+            <label>Tên hiển thị:</label>
+            <input type="text" id="inputName">
+        </div>
+
+        <div class="form-group">
+            <label>Link Ảnh Đại Diện (Avatar URL):</label>
+            <input type="text" id="inputAvatar">
+        </div>
+
+        <div class="form-group">
+            <label>Link Facebook:</label>
+            <input type="text" id="inputFb">
+        </div>
+
+        <div class="form-group">
+            <label>Link TikTok:</label>
+            <input type="text" id="inputTiktok">
+        </div>
+
+        <div class="form-group">
+            <label>Tên Bài Hát:</label>
+            <input type="text" id="inputSongName">
+        </div>
+
+        <div class="form-group">
+            <label>Link File Nhạc MP3 (Trực tuyến):</label>
+            <input type="text" id="inputSongUrl">
+        </div>
+
+        <button class="btn-save" onclick="saveData()">Lưu Thay Đổi</button>
+        <a href="index.html" class="back-link">⬅ Quay lại trang chủ Bio</a>
+    </div>
+
+    <script>
+        // Tải dữ liệu cũ điền sẵn vào ô input
+        const defaultData = {
+            name: "Lê Bảo Trung",
+            avatar: "https://via.placeholder.com/150",
+            fb: "https://facebook.com",
+            tiktok: "https://tiktok.com",
+            songName: "anhyeuem",
+            songUrl: "https://www.bensound.com/bensound-music/bensound-cute.mp3"
+        };
+
+        const data = JSON.parse(localStorage.getItem('bioData')) || defaultData;
+
+        document.getElementById('inputName').value = data.name;
+        document.getElementById('inputAvatar').value = data.avatar;
+        document.getElementById('inputFb').value = data.fb;
+        document.getElementById('inputTiktok').value = data.tiktok;
+        document.getElementById('inputSongName').value = data.songName;
+        document.getElementById('inputSongUrl').value = data.songUrl;
+
+        function saveData() {
+            const newData = {
+                name: document.getElementById('inputName').value,
+                avatar: document.getElementById('inputAvatar').value,
+                fb: document.getElementById('inputFb').value,
+                tiktok: document.getElementById('inputTiktok').value,
+                songName: document.getElementById('inputSongName').value,
+                songUrl: document.getElementById('inputSongUrl').value
+            };
+
+            localStorage.setItem('bioData', JSON.stringify(newData));
+            alert("Đã lưu thành công! Bạn hãy quay lại trang chủ để xem kết quả.");
+        }
+    </script>
+</body>
+</html>
