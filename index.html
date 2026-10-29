@@ -51,7 +51,7 @@
       --glow-2: rgba(124, 58, 237, 0.08);
     }
 
-    /* Theme Switcher Colors (JS will override gradient variables) */
+    /* Theme Switcher Colors */
     body.theme-blue { --accent1: #2563eb; --accent2: #06b6d4; --accent3: #3b82f6; }
     body.theme-purple { --accent1: #8b5cf6; --accent2: #d946ef; --accent3: #a855f7; }
     body.theme-green { --accent1: #10b981; --accent2: #34d399; --accent3: #059669; }
@@ -79,7 +79,7 @@
     }
 
     /* =========================================
-       THEME & MODE SWITCHER (GÓC TRÊN PHẢI)
+       THEME & MODE SWITCHER
        ========================================= */
     .top-controls {
       position: fixed;
@@ -113,7 +113,6 @@
       border-color: var(--accent1);
     }
 
-    /* Theme Palette Menu */
     .theme-palette {
       position: absolute;
       top: 3.5rem;
@@ -238,21 +237,6 @@
       100% { transform: translateY(-100vh) translateX(20px) scale(1.5); opacity: 0; }
     }
 
-    /* Hiệu ứng nổ khi click (Click Burst) */
-    .burst-particle {
-      position: fixed;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 999;
-      animation: burstAnim 0.8s ease-out forwards;
-    }
-
-    @keyframes burstAnim {
-      0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-    }
-
     .glow {
       position: fixed;
       width: 60vmax; height: 60vmax;
@@ -294,16 +278,16 @@
       box-shadow: 0 25px 45px -12px var(--shadow-color), 0 0 0 1px rgba(120, 180, 255, 0.1) inset;
       padding: 2.5rem 2rem;
       width: 100%;
-      max-width: 650px;
+      max-width: 620px;
       
       opacity: 0;
       transform: translateY(30px) scale(0.96);
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
       transform-style: preserve-3d;
       overflow: hidden;
+      cursor: pointer; /* Thêm cursor pointer để biết có thể click */
     }
 
-    /* Viền gradient phát sáng */
     .bio-card::before {
       content: '';
       position: absolute;
@@ -324,7 +308,36 @@
 
     .bio-card.show { opacity: 1; transform: translateY(0) scale(1); }
 
-    /* Hiệu ứng xuất hiện lần lượt */
+    /* =========================================
+       HIỆU ỨNG DẤU CHÂN MÈO (PAW PRINT)
+       ========================================= */
+    .paw-click {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 2.2rem;
+      line-height: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      animation: pawPop 1s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4));
+      user-select: none;
+    }
+
+    @keyframes pawPop {
+      0% {
+        transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+        opacity: 1;
+      }
+      30% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(var(--rot));
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.6) rotate(var(--rot));
+        opacity: 0;
+      }
+    }
+
     .fade-item {
       position: relative;
       z-index: 2;
@@ -343,7 +356,6 @@
     .bio-card.show .bio-tagline { transition-delay: 0.3s; }
     .bio-card.show .bio-content { transition-delay: 0.45s; }
     .bio-card.show .social-links { transition-delay: 0.55s; }
-    .bio-card.show .gallery-section { transition-delay: 0.6s; }
     .bio-card.show .music-player { transition-delay: 0.7s; }
 
     /* Avatar */
@@ -360,12 +372,8 @@
       border-radius: 50%;
       padding: 3px;
       margin-bottom: 1rem;
-      background: conic-gradient(from 0deg, var(--accent1), var(--accent2), var(--accent3), var(--accent1));
-      animation: spinRing 6s linear infinite, breathing 3s infinite ease-in-out;
-    }
-
-    @keyframes spinRing {
-      to { transform: rotate(360deg); }
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      animation: breathing 3s infinite ease-in-out;
     }
 
     @keyframes breathing {
@@ -604,35 +612,6 @@
     .social-icon:hover::before { opacity: 1; }
 
     /* =========================================
-       GALLERY ẢNH NHỎ
-       ========================================= */
-    .gallery-section {
-      display: flex;
-      justify-content: center;
-      gap: 0.8rem;
-      margin-bottom: 1.8rem;
-      padding: 0.5rem;
-    }
-
-    .gallery-img {
-      width: 60px;
-      height: 60px;
-      border-radius: 0.8rem;
-      object-fit: cover;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    .gallery-img:hover {
-      transform: scale(1.15) translateY(-5px);
-      border-color: var(--accent1);
-      box-shadow: 0 8px 20px var(--glow-1);
-      z-index: 10;
-    }
-
-    /* =========================================
        MUSIC PLAYER + VISUALIZER
        ========================================= */
     .music-player {
@@ -783,7 +762,7 @@
       .music-controls { margin-left: auto; }
       .verified-tooltip { font-size: 0.65rem; padding: 0.35em 0.65em; }
       
-      .gallery-img { width: 50px; height: 50px; }
+      .paw-click { font-size: 1.8rem; }
     }
   </style>
 </head>
@@ -849,14 +828,6 @@
       <a href="https://github.com/" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
     </div>
 
-    <!-- GALLERY ẢNH NHỎ -->
-    <div class="gallery-section fade-item">
-      <img src="https://picsum.photos/seed/paw1/100/100" class="gallery-img" alt="Gallery 1">
-      <img src="https://picsum.photos/seed/paw2/100/100" class="gallery-img" alt="Gallery 2">
-      <img src="https://picsum.photos/seed/paw3/100/100" class="gallery-img" alt="Gallery 3">
-      <img src="https://picsum.photos/seed/paw4/100/100" class="gallery-img" alt="Gallery 4">
-    </div>
-
     <div class="music-player fade-item">
       <div class="music-info" id="musicInfo">
         <i class="fas fa-compact-disc"></i>
@@ -885,7 +856,7 @@
 
   <script>
     // =========================================
-    // 1. TẠO ĐOM ĐÓM BAY & HIỆU ỨNG NỔ (PARTICLE BURST)
+    // 1. TẠO ĐOM ĐÓM BAY
     // =========================================
     const particlesContainer = document.getElementById('particles');
     for (let i = 0; i < 30; i++) {
@@ -900,41 +871,50 @@
       particlesContainer.appendChild(p);
     }
 
-    // Hiệu ứng nổ khi click vào card
-    document.getElementById('bioCard').addEventListener('click', function(e) {
-      // Bỏ qua nếu click vào nút play, link, hoặc thanh tiến trình
-      if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.progress-container')) return;
+    // =========================================
+    // 2. HIỆU ỨNG CLICK: DẤU CHÂN MÈO (PAW PRINT)
+    // =========================================
+    const bioCard = document.getElementById('bioCard');
+    const pawEmojis = ['🐾', '🐾', '🐾', '🐈', '🐈‍⬛', '🐱']; // Đa dạng một chút nhưng chủ yếu là 🐾
 
-      const rect = this.getBoundingClientRect();
-      const x = e.clientX;
-      const y = e.clientY;
-      
-      const colors = ['#3a7bd5', '#9d4edd', '#20D5EC', '#f59e0b', '#ec4899'];
-      
-      for (let i = 0; i < 15; i++) {
-        const burst = document.createElement('div');
-        burst.classList.add('burst-particle');
-        burst.style.left = `${x}px`;
-        burst.style.top = `${y}px`;
-        burst.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 100 + 30;
-        const tx = Math.cos(angle) * distance;
-        const ty = Math.sin(angle) * distance;
-        
-        burst.style.setProperty('--tx', `${tx}px`);
-        burst.style.setProperty('--ty', `${ty}px`);
-        
-        document.body.appendChild(burst);
-        setTimeout(() => burst.remove(), 800);
+    bioCard.addEventListener('click', function(e) {
+      // Bỏ qua nếu click vào nút bấm, link, thanh tiến trình hoặc tooltip
+      if (e.target.closest('button') || e.target.closest('a') || 
+          e.target.closest('.progress-container') || e.target.closest('.verified-wrapper')) {
+        return;
       }
+
+      // Tạo dấu chân tại vị trí click
+      const paw = document.createElement('div');
+      paw.classList.add('paw-click');
+      
+      // 90% là dấu chân, 10% là mặt mèo cho vui
+      paw.textContent = Math.random() > 0.1 ? '🐾' : '🐱';
+      
+      // Vị trí
+      paw.style.left = `${e.clientX}px`;
+      paw.style.top = `${e.clientY}px`;
+      
+      // Màu sắc: lấy accent color nếu là SVG, còn emoji thì để tự nhiên
+      // Xoay ngẫu nhiên từ -30 đến 30 độ
+      const rot = (Math.random() * 60 - 30).toFixed(0);
+      paw.style.setProperty('--rot', `${rot}deg`);
+      
+      // Cỡ chữ ngẫu nhiên chút
+      const size = Math.random() * 0.6 + 1.8; // từ 1.8rem đến 2.4rem
+      paw.style.fontSize = `${size}rem`;
+
+      document.body.appendChild(paw);
+
+      // Xoá sau khi animation kết thúc (1s)
+      setTimeout(() => {
+        paw.remove();
+      }, 1000);
     });
 
     // =========================================
-    // 2. HIỆU ỨNG 3D TILT
+    // 3. HIỆU ỨNG 3D TILT
     // =========================================
-    const bioCard = document.getElementById('bioCard');
     if (window.innerWidth > 768) {
       document.addEventListener('mousemove', (e) => {
         if (!bioCard.classList.contains('show')) return;
@@ -950,7 +930,7 @@
     }
 
     // =========================================
-    // 3. TOOLTIP XÁC MINH
+    // 4. TOOLTIP XÁC MINH
     // =========================================
     const verifiedWrapper = document.getElementById('verifiedWrapper');
     let tooltipTimer = null;
@@ -965,7 +945,7 @@
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
 
     // =========================================
-    // 4. TYPEWRITER TAGLINE
+    // 5. TYPEWRITER TAGLINE
     // =========================================
     const typewriterEl = document.getElementById('typewriterText');
     const textToType = "High school student & Developer ";
@@ -973,16 +953,14 @@
     
     function typeWriter() {
       if (typeIndex < textToType.length) {
-        typewriterEl.textContent += textToType.charAt(typeIndex);
+        typewriterEl.textContent += textToText = textToType.charAt(typeIndex);
         typeIndex++;
         setTimeout(typeWriter, 80);
       }
     }
-    // Bắt đầu gõ sau khi splash screen được click
-    // (Sẽ gọi hàm này trong phần splash)
 
     // =========================================
-    // 5. CHUYỂN ĐỔI THEME & DARK/LIGHT MODE
+    // 6. CHUYỂN ĐỔI THEME & DARK/LIGHT MODE
     // =========================================
     const modeToggleBtn = document.getElementById('modeToggleBtn');
     const modeIcon = document.getElementById('modeIcon');
@@ -990,7 +968,6 @@
     const themePalette = document.getElementById('themePalette');
     const body = document.body;
 
-    // Chế độ Sáng/Tối
     modeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       body.classList.toggle('light-mode');
@@ -1001,7 +978,6 @@
       }
     });
 
-    // Bảng chọn màu
     themeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       themePalette.classList.toggle('active');
@@ -1010,15 +986,12 @@
     document.querySelectorAll('.color-dot').forEach(dot => {
       dot.addEventListener('click', (e) => {
         const theme = dot.getAttribute('data-theme');
-        // Xoá các theme cũ
         body.classList.remove('theme-blue', 'theme-purple', 'theme-green', 'theme-orange', 'theme-pink');
-        // Thêm theme mới
         body.classList.add(theme);
         themePalette.classList.remove('active');
       });
     });
 
-    // Đóng bảng màu khi click ra ngoài
     document.addEventListener('click', (e) => {
       if (!themePalette.contains(e.target) && e.target !== themeToggleBtn && !themeToggleBtn.contains(e.target)) {
         themePalette.classList.remove('active');
@@ -1026,7 +999,7 @@
     });
 
     // =========================================
-    // 6. LOGIC NHẠC, VISUALIZER, SPLASH
+    // 7. LOGIC NHẠC, VISUALIZER, SPLASH
     // =========================================
     (function() {
       const audio = document.getElementById('bgMusic');
@@ -1042,7 +1015,6 @@
       const musicInfo = document.getElementById('musicInfo');
       const visualizerContainer = document.getElementById('visualizer');
 
-      // Tạo 15 thanh visualizer
       const bars = [];
       for (let i = 0; i < 15; i++) {
         const bar = document.createElement('div');
@@ -1051,10 +1023,8 @@
         bars.push(bar);
       }
 
-      let visualizerInterval;
       function animateVisualizer() {
         bars.forEach(bar => {
-          // Tạo ngẫu nhiên chiều cao từ 10% đến 100% nếu đang phát, ngược lại về 5%
           if (!audio.paused) {
             const height = Math.random() * 90 + 10;
             bar.style.height = `${height}%`;
@@ -1063,9 +1033,7 @@
           }
         });
       }
-
-      // Cập nhật visualizer mỗi 150ms (tạo nhịp điệu)
-      visualizerInterval = setInterval(animateVisualizer, 150);
+      setInterval(animateVisualizer, 150);
 
       audio.volume = 0.7;
 
@@ -1130,7 +1098,6 @@
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
         bioCard.classList.add('show');
-        // Bắt đầu chạy typewriter khi vào trang
         setTimeout(typeWriter, 500);
       });
 
