@@ -257,38 +257,108 @@
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 0.35em;
     }
 
     /* =========================================
-       TICK XANH XÁC MINH
+       TICK XANH TIKTOK + TOOLTIP "ĐÃ XÁC MINH"
        ========================================= */
+    .verified-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
     .verified-badge {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
-      color: #20D5EC;
+      width: 0.75em;
+      height: 0.75em;
       vertical-align: middle;
-      filter: drop-shadow(0 0 6px rgba(32, 213, 236, 0.7));
+      filter: drop-shadow(0 0 6px rgba(32, 213, 236, 0.8));
       animation: badgeGlow 2.5s infinite alternate ease-in-out;
       line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .verified-badge .check-mark {
+    /* Nền tròn xanh ngọc TikTok */
+    .verified-badge::before {
+      content: '';
       position: absolute;
-      font-size: 0.5rem;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #4ff0ff 0%, #20D5EC 45%, #0aa5c2 100%);
+      box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.15) inset;
+    }
+
+    /* Dấu tick trắng */
+    .verified-badge .check-mark {
+      position: relative;
+      font-size: 0.5em;
       color: #fff;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      z-index: 1;
       font-weight: 900;
+      transform: translateY(-0.02em);
+      pointer-events: none;
     }
 
     @keyframes badgeGlow {
-      0% { filter: drop-shadow(0 0 4px rgba(32, 213, 236, 0.5)); }
-      100% { filter: drop-shadow(0 0 10px rgba(32, 213, 236, 0.95)); }
+      0% { filter: drop-shadow(0 0 4px rgba(32, 213, 236, 0.6)); }
+      100% { filter: drop-shadow(0 0 12px rgba(32, 213, 236, 1)); }
+    }
+
+    /* Tooltip "Đã xác minh" */
+    .verified-tooltip {
+      position: absolute;
+      bottom: calc(100% + 0.5em);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: rgba(10, 15, 25, 0.95);
+      color: #e6f7ff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      padding: 0.4em 0.75em;
+      border-radius: 0.5em;
+      border: 1px solid rgba(32, 213, 236, 0.5);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(32, 213, 236, 0.3);
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+      z-index: 50;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    /* Mũi nhọn tooltip */
+    .verified-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: rgba(10, 15, 25, 0.95);
+    }
+
+    /* Hiện tooltip khi hover (PC) */
+    .verified-wrapper:hover .verified-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Hiện tooltip khi active/click (Mobile + PC) */
+    .verified-wrapper.active .verified-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
     }
 
     .bio-tagline {
@@ -510,6 +580,11 @@
       .music-controls {
         margin-left: auto;
       }
+
+      .verified-tooltip {
+        font-size: 0.65rem;
+        padding: 0.35em 0.65em;
+      }
     }
   </style>
 </head>
@@ -537,9 +612,11 @@
       </div>
       <h1 class="bio-name">
         Lê Trung
-        <span class="verified-badge" title="Đã xác minh">
-          <i class="fas fa-certificate"></i>
-          <i class="fas fa-check check-mark"></i>
+        <span class="verified-wrapper" id="verifiedWrapper">
+          <span class="verified-badge" aria-label="Đã xác minh">
+            <i class="fas fa-check check-mark"></i>
+          </span>
+          <span class="verified-tooltip">Đã xác minh</span>
         </span>
       </h1>
       <div class="bio-tagline">
@@ -614,27 +691,57 @@
     // --- HIỆU ỨNG 3D NGHIÊNG THẺ THEO CHUỘT (TILT EFFECT) ---
     const bioCard = document.getElementById('bioCard');
     
-    // Chỉ áp dụng hiệu ứng 3D khi màn hình lớn (tránh giật lag trên đt)
     if (window.innerWidth > 768) {
       document.addEventListener('mousemove', (e) => {
-        if (!bioCard.classList.contains('show')) return; // Chưa hiện thì không làm gì
+        if (!bioCard.classList.contains('show')) return;
         
         const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
         const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
         
-        // Nghiêng thẻ theo trục X và Y
         bioCard.style.transform = `translateY(0) scale(1) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        
-        // Làm các hạt đom đóm di chuyển ngược hướng tạo cảm giác chiều sâu
         particlesContainer.style.transform = `translate(${xAxis * -1.5}px, ${yAxis * -1.5}px)`;
       });
 
-      // Khi chuột rời khỏi trang, thẻ trở về vị trí cân bằng
       document.addEventListener('mouseleave', () => {
         bioCard.style.transform = `translateY(0) scale(1) rotateY(0deg) rotateX(0deg)`;
         particlesContainer.style.transform = `translate(0, 0)`;
       });
     }
+
+    // --- TOOLTIP XÁC MINH (click/tap để hiện trên cả PC và mobile) ---
+    const verifiedWrapper = document.getElementById('verifiedWrapper');
+    let tooltipTimer = null;
+
+    function showTooltip() {
+      verifiedWrapper.classList.add('active');
+      clearTimeout(tooltipTimer);
+      tooltipTimer = setTimeout(() => {
+        verifiedWrapper.classList.remove('active');
+      }, 2000);
+    }
+
+    verifiedWrapper.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showTooltip();
+    });
+
+    verifiedWrapper.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+      showTooltip();
+    }, { passive: true });
+
+    // Ẩn tooltip khi bấm ra ngoài
+    document.addEventListener('click', (e) => {
+      if (!verifiedWrapper.contains(e.target)) {
+        verifiedWrapper.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('touchstart', (e) => {
+      if (!verifiedWrapper.contains(e.target)) {
+        verifiedWrapper.classList.remove('active');
+      }
+    }, { passive: true });
 
     // --- LOGIC NHẠC VÀ MÀN HÌNH CHỜ ---
     (function() {
