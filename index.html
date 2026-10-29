@@ -208,7 +208,6 @@
     .bio-card.show .bio-content { transition-delay: 0.4s; }
     .bio-card.show .social-links { transition-delay: 0.5s; }
     .bio-card.show .music-player { transition-delay: 0.6s; }
-    /* Độ trễ cho khối Terminal */
     .bio-card.show .extra-section-terminal { opacity: 1; transform: translateY(0) translateZ(30px); transition-delay: 0.8s; }
 
     /* Avatar */
@@ -450,7 +449,7 @@
     }
 
     /* =========================================
-       TERMINAL SECTION
+       TERMINAL SECTION (ĐÃ NÂNG CẤP)
        ========================================= */
     .extra-section-terminal {
       opacity: 0;
@@ -467,6 +466,7 @@
       overflow: hidden;
       font-family: 'Consolas', 'Courier New', monospace;
       text-align: left;
+      height: 140px; /* Cố định chiều cao để không bị giật layout */
     }
 
     .terminal-header {
@@ -499,6 +499,8 @@
       font-size: 0.8rem;
       line-height: 1.6;
       color: #cddfff;
+      height: calc(100% - 35px);
+      overflow-y: hidden;
     }
 
     .term-line { margin-bottom: 0.4rem; }
@@ -553,7 +555,8 @@
 
   <!-- MÀN HÌNH CHỜ -->
   <div class="splash-screen" id="splashScreen">
-    <div class="splash-text">click to enter</div>
+    <div class="splash-text">click to enter...</div>
+    <div class="splash-subtext">Dev Lê Trung</div>
     <div class="splash-dot"></div>
   </div>
 
@@ -620,7 +623,7 @@
       </div>
     </div>
 
-    <!-- KHỐI TERMINAL GIẢ LẬP (MỚI THÊM) -->
+    <!-- KHỐI TERMINAL TỰ ĐỘNG GÕ */
     <div class="extra-section-terminal">
       <div class="terminal-window">
         <div class="terminal-header">
@@ -629,12 +632,8 @@
           <span class="dot green"></span>
           <span class="terminal-title">pawdev@bio:~</span>
         </div>
-        <div class="terminal-body">
-          <div class="term-line"><span class="prompt">$</span> <span class="cmd">whoami</span></div>
-          <div class="term-line output">> Lê Trung (High School Dev)</div>
-          <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat location.txt</span></div>
-          <div class="term-line output">> Gia Lai, Việt Nam</div>
-          <div class="term-line"><span class="prompt">$</span> <span class="cmd">_</span><span class="cursor-blink">|</span></div>
+        <div class="terminal-body" id="terminalBody">
+          <!-- Nội dung sẽ được JS tự động điền vào đây -->
         </div>
       </div>
     </div>
@@ -757,6 +756,9 @@
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
         bioCard.classList.add('show');
+        
+        // Bắt đầu chạy hiệu ứng Terminal SAU KHI thẻ hiện ra
+        setTimeout(startTerminalAnimation, 1000);
       });
 
       progressContainer.addEventListener('click', (e) => {
@@ -799,6 +801,88 @@
         }
       });
     })();
+
+    // =========================================
+    // LOGIC TERMINAL TỰ ĐỘNG GÕ (TYPEWRITER)
+    // =========================================
+    const terminalBody = document.getElementById('terminalBody');
+    
+    // Danh sách các câu lệnh và kết quả
+    const commands = [
+      { cmd: "whoami", output: "Lê Trung (High School Dev)" },
+      { cmd: "cat location.txt", output: "Gia Lai, Việt Nam" },
+      { cmd: "node -v", output: "v20.11.0" },
+      { cmd: "echo 'Have a nice day!'", output: "Have a nice day!" }
+    ];
+
+    let currentCmdIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isWaiting = false;
+
+    function startTerminalAnimation() {
+      terminalBody.innerHTML = ''; // Xoá trắng lúc đầu
+      runCommand();
+    }
+
+    function runCommand() {
+      if (isWaiting) return;
+      
+      const currentCmd = commands[currentCmdIndex];
+      
+      // Nếu đang ở dòng mới, tạo thẻ div mới
+      if (charIndex === 0 && !isDeleting) {
+        const line = document.createElement('div');
+        line.classList.add('term-line');
+        line.innerHTML = `<span class="prompt">$</span> <span class="cmd"></span><span class="cursor-blink">|</span>`;
+        terminalBody.appendChild(line);
+        terminalBody.scrollTop = terminalBody.scrollHeight; // Cuộn xuống dưới
+      }
+
+      // Lấy thẻ chứa lệnh hiện tại
+      const lastLine = terminalBody.lastElementChild;
+      const cmdSpan = lastLine.querySelector('.cmd');
+      
+      // LOGIC GÕ CHỮ
+      if (!isDeleting && charIndex < currentCmd.cmd.length) {
+        // Đang gõ
+        cmdSpan.textContent += currentCmd.cmd.charAt(charIndex);
+        charIndex++;
+        setTimeout(runCommand, 100); // Tốc độ gõ (100ms/ký tự)
+      } 
+      else if (!isDeleting && charIndex === currentCmd.cmd.length) {
+        // Gõ xong lệnh -> Hiện kết quả
+        isWaiting = true;
+        lastLine.querySelector('.cursor-blink').style.display = 'none'; // Ẩn con trỏ
+        
+        setTimeout(() => {
+          const outputLine = document.createElement('div');
+          outputLine.classList.add('term-line', 'output');
+          outputLine.textContent = "> " + currentCmd.output;
+          terminalBody.appendChild(outputLine);
+          terminalBody.scrollTop = terminalBody.scrollHeight;
+          
+          // Đợi 1.5 giây rồi chuyển sang lệnh tiếp theo
+          setTimeout(() => {
+            isWaiting = false;
+            isDeleting = false;
+            charIndex = 0;
+            currentCmdIndex++;
+            
+            // Nếu hết lệnh thì xoá màn hình và chạy lại từ đầu
+            if (currentCmdIndex >= commands.length) {
+              setTimeout(() => {
+                terminalBody.innerHTML = '';
+                currentCmdIndex = 0;
+                runCommand();
+              }, 2000); // Đợi 2s rồi reset
+            } else {
+              runCommand();
+            }
+          }, 1500);
+        }, 300);
+      }
+    }
   </script>
 </body>
 </html>
