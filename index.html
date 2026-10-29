@@ -33,7 +33,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #000;
+      background-color: #050505;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -48,25 +48,68 @@
       visibility: hidden;
     }
 
+    /* Hiệu ứng chữ đánh máy */
     .splash-text {
       color: #fff;
       font-size: 1.5rem;
       font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: lowercase;
+      letter-spacing: 1.5px;
       margin-bottom: 5px;
-      animation: pulseText 2s infinite;
+      overflow: hidden; 
+      white-space: nowrap;
+      border-right: 2px solid #5d9eff;
+      animation: typing 2.5s steps(20, end) forwards, blink 0.8s step-end infinite;
+      width: 0;
     }
 
     .splash-subtext {
       color: #888;
       font-size: 0.9rem;
       font-weight: 400;
+      opacity: 0;
+      animation: fadeIn 1s ease 2s forwards; /* Hiện sau khi gõ chữ xong */
     }
 
-    @keyframes pulseText {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 15.5ch } /* Độ dài xấp xỉ của chữ "click to enter..." */
+    }
+
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: #5d9eff }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* =========================================
+       BACKGROUND PARTICLES (ĐOM ĐÓM BAY)
+       ========================================= */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
 
     /* Hiệu ứng ánh sáng nền */
@@ -101,13 +144,15 @@
       100% { transform: translate(6vmax, 4vmax) scale(1.1); }
     }
 
-    /* Card chính */
+    /* =========================================
+       CARD CHÍNH
+       ========================================= */
     .bio-card {
       position: relative;
       z-index: 10;
       background: rgba(20, 25, 35, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 3rem 1rem 3rem 1rem;
       box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(120, 180, 255, 0.1) inset;
@@ -116,13 +161,33 @@
       max-width: 620px;
       opacity: 0;
       transform: translateY(30px) scale(0.96);
-      transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
     .bio-card.show {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+
+    /* Hiệu ứng xuất hiện lần lượt cho các thành phần con */
+    .fade-item {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .bio-card.show .fade-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Tạo độ trễ (delay) cho từng thành phần để nó hiện lần lượt */
+    .bio-card.show .avatar-wrapper { transition-delay: 0.1s; }
+    .bio-card.show .bio-name { transition-delay: 0.2s; }
+    .bio-card.show .bio-tagline { transition-delay: 0.3s; }
+    .bio-card.show .bio-content { transition-delay: 0.4s; }
+    .bio-card.show .social-links { transition-delay: 0.5s; }
+    .bio-card.show .music-player { transition-delay: 0.6s; }
 
     /* Avatar */
     .avatar-section {
@@ -139,7 +204,13 @@
       background: linear-gradient(135deg, #3a7bd5, #9d4edd);
       padding: 3px;
       margin-bottom: 1rem;
-      box-shadow: 0 0 25px rgba(100, 180, 255, 0.4);
+      /* Hiệu ứng Avatar "thở" */
+      animation: breathing 3s infinite ease-in-out;
+    }
+
+    @keyframes breathing {
+      0%, 100% { box-shadow: 0 0 15px rgba(100, 180, 255, 0.3); transform: scale(1); }
+      50% { box-shadow: 0 0 30px rgba(157, 78, 221, 0.6); transform: scale(1.03); }
     }
 
     .avatar {
@@ -228,13 +299,13 @@
     .social-icon:hover {
       background: #2a3b5a;
       color: #ffffff;
-      transform: translateY(-4px);
+      transform: translateY(-5px) scale(1.05);
       border-color: #5d9eff;
       box-shadow: 0 12px 18px -8px #2a6bc0;
     }
 
     /* =========================================
-       MUSIC PLAYER (ĐÃ TINH CHỈNH LẠI)
+       MUSIC PLAYER
        ========================================= */
     .music-player {
       background: rgba(15, 20, 30, 0.6);
@@ -309,7 +380,6 @@
       gap: 0.6rem;
     }
 
-    /* Cả 2 nút đều vuông vức, bo góc tròn trịa */
     .music-btn {
       display: flex;
       align-items: center;
@@ -334,16 +404,22 @@
       transform: scale(0.92);
     }
 
-    /* Nút Play nổi bật */
+    /* Nút Play nổi bật + Hiệu ứng nhịp đập */
     #playPauseBtn {
       background: linear-gradient(135deg, #3a7bd5, #9d4edd);
       color: #ffffff;
       border: none;
-      box-shadow: 0 4px 12px rgba(100, 140, 255, 0.3);
+      animation: beat 1.5s infinite alternate;
+    }
+
+    @keyframes beat {
+      0% { box-shadow: 0 4px 12px rgba(100, 140, 255, 0.3); }
+      100% { box-shadow: 0 4px 25px rgba(157, 78, 221, 0.7); }
     }
 
     #playPauseBtn:hover {
       box-shadow: 0 6px 16px rgba(100, 140, 255, 0.5);
+      animation: none; /* Dừng đập khi hover để dễ bấm */
     }
 
     #playPauseBtn i {
@@ -367,14 +443,12 @@
         height: 100px;
       }
       
-      /* Thanh tiến trình rớt xuống hàng dưới cho rộng rãi */
       .progress-wrapper {
         order: 3;
         width: 100%;
         margin-top: 0.6rem;
       }
       
-      /* Nút nằm bên phải */
       .music-info {
         flex: 1;
       }
@@ -389,8 +463,11 @@
   <!-- MÀN HÌNH CHỜ -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-text">click to enter...</div>
-    <div class="splash-subtext">By: Lê Trung</div>
+    <div class="splash-subtext">Dev Lê Trung</div>
   </div>
+
+  <!-- Lớp đom đóm bay (Tạo bằng JS) -->
+  <div class="particles" id="particles"></div>
 
   <!-- Hiệu ứng nền -->
   <div class="glow"></div>
@@ -398,7 +475,8 @@
 
   <!-- NỘI DUNG CHÍNH -->
   <div class="bio-card" id="bioCard">
-    <div class="avatar-section">
+    
+    <div class="avatar-section fade-item">
       <div class="avatar-wrapper">
         <div class="avatar"></div>
       </div>
@@ -409,12 +487,12 @@
       </div>
     </div>
 
-    <div class="bio-content">
+    <div class="bio-content fade-item">
       <p><i class="fas fa-location-dot"></i> Gia Lai, Việt Nam</p>
       <p style="font-size:0.95rem; opacity:0.9; margin-top:1rem;">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
 
-    <div class="social-links">
+    <div class="social-links fade-item">
       <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
         <i class="fab fa-facebook-f"></i>
       </a>
@@ -427,7 +505,7 @@
     </div>
 
     <!-- Music Player -->
-    <div class="music-player">
+    <div class="music-player fade-item">
       <div class="music-info">
         <i class="fas fa-music"></i>
         <span id="trackName">InLove</span>
@@ -456,6 +534,35 @@
   <audio id="bgMusic" loop preload="auto" src="https://wily-silver-gwxkcolc.edgeone.dev/"></audio>
 
   <script>
+    // --- TẠO ĐOM ĐÓM BAY (PARTICLES) ---
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 30; // Số lượng hạt
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Kích thước ngẫu nhiên từ 2px đến 5px
+      const size = Math.random() * 3 + 2;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      
+      // Vị trí ngẫu nhiên
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.top = `${Math.random() * 100}vh`;
+      
+      // Thời gian bay và độ trễ ngẫu nhiên
+      const duration = Math.random() * 10 + 10; // 10s - 20s
+      particle.style.animationDuration = `${duration}s`;
+      particle.style.animationDelay = `${Math.random() * -20}s`; // Bắt đầu ở giữa chừng
+      
+      // Màu sắc ngẫu nhiên (xanh hoặc tím)
+      particle.style.backgroundColor = Math.random() > 0.5 ? '#6ea8ff' : '#b06eff';
+      
+      particlesContainer.appendChild(particle);
+    }
+
+    // --- LOGIC NHẠC VÀ MÀN HÌNH CHỜ ---
     (function() {
       const audio = document.getElementById('bgMusic');
       const splashScreen = document.getElementById('splashScreen');
@@ -483,9 +590,11 @@
         if (audio.paused) {
           playIcon.classList.remove('fa-pause');
           playIcon.classList.add('fa-play');
+          document.getElementById('playPauseBtn').style.animation = 'beat 1.5s infinite alternate';
         } else {
           playIcon.classList.remove('fa-play');
           playIcon.classList.add('fa-pause');
+          document.getElementById('playPauseBtn').style.animation = 'none'; // Tắt nhịp đập khi đang phát
         }
       }
 
@@ -527,14 +636,12 @@
         updateVolumeIcon();
       }
 
-      // Xử lý click màn hình chờ
       splashScreen.addEventListener('click', () => {
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
         bioCard.classList.add('show');
       });
 
-      // Click thanh tiến trình để tua nhạc
       progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
