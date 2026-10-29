@@ -30,7 +30,7 @@
         h2 { margin-bottom: 20px; font-size: 1.2rem; text-align: center; color: #38bdf8; }
         .form-group { margin-bottom: 14px; }
         label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: #94a3b8; }
-        input {
+        input[type="text"], input[type="file"] {
             width: 100%; padding: 10px 14px;
             background: rgba(15, 23, 42, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -58,8 +58,13 @@
         </div>
 
         <div class="form-group">
-            <label>Link Ảnh Đại Diện (Avatar URL):</label>
-            <input type="text" id="inputAvatar">
+            <label>Chọn Ảnh Đại Diện (Từ thiết bị):</label>
+            <input type="file" id="inputAvatarFile" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <label>Chọn Ảnh Nền Background (Từ thiết bị):</label>
+            <input type="file" id="inputBgFile" accept="image/*">
         </div>
 
         <div class="form-group">
@@ -83,14 +88,14 @@
         </div>
 
         <button class="btn-save" onclick="saveData()">Lưu Thay Đổi</button>
-        <a href="index.html" class="back-link">⬅ Quay lại trang chủ Bio</a>
+        <a href="index.html" class="back-link">⬅ Xem trang chủ Bio</a>
     </div>
 
     <script>
-        // Tải dữ liệu cũ điền sẵn vào ô input
         const defaultData = {
             name: "Lê Bảo Trung",
-            avatar: "https://via.placeholder.com/150",
+            avatar: "",
+            bgImage: "",
             fb: "https://facebook.com",
             tiktok: "https://tiktok.com",
             songName: "anhyeuem",
@@ -100,16 +105,43 @@
         const data = JSON.parse(localStorage.getItem('bioData')) || defaultData;
 
         document.getElementById('inputName').value = data.name;
-        document.getElementById('inputAvatar').value = data.avatar;
         document.getElementById('inputFb').value = data.fb;
         document.getElementById('inputTiktok').value = data.tiktok;
         document.getElementById('inputSongName').value = data.songName;
         document.getElementById('inputSongUrl').value = data.songUrl;
 
+        let tempAvatar = data.avatar;
+        let tempBg = data.bgImage;
+
+        // Đọc ảnh avatar từ máy tính/điện thoại
+        document.getElementById('inputAvatarFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    tempAvatar = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Đọc ảnh background từ máy tính/điện thoại
+        document.getElementById('inputBgFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    tempBg = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         function saveData() {
             const newData = {
                 name: document.getElementById('inputName').value,
-                avatar: document.getElementById('inputAvatar').value,
+                avatar: tempAvatar,
+                bgImage: tempBg,
                 fb: document.getElementById('inputFb').value,
                 tiktok: document.getElementById('inputTiktok').value,
                 songName: document.getElementById('inputSongName').value,
@@ -117,7 +149,7 @@
             };
 
             localStorage.setItem('bioData', JSON.stringify(newData));
-            alert("Đã lưu thành công! Bạn hãy quay lại trang chủ để xem kết quả.");
+            alert("Đã lưu thành công! Hãy bấm 'Xem trang chủ Bio' để kiểm tra kết quả.");
         }
     </script>
 </body>
