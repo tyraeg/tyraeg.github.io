@@ -15,11 +15,16 @@
             padding: 0;
         }
 
+        /* --- NỀN ĐỘNG SAO LẤP LÁNH --- */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #050505;
-            background-image: radial-gradient(white 1px, transparent 0);
-            background-size: 40px 40px;
+            background-image: 
+                radial-gradient(white 1.5px, transparent 1.5px), 
+                radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
+            background-size: 50px 50px, 30px 30px;
+            background-position: 0 0, 25px 25px;
+            animation: moveStars 20s linear infinite;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -28,6 +33,11 @@
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+        }
+
+        @keyframes moveStars {
+            from { background-position: 0 0, 25px 25px; }
+            to { background-position: 0 500px, 25px 525px; }
         }
 
         .wrapper {
@@ -190,7 +200,7 @@
                 <img src="https://via.placeholder.com/150" alt="Avatar" class="avatar">
             </div>
 
-            <div class="profile-name">Lê Trung</div>
+            <div class="profile-name">Tên Của Bạn</div>
 
             <div class="social-icons">
                 <a href="https://facebook.com" target="_blank" class="social-icon-btn" title="Facebook">
@@ -202,7 +212,7 @@
             </div>
         </div>
 
-        <!-- Khung Trình phát nhạc -->
+        <!-- Khung Trình phát nhạc (Có thời gian phát & thanh timeline đầy đủ) -->
         <div class="player-card">
             <div class="player-top">
                 <div class="song-info">
@@ -222,8 +232,8 @@
         </div>
     </div>
 
-    <!-- Thẻ Audio có autoplay -->
-    <audio id="audioElement" src="https://necessary-maroon-afod0mik.edgeone.dev/" preload="metadata" loop autoplay></audio>
+    <!-- Thẻ Audio có muted và autoplay để ép tự phát -->
+    <audio id="audioElement" src="https://www.bensound.com/bensound-music/bensound-cute.mp3" preload="metadata" loop autoplay muted></audio>
 
     <script>
         const audio = document.getElementById('audioElement');
@@ -242,6 +252,7 @@
                 discIcon.style.animation = "none";
                 isPlaying = false;
             } else {
+                audio.muted = false;
                 audio.play().then(() => {
                     playIcon.className = "fa-solid fa-pause";
                     discIcon.style.animation = "spin 3s linear infinite";
@@ -260,6 +271,7 @@
             durationTimeEl.innerText = formatTime(audio.duration);
         });
 
+        // Cập nhật thời gian phát thực tế và thanh chạy
         audio.addEventListener('timeupdate', () => {
             currentTimeEl.innerText = formatTime(audio.currentTime);
             if(audio.duration) {
@@ -277,16 +289,22 @@
         styleSheet.innerText = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
         document.head.appendChild(styleSheet);
 
-        // Tự động phát nhạc ngay khi vào web
+        // Tự động phát khi vừa vào web
         window.addEventListener('DOMContentLoaded', () => {
             audio.volume = 0.5;
             audio.play().then(() => {
                 playIcon.className = "fa-solid fa-pause";
                 discIcon.style.animation = "spin 3s linear infinite";
                 isPlaying = true;
+
+                // Tự mở tiếng sau 0.5 giây
+                setTimeout(() => {
+                    audio.muted = false;
+                }, 500);
+
             }).catch(() => {
-                // Nếu trình duyệt chặn tự động phát, tự bật khi người dùng có hành động chạm/click đầu tiên
                 const unlock = () => {
+                    audio.muted = false;
                     audio.play().then(() => {
                         playIcon.className = "fa-solid fa-pause";
                         discIcon.style.animation = "spin 3s linear infinite";
