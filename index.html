@@ -25,7 +25,7 @@
     }
 
     /* =========================================
-       MÀN HÌNH CHỜ (SPLASH SCREEN) - SIÊU MƯỢT
+       MÀN HÌNH CHỜ (SPLASH SCREEN) - ĐÃ CÂN ĐỐI LẠI
        ========================================= */
     .splash-screen {
       position: fixed;
@@ -33,7 +33,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #050505;
+      background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%); /* Đồng bộ màu nền */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -48,30 +48,61 @@
       visibility: hidden;
     }
 
-    /* Hiệu ứng hiện ra mượt mà (Fade Up) */
+    /* Thêm ánh sáng mờ ảo cho màn hình chờ */
+    .splash-screen::before {
+      content: '';
+      position: absolute;
+      width: 50vmax;
+      height: 50vmax;
+      background: radial-gradient(circle, rgba(100, 210, 255, 0.1) 0%, transparent 60%);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+    }
+
+    /* Hiệu ứng chữ hiện ra mượt mà */
     .splash-text {
       color: #fff;
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      margin-bottom: 5px;
+      font-size: 2rem; /* To hơn một chút */
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 15px; /* Khoảng cách vừa phải với dòng dưới */
       opacity: 0;
       transform: translateY(20px) scale(0.9);
       animation: smoothAppear 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 20px rgba(100, 180, 255, 0.5);
     }
 
     .splash-subtext {
-      color: #888;
-      font-size: 0.9rem;
+      color: #8fa5cc;
+      font-size: 1rem;
       font-weight: 400;
+      letter-spacing: 1px;
       opacity: 0;
       transform: translateY(10px);
       animation: smoothAppear 1s cubic-bezier(0.2, 0.9, 0.3, 1) 0.3s forwards;
     }
 
+    /* Chấm tròn nhấp nháy báo hiệu click */
+    .splash-dot {
+      margin-top: 40px;
+      width: 8px;
+      height: 8px;
+      background-color: #5d9eff;
+      border-radius: 50%;
+      animation: pulseDot 1.5s infinite;
+    }
+
     @keyframes smoothAppear {
       to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.8); opacity: 0.5; box-shadow: 0 0 0 0 rgba(93, 158, 255, 0.7); }
+      70% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 10px rgba(93, 158, 255, 0); }
+      100% { transform: scale(0.8); opacity: 0.5; box-shadow: 0 0 0 0 rgba(93, 158, 255, 0); }
     }
 
     /* =========================================
@@ -455,6 +486,7 @@
   <div class="splash-screen" id="splashScreen">
     <div class="splash-text">click to enter...</div>
     <div class="splash-subtext">Dev Lê Trung</div>
+    <div class="splash-dot"></div>
   </div>
 
   <!-- Lớp đom đóm bay (Tạo bằng JS) -->
