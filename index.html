@@ -30,10 +30,8 @@
        ========================================= */
     .splash-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: linear-gradient(145deg, #0b0f1a 0%, #1a1f2e 100%);
       display: flex;
       flex-direction: column;
@@ -52,12 +50,10 @@
     .splash-screen::before {
       content: '';
       position: absolute;
-      width: 50vmax;
-      height: 50vmax;
+      width: 50vmax; height: 50vmax;
       background: radial-gradient(circle, rgba(100, 210, 255, 0.1) 0%, transparent 60%);
       border-radius: 50%;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       z-index: -1;
     }
@@ -77,7 +73,6 @@
     .splash-subtext {
       color: #8fa5cc;
       font-size: 1rem;
-      font-weight: 400;
       letter-spacing: 1px;
       opacity: 0;
       transform: translateY(10px);
@@ -86,8 +81,7 @@
 
     .splash-dot {
       margin-top: 40px;
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       background-color: #5d9eff;
       border-radius: 50%;
       animation: pulseDot 1.5s infinite;
@@ -108,10 +102,8 @@
        ========================================= */
     .particles {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 1;
       pointer-events: none;
     }
@@ -135,12 +127,10 @@
     /* Hiệu ứng ánh sáng nền */
     .glow {
       position: fixed;
-      width: 60vmax;
-      height: 60vmax;
+      width: 60vmax; height: 60vmax;
       background: radial-gradient(circle, rgba(100, 210, 255, 0.15) 0%, transparent 70%);
       border-radius: 50%;
-      top: -20vmax;
-      left: -20vmax;
+      top: -20vmax; left: -20vmax;
       z-index: 0;
       pointer-events: none;
       animation: floatGlow 14s infinite alternate ease-in-out;
@@ -148,12 +138,10 @@
 
     .glow2 {
       position: fixed;
-      width: 70vmax;
-      height: 70vmax;
+      width: 70vmax; height: 70vmax;
       background: radial-gradient(circle, rgba(200, 100, 255, 0.12) 0%, transparent 70%);
       border-radius: 50%;
-      bottom: -30vmax;
-      right: -20vmax;
+      bottom: -30vmax; right: -20vmax;
       z-index: 0;
       pointer-events: none;
       animation: floatGlow 18s infinite alternate-reverse ease-in-out;
@@ -184,6 +172,42 @@
       transform: translateY(30px) scale(0.96);
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
       transform-style: preserve-3d;
+      overflow: hidden;
+    }
+
+    /* Viền gradient phát sáng quanh card */
+    .bio-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(100, 180, 255, 0.5), rgba(157, 78, 221, 0.5), rgba(32, 213, 236, 0.5));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    /* Hiệu ứng shimmer chạy qua card */
+    .bio-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+      transform: skewX(-20deg);
+      animation: shimmer 8s infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { left: -100%; }
+      50% { left: 150%; }
     }
 
     .bio-card.show {
@@ -193,6 +217,8 @@
 
     /* Hiệu ứng xuất hiện lần lượt */
     .fade-item {
+      position: relative;
+      z-index: 2;
       opacity: 0;
       transform: translateY(15px) translateZ(30px);
       transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
@@ -206,9 +232,10 @@
     .bio-card.show .avatar-wrapper { transition-delay: 0.1s; }
     .bio-card.show .bio-name { transition-delay: 0.2s; }
     .bio-card.show .bio-tagline { transition-delay: 0.3s; }
-    .bio-card.show .bio-content { transition-delay: 0.4s; }
-    .bio-card.show .social-links { transition-delay: 0.5s; }
-    .bio-card.show .music-player { transition-delay: 0.6s; }
+    .bio-card.show .bio-stats { transition-delay: 0.35s; }
+    .bio-card.show .bio-content { transition-delay: 0.45s; }
+    .bio-card.show .social-links { transition-delay: 0.55s; }
+    .bio-card.show .music-player { transition-delay: 0.65s; }
 
     /* Avatar */
     .avatar-section {
@@ -218,14 +245,19 @@
       margin-bottom: 1.8rem;
     }
 
+    /* Vòng xoay gradient quanh avatar */
     .avatar-wrapper {
-      width: 120px;
-      height: 120px;
+      position: relative;
+      width: 120px; height: 120px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #3a7bd5, #9d4edd);
       padding: 3px;
       margin-bottom: 1rem;
-      animation: breathing 3s infinite ease-in-out;
+      background: conic-gradient(from 0deg, #3a7bd5, #9d4edd, #20D5EC, #3a7bd5);
+      animation: spinRing 6s linear infinite, breathing 3s infinite ease-in-out;
+    }
+
+    @keyframes spinRing {
+      to { background: conic-gradient(from 360deg, #3a7bd5, #9d4edd, #20D5EC, #3a7bd5); }
     }
 
     @keyframes breathing {
@@ -234,12 +266,30 @@
     }
 
     .avatar {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       border-radius: 50%;
       background: #1e2433 url('https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg') center/cover no-repeat;
       background-size: cover; 
       border: 2px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    /* Chấm trạng thái online ở avatar */
+    .avatar-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 6px; right: 6px;
+      width: 18px; height: 18px;
+      background: #22c55e;
+      border: 3px solid #141923;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+      animation: onlinePulse 2s infinite;
+    }
+
+    @keyframes onlinePulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(34, 197, 94, 0.6); }
+      50% { box-shadow: 0 0 14px rgba(34, 197, 94, 1); }
     }
 
     .bio-name {
@@ -276,17 +326,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 0.75em;
-      height: 0.75em;
+      width: 0.75em; height: 0.75em;
       vertical-align: middle;
       filter: drop-shadow(0 0 6px rgba(32, 213, 236, 0.8));
       animation: badgeGlow 2.5s infinite alternate ease-in-out;
-      line-height: 1;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Nền tròn xanh ngọc TikTok */
     .verified-badge::before {
       content: '';
       position: absolute;
@@ -296,7 +343,6 @@
       box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.15) inset;
     }
 
-    /* Dấu tick trắng */
     .verified-badge .check-mark {
       position: relative;
       font-size: 0.5em;
@@ -312,7 +358,6 @@
       100% { filter: drop-shadow(0 0 12px rgba(32, 213, 236, 1)); }
     }
 
-    /* Tooltip "Đã xác minh" */
     .verified-tooltip {
       position: absolute;
       bottom: calc(100% + 0.5em);
@@ -333,10 +378,8 @@
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
       z-index: 50;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
     }
 
-    /* Mũi nhọn tooltip */
     .verified-tooltip::after {
       content: '';
       position: absolute;
@@ -347,14 +390,7 @@
       border-top-color: rgba(10, 15, 25, 0.95);
     }
 
-    /* Hiện tooltip khi hover (PC) */
-    .verified-wrapper:hover .verified-tooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* Hiện tooltip khi active/click (Mobile + PC) */
+    .verified-wrapper:hover .verified-tooltip,
     .verified-wrapper.active .verified-tooltip {
       opacity: 1;
       visibility: visible;
@@ -364,7 +400,6 @@
     .bio-tagline {
       color: #8fa5cc;
       font-size: 1rem;
-      font-weight: 400;
       display: flex;
       align-items: center;
       gap: 0.4rem;
@@ -375,6 +410,49 @@
     .bio-tagline i {
       color: #5d9eff;
       font-size: 0.9rem;
+    }
+
+    /* =========================================
+       BIO STATS (số liệu)
+       ========================================= */
+    .bio-stats {
+      display: flex;
+      justify-content: center;
+      gap: 1.8rem;
+      margin: 1.4rem 0 0.5rem;
+      padding: 0.8rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      transition: transform 0.25s ease;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-3px);
+    }
+
+    .stat-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(to right, #6ea8ff, #b06eff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: #8fa5cc;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 500;
     }
 
     /* Thông tin bio */
@@ -398,6 +476,19 @@
       text-align: center;
     }
 
+    .bio-quote {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-top: 1rem !important;
+      font-style: italic;
+      color: #b8c9e6;
+      padding: 0.7rem 1rem;
+      border-left: 2px solid rgba(110, 168, 255, 0.5);
+      border-radius: 0.3rem;
+      background: rgba(110, 168, 255, 0.05);
+      text-align: left;
+    }
+
     /* Social icons */
     .social-links {
       display: flex;
@@ -411,23 +502,37 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 3rem;
-      height: 3rem;
+      width: 3rem; height: 3rem;
       border-radius: 1rem;
       background: rgba(255, 255, 255, 0.04);
       color: #cddfff;
       font-size: 1.4rem;
-      transition: all 0.25s ease;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
       border: 1px solid rgba(255, 255, 255, 0.06);
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #3a7bd5, #9d4edd);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
     }
 
     .social-icon:hover {
-      background: #2a3b5a;
       color: #ffffff;
-      transform: translateY(-5px) scale(1.05);
-      border-color: #5d9eff;
-      box-shadow: 0 12px 18px -8px #2a6bc0;
+      transform: translateY(-6px) scale(1.08);
+      border-color: transparent;
+      box-shadow: 0 12px 22px -8px #2a6bc0;
+    }
+
+    .social-icon:hover::before {
+      opacity: 1;
     }
 
     /* =========================================
@@ -459,9 +564,19 @@
       min-width: 90px;
     }
 
+    /* Đĩa nhạc xoay khi đang phát */
     .music-info i {
       color: #6ea8ff;
       font-size: 1.1rem;
+      animation: spinMusic 3s linear infinite paused;
+    }
+
+    .music-info.playing i {
+      animation-play-state: running;
+    }
+
+    @keyframes spinMusic {
+      to { transform: rotate(360deg); }
     }
 
     .progress-wrapper {
@@ -487,6 +602,11 @@
       border-radius: 4px;
       cursor: pointer;
       position: relative;
+      transition: height 0.2s ease;
+    }
+
+    .progress-container:hover {
+      height: 6px;
     }
 
     .progress-bar {
@@ -495,9 +615,9 @@
       background: linear-gradient(90deg, #6ea8ff, #b06eff);
       border-radius: 4px;
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       pointer-events: none;
+      box-shadow: 0 0 8px rgba(110, 168, 255, 0.6);
     }
 
     .music-controls {
@@ -510,8 +630,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 2.6rem;
-      height: 2.6rem;
+      width: 2.6rem; height: 2.6rem;
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -544,15 +663,11 @@
 
     #playPauseBtn:hover {
       box-shadow: 0 6px 16px rgba(100, 140, 255, 0.5);
-      animation: none; 
+      animation: none;
     }
 
-    #playPauseBtn i {
-      margin-left: 2px; 
-    }
-    #playPauseBtn i.fa-pause {
-      margin-left: 0; 
-    }
+    #playPauseBtn i { margin-left: 2px; }
+    #playPauseBtn i.fa-pause { margin-left: 0; }
 
     /* Responsive Mobile */
     @media (max-width: 520px) {
@@ -560,13 +675,8 @@
         padding: 1.8rem 1.2rem;
         border-radius: 2rem 0.8rem 2rem 0.8rem;
       }
-      .bio-name {
-        font-size: 1.7rem;
-      }
-      .avatar-wrapper {
-        width: 100px;
-        height: 100px;
-      }
+      .bio-name { font-size: 1.7rem; }
+      .avatar-wrapper { width: 100px; height: 100px; }
       
       .progress-wrapper {
         order: 3;
@@ -574,17 +684,17 @@
         margin-top: 0.6rem;
       }
       
-      .music-info {
-        flex: 1;
-      }
-      .music-controls {
-        margin-left: auto;
-      }
+      .music-info { flex: 1; }
+      .music-controls { margin-left: auto; }
 
       .verified-tooltip {
         font-size: 0.65rem;
         padding: 0.35em 0.65em;
       }
+
+      .bio-stats { gap: 1.2rem; }
+      .stat-value { font-size: 1rem; }
+      .stat-label { font-size: 0.6rem; }
     }
   </style>
 </head>
@@ -625,9 +735,25 @@
       </div>
     </div>
 
+    <!-- Số liệu -->
+    <div class="bio-stats fade-item">
+      <div class="stat-item">
+        <span class="stat-value">2+</span>
+        <span class="stat-label">Năm code</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">15+</span>
+        <span class="stat-label">Dự án</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">∞</span>
+        <span class="stat-label">Đam mê</span>
+      </div>
+    </div>
+
     <div class="bio-content fade-item">
       <p><i class="fas fa-location-dot"></i> Gia Lai, Việt Nam</p>
-      <p style="font-size:0.95rem; opacity:0.9; margin-top:1rem;">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
+      <p class="bio-quote">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
 
     <div class="social-links fade-item">
@@ -640,11 +766,14 @@
       <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
         <i class="fab fa-tiktok"></i>
       </a>
+      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
     </div>
 
     <div class="music-player fade-item">
-      <div class="music-info">
-        <i class="fas fa-music"></i>
+      <div class="music-info" id="musicInfo">
+        <i class="fas fa-compact-disc"></i>
         <span id="trackName">Kẻ Điên Tin Vào Tình Yêu</span>
       </div>
 
@@ -688,16 +817,14 @@
       particlesContainer.appendChild(particle);
     }
 
-    // --- HIỆU ỨNG 3D NGHIÊNG THẺ THEO CHUỘT (TILT EFFECT) ---
+    // --- HIỆU ỨNG 3D NGHIÊNG THẺ THEO CHUỘT ---
     const bioCard = document.getElementById('bioCard');
     
     if (window.innerWidth > 768) {
       document.addEventListener('mousemove', (e) => {
         if (!bioCard.classList.contains('show')) return;
-        
         const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
         const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-        
         bioCard.style.transform = `translateY(0) scale(1) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         particlesContainer.style.transform = `translate(${xAxis * -1.5}px, ${yAxis * -1.5}px)`;
       });
@@ -708,7 +835,7 @@
       });
     }
 
-    // --- TOOLTIP XÁC MINH (click/tap để hiện trên cả PC và mobile) ---
+    // --- TOOLTIP XÁC MINH ---
     const verifiedWrapper = document.getElementById('verifiedWrapper');
     let tooltipTimer = null;
 
@@ -730,7 +857,6 @@
       showTooltip();
     }, { passive: true });
 
-    // Ẩn tooltip khi bấm ra ngoài
     document.addEventListener('click', (e) => {
       if (!verifiedWrapper.contains(e.target)) {
         verifiedWrapper.classList.remove('active');
@@ -747,7 +873,6 @@
     (function() {
       const audio = document.getElementById('bgMusic');
       const splashScreen = document.getElementById('splashScreen');
-      
       const playPauseBtn = document.getElementById('playPauseBtn');
       const playIcon = document.getElementById('playIcon');
       const muteBtn = document.getElementById('muteBtn');
@@ -756,6 +881,7 @@
       const progressContainer = document.getElementById('progressContainer');
       const currentTimeEl = document.getElementById('currentTime');
       const durationEl = document.getElementById('duration');
+      const musicInfo = document.getElementById('musicInfo');
 
       audio.volume = 0.7;
 
@@ -770,11 +896,13 @@
         if (audio.paused) {
           playIcon.classList.remove('fa-pause');
           playIcon.classList.add('fa-play');
-          document.getElementById('playPauseBtn').style.animation = 'beat 1.5s infinite alternate';
+          playPauseBtn.style.animation = 'beat 1.5s infinite alternate';
+          musicInfo.classList.remove('playing');
         } else {
           playIcon.classList.remove('fa-play');
           playIcon.classList.add('fa-pause');
-          document.getElementById('playPauseBtn').style.animation = 'none';
+          playPauseBtn.style.animation = 'none';
+          musicInfo.classList.add('playing');
         }
       }
 
@@ -825,9 +953,7 @@
       progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        if (audio.duration) {
-          audio.currentTime = pos * audio.duration;
-        }
+        if (audio.duration) audio.currentTime = pos * audio.duration;
       });
 
       playPauseBtn.addEventListener('click', togglePlay);
