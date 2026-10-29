@@ -109,9 +109,11 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: #1e2433 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="22" fill="%236c8ef5"/><circle cx="50" cy="50" r="38" fill="none" stroke="%236c8ef5" stroke-width="2" stroke-dasharray="6 6"/><circle cx="50" cy="40" r="12" fill="%23222a3a"/><circle cx="50" cy="40" r="8" fill="%239d4edd"/></svg>') center/cover no-repeat;
-      background-size: 75%;
-      background-position: 50% 45%;
+      /* 👇 THAY LINK ẢNH CỦA BẠN VÀO ĐÂY 👇 */
+      background: #1e2433 url('https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg') center/cover no-repeat;
+      /* Bạn có thể xoá dòng background-size và background-position bên dưới đi */
+      background-size: cover; 
+      background-position: center;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -350,26 +352,33 @@
     <!-- Avatar + Tên -->
     <div class="avatar-section">
       <div class="avatar-wrapper">
+        <!-- Div avatar này sẽ lấy ảnh từ CSS ở trên -->
         <div class="avatar"></div>
       </div>
-      <h1 class="bio-name">Alex Rivers</h1>
+      <h1 class="bio-name">Lê Trung</h1>
       <div class="bio-tagline">
-        <i class="fas fa-user-graduate"></i> Sound designer & developer 
+        <i class="fas fa-user-graduate"></i> High school student & Developer 
         <i class="fas fa-code"></i>
       </div>
     </div>
 
     <!-- Nội dung bio -->
     <div class="bio-content">
-      <p><i class="fas fa-location-dot"></i> Đà Nẵng, Việt Nam</p>
+      <p><i class="fas fa-location-dot"></i> Gia Lai, Việt Nam</p>
       <p style="font-size:0.95rem; opacity:0.9; margin-top:1rem;">“Tạo ra trải nghiệm – từ giai điệu đến từng dòng code.”</p>
     </div>
 
-    <!-- Social (Đã sửa: Facebook, Instagram, TikTok) -->
+    <!-- Social -->
     <div class="social-links">
-      <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="#" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://instagram.com/ten-cua-ban" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://tiktok.com/@ten-cua-ban" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+      </a>
     </div>
 
     <!-- Music player -->
