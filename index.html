@@ -90,10 +90,22 @@
     .top-controls {
       position: fixed;
       top: 1.5rem;
+      left: 1.5rem;
       right: 1.5rem;
       display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 0.8rem;
       z-index: 1000;
+      pointer-events: none;
+    }
+
+    .top-controls > * { pointer-events: auto; }
+
+    .top-controls-right {
+      display: flex;
+      gap: 0.8rem;
+      position: relative;
     }
 
     .control-btn {
@@ -111,13 +123,24 @@
       font-size: 1.1rem;
       box-shadow: 0 4px 15px var(--shadow-color);
       transition: all 0.3s ease;
-      pointer-events: auto;
     }
 
     .control-btn:hover {
       transform: scale(1.1) rotate(10deg);
       color: var(--accent1);
       border-color: var(--accent1);
+    }
+
+    /* Nút QR góc trái */
+    .qr-top-btn {
+      color: var(--accent3) !important;
+      border-color: rgba(32, 213, 236, 0.3) !important;
+    }
+    .qr-top-btn:hover {
+      color: #fff !important;
+      background: linear-gradient(135deg, var(--accent1), var(--accent3));
+      border-color: transparent !important;
+      transform: scale(1.1) rotate(0deg) !important;
     }
 
     .theme-palette {
@@ -137,7 +160,6 @@
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s ease;
-      pointer-events: auto;
     }
 
     .theme-palette.active {
@@ -580,8 +602,8 @@
       text-align: left;
     }
 
-    /* Live clock + view counter */
-    .live-info, .view-counter {
+    /* Live clock */
+    .live-info {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -606,9 +628,6 @@
       border-radius: 0.3em;
       color: var(--text-sub);
     }
-
-    .view-counter { font-size: 0.85rem; opacity: 0.85; }
-    .view-counter #viewCount { font-weight: 700; color: var(--accent3); }
 
     /* Social icons */
     .social-links {
@@ -889,7 +908,7 @@
     }
 
     /* =========================================
-       QR MODAL
+       MODALS CHUNG (QR & BANK)
        ========================================= */
     .qr-modal {
       position: fixed;
@@ -951,7 +970,7 @@
 
     .qr-modal-content h3 i { color: var(--accent1); }
 
-    #qrcodeContainer {
+    #qrcodeContainer, #bankQrContainer {
       display: inline-block;
       padding: 0.8rem;
       background: #fff;
@@ -959,7 +978,8 @@
       margin: 0.5rem auto 1rem;
     }
 
-    #qrcodeContainer img, #qrcodeContainer canvas { display: block; }
+    #qrcodeContainer img, #qrcodeContainer canvas,
+    #bankQrContainer img, #bankQrContainer canvas { display: block; }
 
     .qr-url {
       font-size: 0.75rem;
@@ -969,7 +989,7 @@
       padding: 0 0.5rem;
     }
 
-    .qr-copy-btn {
+    .btn-gradient {
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
       color: #fff;
       border: none;
@@ -980,21 +1000,59 @@
       font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.4rem;
       transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
     }
 
-    .qr-copy-btn:hover {
+    .btn-gradient:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px var(--glow-1);
     }
+
+    /* Bank info boxes */
+    .bank-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .bank-info-item {
+      background: var(--social-bg);
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.6rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-body);
+    }
+
+    .bank-info-item strong { color: var(--text-main); }
+    
+    .copy-icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--accent3);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.2rem;
+      transition: transform 0.2s;
+    }
+    
+    .copy-icon-btn:hover { transform: scale(1.2); }
 
     /* Responsive Mobile */
     @media (max-width: 520px) {
       .bio-card { padding: 1.8rem 1.2rem; border-radius: 2rem 0.8rem 2rem 0.8rem; }
       .bio-name { font-size: 1.7rem; }
       .avatar-wrapper { width: 100px; height: 100px; }
-      .top-controls { top: 1rem; right: 1rem; gap: 0.5rem; }
+      .top-controls { top: 1rem; left: 1rem; right: 1rem; gap: 0.5rem; }
+      .top-controls-right { gap: 0.5rem; }
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
       .verified-tooltip { font-size: 0.65rem; padding: 0.35em 0.65em; }
       .paw-click { width: 30px; height: 30px; }
@@ -1007,19 +1065,26 @@
 
   <!-- ĐIỀU KHIỂN THEME & MODE -->
   <div class="top-controls">
-    <button class="control-btn" id="themeToggleBtn" aria-label="Đổi màu chủ đề">
-      <i class="fas fa-palette"></i>
+    <!-- QR góc trái -->
+    <button class="control-btn qr-top-btn" id="qrBtn" aria-label="Mã QR chia sẻ trang">
+      <i class="fas fa-qrcode"></i>
     </button>
-    <div class="theme-palette" id="themePalette">
-      <div class="color-dot" data-theme="theme-blue" title="Xanh dương"></div>
-      <div class="color-dot" data-theme="theme-purple" title="Tím"></div>
-      <div class="color-dot" data-theme="theme-green" title="Xanh lá"></div>
-      <div class="color-dot" data-theme="theme-orange" title="Cam"></div>
-      <div class="color-dot" data-theme="theme-pink" title="Hồng"></div>
+
+    <div class="top-controls-right">
+      <button class="control-btn" id="themeToggleBtn" aria-label="Đổi màu chủ đề">
+        <i class="fas fa-palette"></i>
+      </button>
+      <div class="theme-palette" id="themePalette">
+        <div class="color-dot" data-theme="theme-blue" title="Xanh dương"></div>
+        <div class="color-dot" data-theme="theme-purple" title="Tím"></div>
+        <div class="color-dot" data-theme="theme-green" title="Xanh lá"></div>
+        <div class="color-dot" data-theme="theme-orange" title="Cam"></div>
+        <div class="color-dot" data-theme="theme-pink" title="Hồng"></div>
+      </div>
+      <button class="control-btn" id="modeToggleBtn" aria-label="Đổi chế độ Sáng/Tối">
+        <i class="fas fa-moon" id="modeIcon"></i>
+      </button>
     </div>
-    <button class="control-btn" id="modeToggleBtn" aria-label="Đổi chế độ Sáng/Tối">
-      <i class="fas fa-moon" id="modeIcon"></i>
-    </button>
   </div>
 
   <!-- SPLASH -->
@@ -1063,20 +1128,25 @@
         <span class="timezone-tag">GMT+7</span>
       </p>
       
-      <p class="view-counter">
-        <i class="fas fa-eye"></i>
-        <span id="viewCount">1000</span> lượt ghé thăm
-      </p>
-      
       <p class="bio-quote">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
 
+    <!-- HÀNG SOCIAL LINKS -->
     <div class="social-links fade-item">
-      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://instagram.com/ten-cua-ban" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-      <a href="https://github.com/" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-      <button class="social-icon" id="qrBtn" aria-label="Mã QR chia sẻ"><i class="fas fa-qrcode"></i></button>
+      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://instagram.com/ten-cua-ban" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      
+      <!-- Locket (Dùng icon camera vì FA không có icon Locket) -->
+      <a href="https://locket.cam/" target="_blank" class="social-icon" title="Locket"><i class="fas fa-camera-retro"></i></a>
+      
+      <!-- Discord -->
+      <a href="https://discord.com/" target="_blank" class="social-icon" title="Discord"><i class="fab fa-discord"></i></a>
+      
+      <!-- Nút Ngân hàng (Mở Modal) -->
+      <button class="social-icon" id="bankBtn" title="Thông tin chuyển khoản" style="border: 1px solid var(--accent1); color: var(--accent1);">
+        <i class="fas fa-wallet"></i>
+      </button>
     </div>
 
     <div class="music-player fade-item">
@@ -1113,14 +1183,43 @@
     </div>
   </div>
 
-  <!-- QR MODAL -->
+  <!-- QR SHARE MODAL (Trang web) -->
   <div class="qr-modal" id="qrModal">
     <div class="qr-modal-content">
       <button class="qr-modal-close" id="qrModalClose"><i class="fas fa-times"></i></button>
       <h3><i class="fas fa-qrcode"></i> Quét để chia sẻ</h3>
       <div id="qrcodeContainer"></div>
       <p class="qr-url" id="qrUrl"></p>
-      <button class="qr-copy-btn" id="qrCopyBtn"><i class="fas fa-copy"></i> Copy link</button>
+      <button class="btn-gradient" id="qrCopyBtn"><i class="fas fa-copy"></i> Copy link</button>
+    </div>
+  </div>
+
+  <!-- BANK MODAL (Chuyển khoản) -->
+  <div class="qr-modal" id="bankModal">
+    <div class="qr-modal-content">
+      <button class="qr-modal-close" id="bankModalClose"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-university"></i> Thông tin chuyển khoản</h3>
+      
+      <!-- Thay đổi thông tin ngân hàng của bạn ở đây -->
+      <div class="bank-info-list">
+        <div class="bank-info-item">
+          <span>Ngân hàng: <strong>TPBANK</strong></span>
+        </div>
+        <div class="bank-info-item">
+          <span>Số TK: <strong id="stkValue">31189838888</strong></span>
+          <button class="copy-icon-btn" id="copyStkBtn" title="Copy STK"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="bank-info-item">
+          <span>Chủ thẻ: <strong>LE BAO TRUNG</strong></span>
+        </div>
+      </div>
+
+      <!-- Mã QR chuyển khoản (Sử dụng VietQR) -->
+      <div id="bankQrContainer">
+        <img id="bankQrImg" src="" alt="QR Chuyển khoản" width="200" height="200" style="border-radius: 0.5rem;">
+      </div>
+      
+      <p class="qr-url" style="margin-bottom: 0;">Quét mã trên app ngân hàng để chuyển khoản</p>
     </div>
   </div>
 
@@ -1251,7 +1350,6 @@
     const themePalette = document.getElementById('themePalette');
     const body = document.body;
 
-    // Khôi phục theme từ localStorage
     const savedTheme = localStorage.getItem('pawdev_theme');
     if (savedTheme) body.classList.add(savedTheme);
     const savedMode = localStorage.getItem('pawdev_mode');
@@ -1295,12 +1393,11 @@
     });
 
     // =========================================
-    // 7. LIVE CLOCK + GREETING + VIEW COUNTER
+    // 7. LIVE CLOCK + GREETING
     // =========================================
     (function() {
       const liveClock = document.getElementById('liveClock');
       const greetingText = document.getElementById('greetingText');
-      const viewCountEl = document.getElementById('viewCount');
 
       function updateClock() {
         const now = new Date();
@@ -1324,31 +1421,14 @@
       }
       updateClock();
       setInterval(updateClock, 1000);
-
-      // View counter (localStorage)
-      let views = parseInt(localStorage.getItem('pawdev_views') || '0', 10);
-      views += 1;
-      localStorage.setItem('pawdev_views', views);
-      let current = 0;
-      const target = views;
-      const step = Math.max(1, Math.ceil(target / 30));
-      const counterInterval = setInterval(() => {
-        current += step;
-        if (current >= target) { current = target; clearInterval(counterInterval); }
-        viewCountEl.textContent = current;
-      }, 40);
     })();
 
     // =========================================
     // 8. PLAYLIST NHẠC + VISUALIZER
     // =========================================
-    let loadTrackExternal = null; // expose ra ngoài cho splash
     (function() {
-      // 🎵 Danh sách nhạc - thay src bằng link của bạn
       const PLAYLIST = [
         { name: 'Kẻ Điên Tin Vào Tình Yêu', src: 'https://handsome-apricot-swtddb8f.edgeone.dev' }
-        // Thêm bài mới ở đây, ví dụ:
-        // { name: 'Tên bài 2', src: 'https://link-mp3-cua-ban.com/bai2.mp3' },
       ].filter(t => t.src);
 
       let currentIndex = parseInt(localStorage.getItem('pawdev_track') || '0', 10);
@@ -1495,7 +1575,6 @@
         loadTrack((currentIndex + 1) % PLAYLIST.length, true);
       });
 
-      // Mở playlist khi nhấn vào tên bài
       musicInfo.style.cursor = 'pointer';
       musicInfo.title = 'Nhấn để xem danh sách phát';
       musicInfo.addEventListener('click', () => {
@@ -1524,11 +1603,10 @@
 
       loadTrack(currentIndex, false);
       updateVolumeIcon();
-      loadTrackExternal = loadTrack;
     })();
 
     // =========================================
-    // 9. QR CODE MODAL
+    // 9. MODAL QR CHIA SẺ TRANG WEB (Góc trái)
     // =========================================
     (function() {
       const qrBtn = document.getElementById('qrBtn');
@@ -1562,7 +1640,49 @@
     })();
 
     // =========================================
-    // 10. AVATAR THEO MÙA
+    // 10. MODAL NGÂN HÀNG (Chuyển khoản)
+    // =========================================
+    (function() {
+      const bankBtn = document.getElementById('bankBtn');
+      const bankModal = document.getElementById('bankModal');
+      const bankModalClose = document.getElementById('bankModalClose');
+      const copyStkBtn = document.getElementById('copyStkBtn');
+      const stkValue = document.getElementById('stkValue').textContent;
+      const bankQrImg = document.getElementById('bankQrImg');
+      
+      // 🔥 TÙY CHỈNH THÔNG TIN NGÂN HÀNG CỦA BẠN Ở ĐÂY:
+      const BANK_ID = 'TPBANK'; // Mã ngân hàng (MB, VCB, ICB, TCB, ACB, BIDV...)
+      const ACCOUNT_NO = '31189838888'; // Số tài khoản
+      const ACCOUNT_NAME = 'LE BAO TRUNG'; // Tên chủ thẻ (Không dấu)
+      const TEMPLATE = 'compact'; // Theme QR (compact, qr_only, print)
+
+      // Tạo link VietQR động
+      // Cú pháp: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.png?amount=<AMOUNT>&addInfo=<DESCRIPTION>&accountName=<ACCOUNT_NAME>
+      const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-${TEMPLATE}.png?accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+      
+      bankBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bankQrImg.src = qrUrl;
+        bankModal.classList.add('active');
+      });
+
+      function closeBankModal() { bankModal.classList.remove('active'); }
+      bankModalClose.addEventListener('click', closeBankModal);
+      bankModal.addEventListener('click', (e) => { if (e.target === bankModal) closeBankModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBankModal(); });
+
+      // Nút Copy số tài khoản
+      copyStkBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(stkValue).then(() => {
+          const originalIcon = copyStkBtn.innerHTML;
+          copyStkBtn.innerHTML = '<i class="fas fa-check" style="color: #22c55e;"></i>';
+          setTimeout(() => { copyStkBtn.innerHTML = originalIcon; }, 1500);
+        });
+      });
+    })();
+
+    // =========================================
+    // 11. AVATAR THEO MÙA
     // =========================================
     (function() {
       const avatarWrapper = document.getElementById('avatarWrapper');
@@ -1583,7 +1703,7 @@
     })();
 
     // =========================================
-    // 11. PWA SERVICE WORKER
+    // 12. PWA SERVICE WORKER
     // =========================================
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
