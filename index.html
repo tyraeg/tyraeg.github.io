@@ -6,6 +6,13 @@
   <title>Bio • PawDev</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#3a7bd5">
+  <link rel="apple-touch-icon" href="https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
   <style>
     /* =========================================
        THEME VARIABLES & GLOBAL
@@ -30,7 +37,6 @@
       --glow-2: rgba(200, 100, 255, 0.12);
     }
 
-    /* Light Mode Theme */
     body.light-mode {
       --bg1: #e0e5ec;
       --bg2: #f0f4f8;
@@ -51,7 +57,6 @@
       --glow-2: rgba(124, 58, 237, 0.08);
     }
 
-    /* Theme Switcher Colors */
     body.theme-blue { --accent1: #2563eb; --accent2: #06b6d4; --accent3: #3b82f6; }
     body.theme-purple { --accent1: #8b5cf6; --accent2: #d946ef; --accent3: #a855f7; }
     body.theme-green { --accent1: #10b981; --accent2: #34d399; --accent3: #059669; }
@@ -157,7 +162,7 @@
     .color-dot[data-theme="theme-pink"] { background: linear-gradient(135deg, #ec4899, #f472b6); }
 
     /* =========================================
-       MÀN HÌNH CHỜ (SPLASH SCREEN)
+       SPLASH SCREEN
        ========================================= */
     .splash-screen {
       position: fixed;
@@ -214,7 +219,7 @@
     }
 
     /* =========================================
-       BACKGROUND PARTICLES & GLOW
+       PARTICLES & GLOW
        ========================================= */
     .particles {
       position: fixed;
@@ -268,7 +273,7 @@
     }
 
     /* =========================================
-       CARD CHÍNH (3D TILT EFFECT)
+       BIO CARD
        ========================================= */
     .bio-card {
       position: relative;
@@ -282,7 +287,6 @@
       padding: 2.5rem 2rem;
       width: 100%;
       max-width: 620px;
-      
       opacity: 0;
       transform: translateY(30px) scale(0.96);
       transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
@@ -307,11 +311,10 @@
     }
 
     .bio-card:hover::before { opacity: 1; }
-
     .bio-card.show { opacity: 1; transform: translateY(0) scale(1); }
 
     /* =========================================
-       HIỆU ỨNG DẤU CHÂN MÈO (SVG)
+       PAW CLICK
        ========================================= */
     .paw-click {
       position: fixed;
@@ -390,7 +393,7 @@
       width: 100%; height: 100%;
       border-radius: 50%;
       background: var(--bg1) url('https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg') center/cover no-repeat;
-      background-size: cover; 
+      background-size: cover;
       border: 2px solid rgba(255, 255, 255, 0.2);
       position: relative;
     }
@@ -405,6 +408,30 @@
       border-radius: 50%;
       box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
       animation: onlinePulse 2s infinite;
+    }
+
+    /* Avatar theo mùa - emoji override ::after */
+    .avatar-wrapper.season-tet::after,
+    .avatar-wrapper.season-christmas::after,
+    .avatar-wrapper.season-halloween::after,
+    .avatar-wrapper.season-newyear::after {
+      width: auto; height: auto;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      font-size: 1.4rem;
+      bottom: auto; right: -8px; top: -8px;
+      animation: floatEmoji 3s ease-in-out infinite;
+      border-radius: 0;
+    }
+    .avatar-wrapper.season-tet::after { content: '🌸'; }
+    .avatar-wrapper.season-christmas::after { content: '🎄'; }
+    .avatar-wrapper.season-halloween::after { content: '🎃'; }
+    .avatar-wrapper.season-newyear::after { content: '🎆'; }
+
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-6px) rotate(5deg); }
     }
 
     @keyframes onlinePulse {
@@ -430,7 +457,6 @@
       gap: 0.35em;
     }
 
-    /* Tick xanh TikTok + Tooltip */
     .verified-wrapper {
       position: relative;
       display: inline-flex;
@@ -514,7 +540,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Typewriter Tagline */
     .bio-tagline {
       color: var(--text-sub);
       font-size: 1rem;
@@ -528,11 +553,8 @@
 
     .bio-tagline i { color: var(--accent1); font-size: 0.9rem; }
 
-    .typewriter {
-      display: inline-block;
-    }
+    .typewriter { display: inline-block; }
 
-    /* Thông tin bio */
     .bio-content {
       margin: 1.2rem 0;
       color: var(--text-body);
@@ -558,6 +580,36 @@
       text-align: left;
     }
 
+    /* Live clock + view counter */
+    .live-info, .view-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.92rem;
+      color: var(--text-body);
+      flex-wrap: wrap;
+    }
+
+    .live-info #liveClock {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      color: var(--accent1);
+      letter-spacing: 1px;
+    }
+
+    .timezone-tag {
+      font-size: 0.65rem;
+      padding: 0.1em 0.4em;
+      background: var(--social-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.3em;
+      color: var(--text-sub);
+    }
+
+    .view-counter { font-size: 0.85rem; opacity: 0.85; }
+    .view-counter #viewCount { font-weight: 700; color: var(--accent3); }
+
     /* Social icons */
     .social-links {
       display: flex;
@@ -581,6 +633,8 @@
       text-decoration: none;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     .social-icon::before {
@@ -603,22 +657,22 @@
     .social-icon:hover::before { opacity: 1; }
 
     /* =========================================
-       MUSIC PLAYER + VISUALIZER (FIX RESPONSIVE)
+       MUSIC PLAYER
        ========================================= */
     .music-player {
       background: var(--social-bg);
       border-radius: 1.2rem;
       padding: 1rem;
       display: flex;
-      flex-wrap: wrap; /* Cho phép rớt dòng trên mobile */
+      flex-wrap: wrap;
       align-items: center;
       gap: 1rem;
       border: 1px solid var(--border-color);
       box-shadow: 0 10px 30px -10px var(--shadow-color);
       backdrop-filter: blur(16px);
+      position: relative;
     }
 
-    /* Khối 1: Tên bài hát */
     .music-info {
       display: flex;
       align-items: center;
@@ -626,7 +680,7 @@
       color: var(--text-main);
       font-size: 0.9rem;
       font-weight: 600;
-      flex: 1 1 auto; /* Cho phép co giãn */
+      flex: 1 1 auto;
       min-width: 140px;
     }
 
@@ -643,10 +697,9 @@
     #trackName {
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; /* Cắt chữ bằng dấu ... nếu quá dài */
+      text-overflow: ellipsis;
     }
 
-    /* Khối 2: Các nút điều khiển */
     .music-controls {
       display: flex;
       align-items: center;
@@ -688,13 +741,12 @@
     #playPauseBtn i { margin-left: 2px; }
     #playPauseBtn i.fa-pause { margin-left: 0; }
 
-    /* Khối 3: Thanh tiến trình */
     .progress-wrapper {
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      flex: 1 1 100%; /* Luôn chiếm 1 dòng riêng dưới cùng trên mobile */
-      order: 3; /* Đẩy xuống dưới */
+      flex: 1 1 100%;
+      order: 3;
     }
 
     .time-display {
@@ -729,7 +781,6 @@
       box-shadow: 0 0 8px var(--glow-1);
     }
 
-    /* Khối 4: Sóng nhạc Visualizer */
     .visualizer-container {
       width: 100%;
       height: 25px;
@@ -749,11 +800,193 @@
       transition: height 0.1s ease;
     }
 
-    /* Thiết lập riêng cho màn hình PC (Rộng hơn 520px) thì thanh tiến trình nằm cùng dòng */
     @media (min-width: 521px) {
       .music-info { flex: 0 1 auto; }
       .progress-wrapper { flex: 1 1 auto; order: 0; min-width: 100px; }
       .visualizer-container { order: 0; width: 60px; flex-shrink: 0; }
+    }
+
+    /* =========================================
+       PLAYLIST PANEL
+       ========================================= */
+    .playlist-panel {
+      position: absolute;
+      bottom: calc(100% + 0.5rem);
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+      z-index: 20;
+    }
+
+    .playlist-panel.active {
+      max-height: 320px;
+      opacity: 1;
+      overflow-y: auto;
+    }
+
+    .playlist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      background: var(--card-bg);
+      z-index: 2;
+    }
+
+    .playlist-close {
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.2rem;
+    }
+
+    .playlist-list {
+      list-style: none;
+      padding: 0.4rem;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-body);
+      transition: background 0.2s;
+    }
+
+    .playlist-item:hover { background: var(--social-hover); }
+
+    .playlist-item.active {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .playlist-item .track-index {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      min-width: 1.2rem;
+      text-align: center;
+    }
+
+    /* =========================================
+       QR MODAL
+       ========================================= */
+    .qr-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      padding: 1rem;
+    }
+
+    .qr-modal.active { opacity: 1; visibility: visible; }
+
+    .qr-modal-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 2rem 1.5rem 1.5rem;
+      max-width: 340px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    .qr-modal.active .qr-modal-content { transform: scale(1); }
+
+    .qr-modal-close {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      background: var(--social-bg);
+      border: 1px solid var(--border-color);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .qr-modal-content h3 {
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .qr-modal-content h3 i { color: var(--accent1); }
+
+    #qrcodeContainer {
+      display: inline-block;
+      padding: 0.8rem;
+      background: #fff;
+      border-radius: 1rem;
+      margin: 0.5rem auto 1rem;
+    }
+
+    #qrcodeContainer img, #qrcodeContainer canvas { display: block; }
+
+    .qr-url {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      word-break: break-all;
+      margin-bottom: 1rem;
+      padding: 0 0.5rem;
+    }
+
+    .qr-copy-btn {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 0.7rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .qr-copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--glow-1);
     }
 
     /* Responsive Mobile */
@@ -761,12 +994,12 @@
       .bio-card { padding: 1.8rem 1.2rem; border-radius: 2rem 0.8rem 2rem 0.8rem; }
       .bio-name { font-size: 1.7rem; }
       .avatar-wrapper { width: 100px; height: 100px; }
-      
       .top-controls { top: 1rem; right: 1rem; gap: 0.5rem; }
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
       .verified-tooltip { font-size: 0.65rem; padding: 0.35em 0.65em; }
-      
       .paw-click { width: 30px; height: 30px; }
+      .playlist-panel { max-height: 260px; }
+      .qr-modal-content { padding: 1.5rem 1rem 1rem; }
     }
   </style>
 </head>
@@ -789,7 +1022,7 @@
     </button>
   </div>
 
-  <!-- MÀN HÌNH CHỜ -->
+  <!-- SPLASH -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-text">click to enter...</div>
     <div class="splash-dot"></div>
@@ -799,10 +1032,10 @@
   <div class="glow"></div>
   <div class="glow2"></div>
 
-  <!-- NỘI DUNG CHÍNH -->
+  <!-- CARD -->
   <div class="bio-card" id="bioCard">
     <div class="avatar-section fade-item">
-      <div class="avatar-wrapper">
+      <div class="avatar-wrapper" id="avatarWrapper">
         <div class="avatar"></div>
       </div>
       <h1 class="bio-name">
@@ -816,13 +1049,25 @@
       </h1>
       <div class="bio-tagline">
         <i class="fas fa-user-graduate"></i> 
-        <!-- Đưa icon code vào trong chuỗi gõ để nó hiện ra cùng dòng -->
         <span class="typewriter" id="typewriterText"></span>
       </div>
     </div>
 
     <div class="bio-content fade-item">
       <p><i class="fas fa-location-dot"></i> Gia Lai, Việt Nam</p>
+      
+      <p class="live-info">
+        <i class="fas fa-clock"></i>
+        <span id="greetingText">Xin chào</span> • 
+        <span id="liveClock">--:--:--</span>
+        <span class="timezone-tag">GMT+7</span>
+      </p>
+      
+      <p class="view-counter">
+        <i class="fas fa-eye"></i>
+        <span id="viewCount">0</span> lượt ghé thăm
+      </p>
+      
       <p class="bio-quote">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
 
@@ -831,6 +1076,7 @@
       <a href="https://instagram.com/ten-cua-ban" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
       <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
       <a href="https://github.com/" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+      <button class="social-icon" id="qrBtn" aria-label="Mã QR chia sẻ"><i class="fas fa-qrcode"></i></button>
     </div>
 
     <div class="music-player fade-item">
@@ -840,7 +1086,9 @@
       </div>
 
       <div class="music-controls">
+        <button class="music-btn" id="prevBtn" aria-label="Bài trước"><i class="fas fa-backward-step"></i></button>
         <button class="music-btn" id="playPauseBtn"><i class="fas fa-play" id="playIcon"></i></button>
+        <button class="music-btn" id="nextBtn" aria-label="Bài sau"><i class="fas fa-forward-step"></i></button>
         <button class="music-btn" id="muteBtn"><i class="fas fa-volume-up" id="volumeIcon"></i></button>
       </div>
 
@@ -852,16 +1100,33 @@
         <span class="time-display" id="duration">0:00</span>
       </div>
       
-      <!-- VISUALIZER SÓNG NHẠC -->
       <div class="visualizer-container" id="visualizer"></div>
+
+      <!-- Playlist Panel -->
+      <div class="playlist-panel" id="playlistPanel">
+        <div class="playlist-header">
+          <span><i class="fas fa-list-music"></i> Danh sách phát</span>
+          <button class="playlist-close" id="playlistClose"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="playlist-list" id="playlistList"></ul>
+      </div>
     </div>
   </div>
 
-  <audio id="bgMusic" loop preload="auto" src="https://handsome-apricot-swtddb8f.edgeone.dev"></audio>
+  <!-- QR MODAL -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-modal-content">
+      <button class="qr-modal-close" id="qrModalClose"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-qrcode"></i> Quét để chia sẻ</h3>
+      <div id="qrcodeContainer"></div>
+      <p class="qr-url" id="qrUrl"></p>
+      <button class="qr-copy-btn" id="qrCopyBtn"><i class="fas fa-copy"></i> Copy link</button>
+    </div>
+  </div>
 
   <script>
     // =========================================
-    // 1. TẠO ĐOM ĐÓM BAY
+    // 1. PARTICLES
     // =========================================
     const particlesContainer = document.getElementById('particles');
     for (let i = 0; i < 30; i++) {
@@ -877,7 +1142,7 @@
     }
 
     // =========================================
-    // 2. HIỆU ỨNG CLICK TOÀN MÀN HÌNH: DẤU CHÂN MÈO (SVG)
+    // 2. PAW CLICK EFFECT
     // =========================================
     const pawSVG = `
       <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -902,7 +1167,8 @@
           e.target.closest('.progress-container') || 
           e.target.closest('.verified-wrapper') ||
           e.target.closest('.top-controls') ||
-          e.target.closest('.splash-screen')) {
+          e.target.closest('.splash-screen') ||
+          e.target.closest('.qr-modal')) {
         return;
       }
 
@@ -922,13 +1188,11 @@
 
       document.body.appendChild(paw);
 
-      setTimeout(() => {
-        paw.remove();
-      }, 1000);
+      setTimeout(() => { paw.remove(); }, 1000);
     });
 
     // =========================================
-    // 3. HIỆU ỨNG 3D TILT
+    // 3. 3D TILT
     // =========================================
     const bioCard = document.getElementById('bioCard');
     if (window.innerWidth > 768) {
@@ -961,17 +1225,17 @@
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
 
     // =========================================
-    // 5. TYPEWRITER TAGLINE (Gõ kèm icon code)
+    // 5. TYPEWRITER
     // =========================================
     const typewriterEl = document.getElementById('typewriterText');
-    // Thêm thẻ i chứa icon code vào ngay trong chuỗi gõ
     const textToType = `High school student & Developer <i class="fas fa-code" style="color: var(--accent1); margin-left: 4px;"></i>`;
     let typeIndex = 0;
+    let typewriterStarted = false;
     
     function typeWriter() {
-      // Lấy độ dài của chuỗi text gốc (không tính thẻ HTML) để chạy vòng lặp cho mượt
+      if (typewriterStarted) return;
+      typewriterStarted = true;
       if (typeIndex < textToType.length) {
-        // Dùng innerHTML thay vì textContent để thẻ <i> được hiển thị
         typewriterEl.innerHTML = textToType.substring(0, typeIndex + 1);
         typeIndex++;
         setTimeout(typeWriter, 80);
@@ -979,7 +1243,7 @@
     }
 
     // =========================================
-    // 6. CHUYỂN ĐỔI THEME & DARK/LIGHT MODE
+    // 6. THEME & MODE
     // =========================================
     const modeToggleBtn = document.getElementById('modeToggleBtn');
     const modeIcon = document.getElementById('modeIcon');
@@ -987,13 +1251,25 @@
     const themePalette = document.getElementById('themePalette');
     const body = document.body;
 
+    // Khôi phục theme từ localStorage
+    const savedTheme = localStorage.getItem('pawdev_theme');
+    if (savedTheme) body.classList.add(savedTheme);
+    const savedMode = localStorage.getItem('pawdev_mode');
+    if (savedMode === 'light') {
+      body.classList.add('light-mode');
+      modeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+
     modeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       body.classList.toggle('light-mode');
-      if (body.classList.contains('light-mode')) {
+      const isLight = body.classList.contains('light-mode');
+      if (isLight) {
         modeIcon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('pawdev_mode', 'light');
       } else {
         modeIcon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('pawdev_mode', 'dark');
       }
     });
 
@@ -1007,6 +1283,7 @@
         const theme = dot.getAttribute('data-theme');
         body.classList.remove('theme-blue', 'theme-purple', 'theme-green', 'theme-orange', 'theme-pink');
         body.classList.add(theme);
+        localStorage.setItem('pawdev_theme', theme);
         themePalette.classList.remove('active');
       });
     });
@@ -1018,13 +1295,75 @@
     });
 
     // =========================================
-    // 7. LOGIC NHẠC, VISUALIZER, SPLASH
+    // 7. LIVE CLOCK + GREETING + VIEW COUNTER
     // =========================================
     (function() {
-      const audio = document.getElementById('bgMusic');
+      const liveClock = document.getElementById('liveClock');
+      const greetingText = document.getElementById('greetingText');
+      const viewCountEl = document.getElementById('viewCount');
+
+      function updateClock() {
+        const now = new Date();
+        const time = now.toLocaleTimeString('vi-VN', {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          hour12: false
+        });
+        liveClock.textContent = time;
+
+        const hourVN = parseInt(now.toLocaleString('en-US', {
+          timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', hour12: false
+        }), 10);
+        let greeting = 'Xin chào';
+        if (hourVN >= 5 && hourVN < 11) greeting = 'Chào buổi sáng';
+        else if (hourVN >= 11 && hourVN < 14) greeting = 'Chào buổi trưa';
+        else if (hourVN >= 14 && hourVN < 18) greeting = 'Chào buổi chiều';
+        else if (hourVN >= 18 && hourVN < 22) greeting = 'Chào buổi tối';
+        else greeting = 'Khuya rồi, ngủ sớm nhé';
+        greetingText.textContent = greeting;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // View counter (localStorage)
+      let views = parseInt(localStorage.getItem('pawdev_views') || '0', 10);
+      views += 1;
+      localStorage.setItem('pawdev_views', views);
+      let current = 0;
+      const target = views;
+      const step = Math.max(1, Math.ceil(target / 30));
+      const counterInterval = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(counterInterval); }
+        viewCountEl.textContent = current;
+      }, 40);
+    })();
+
+    // =========================================
+    // 8. PLAYLIST NHẠC + VISUALIZER
+    // =========================================
+    let loadTrackExternal = null; // expose ra ngoài cho splash
+    (function() {
+      // 🎵 Danh sách nhạc - thay src bằng link của bạn
+      const PLAYLIST = [
+        { name: 'Kẻ Điên Tin Vào Tình Yêu', src: 'https://handsome-apricot-swtddb8f.edgeone.dev' }
+        // Thêm bài mới ở đây, ví dụ:
+        // { name: 'Tên bài 2', src: 'https://link-mp3-cua-ban.com/bai2.mp3' },
+      ].filter(t => t.src);
+
+      let currentIndex = parseInt(localStorage.getItem('pawdev_track') || '0', 10);
+      if (currentIndex >= PLAYLIST.length) currentIndex = 0;
+
+      const audio = new Audio();
+      audio.loop = false;
+      audio.volume = 0.7;
+      audio.preload = 'auto';
+
       const splashScreen = document.getElementById('splashScreen');
       const playPauseBtn = document.getElementById('playPauseBtn');
       const playIcon = document.getElementById('playIcon');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
       const muteBtn = document.getElementById('muteBtn');
       const volumeIcon = document.getElementById('volumeIcon');
       const progressBar = document.getElementById('progressBar');
@@ -1032,7 +1371,11 @@
       const currentTimeEl = document.getElementById('currentTime');
       const durationEl = document.getElementById('duration');
       const musicInfo = document.getElementById('musicInfo');
+      const trackNameEl = document.getElementById('trackName');
       const visualizerContainer = document.getElementById('visualizer');
+      const playlistPanel = document.getElementById('playlistPanel');
+      const playlistList = document.getElementById('playlistList');
+      const playlistClose = document.getElementById('playlistClose');
 
       const bars = [];
       for (let i = 0; i < 15; i++) {
@@ -1045,8 +1388,7 @@
       function animateVisualizer() {
         bars.forEach(bar => {
           if (!audio.paused) {
-            const height = Math.random() * 90 + 10;
-            bar.style.height = `${height}%`;
+            bar.style.height = `${Math.random() * 90 + 10}%`;
           } else {
             bar.style.height = `5%`;
           }
@@ -1054,13 +1396,39 @@
       }
       setInterval(animateVisualizer, 150);
 
-      audio.volume = 0.7;
+      function formatTime(s) {
+        if (isNaN(s) || s === Infinity) return "0:00";
+        return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+      }
 
-      function formatTime(seconds) {
-        if (isNaN(seconds) || seconds === Infinity) return "0:00";
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      function loadTrack(index, autoplay = false) {
+        currentIndex = index;
+        localStorage.setItem('pawdev_track', index);
+        const track = PLAYLIST[index];
+        audio.src = track.src;
+        trackNameEl.textContent = track.name;
+        progressBar.style.width = '0%';
+        currentTimeEl.textContent = '0:00';
+        durationEl.textContent = '0:00';
+        renderPlaylist();
+        if (autoplay) audio.play().catch(e => console.warn(e));
+      }
+
+      function renderPlaylist() {
+        playlistList.innerHTML = '';
+        PLAYLIST.forEach((track, i) => {
+          const li = document.createElement('li');
+          li.className = 'playlist-item' + (i === currentIndex ? ' active' : '');
+          li.innerHTML = `
+            <span class="track-index">${i === currentIndex ? '<i class="fas fa-volume-high"></i>' : (i+1)}</span>
+            <span class="track-name">${track.name}</span>
+          `;
+          li.addEventListener('click', () => {
+            loadTrack(i, true);
+            playlistPanel.classList.remove('active');
+          });
+          playlistList.appendChild(li);
+        });
       }
 
       function updatePlayIcon() {
@@ -1077,34 +1445,25 @@
 
       function updateVolumeIcon() {
         if (audio.muted || audio.volume === 0) {
-          volumeIcon.classList.remove('fa-volume-up', 'fa-volume-down');
-          volumeIcon.classList.add('fa-volume-mute');
+          volumeIcon.className = 'fas fa-volume-mute';
         } else if (audio.volume < 0.5) {
-          volumeIcon.classList.remove('fa-volume-up', 'fa-volume-mute');
-          volumeIcon.classList.add('fa-volume-down');
+          volumeIcon.className = 'fas fa-volume-down';
         } else {
-          volumeIcon.classList.remove('fa-volume-down', 'fa-volume-mute');
-          volumeIcon.classList.add('fa-volume-up');
+          volumeIcon.className = 'fas fa-volume-up';
         }
       }
 
       function updateProgress() {
         if (audio.duration) {
-          const percent = (audio.currentTime / audio.duration) * 100;
-          progressBar.style.width = percent + '%';
+          progressBar.style.width = (audio.currentTime / audio.duration) * 100 + '%';
           currentTimeEl.textContent = formatTime(audio.currentTime);
-        } else {
-          progressBar.style.width = '0%';
-          currentTimeEl.textContent = "0:00";
         }
       }
 
       function togglePlay() {
-        if (audio.paused) {
-          audio.play().catch(e => console.warn(e));
-        } else {
-          audio.pause();
-        }
+        if (!audio.src) loadTrack(currentIndex, false);
+        if (audio.paused) audio.play().catch(e => console.warn(e));
+        else audio.pause();
         updatePlayIcon();
       }
 
@@ -1114,10 +1473,11 @@
       }
 
       splashScreen.addEventListener('click', () => {
+        loadTrack(currentIndex, false);
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
         bioCard.classList.add('show');
-        setTimeout(typeWriter, 500);
+        setTimeout(() => typeWriter(), 500);
       });
 
       progressContainer.addEventListener('click', (e) => {
@@ -1128,26 +1488,110 @@
 
       playPauseBtn.addEventListener('click', togglePlay);
       muteBtn.addEventListener('click', toggleMute);
+      prevBtn.addEventListener('click', () => {
+        loadTrack((currentIndex - 1 + PLAYLIST.length) % PLAYLIST.length, true);
+      });
+      nextBtn.addEventListener('click', () => {
+        loadTrack((currentIndex + 1) % PLAYLIST.length, true);
+      });
+
+      // Mở playlist khi nhấn vào tên bài
+      musicInfo.style.cursor = 'pointer';
+      musicInfo.title = 'Nhấn để xem danh sách phát';
+      musicInfo.addEventListener('click', () => {
+        playlistPanel.classList.toggle('active');
+      });
+      playlistClose.addEventListener('click', () => playlistPanel.classList.remove('active'));
 
       audio.addEventListener('play', updatePlayIcon);
       audio.addEventListener('pause', updatePlayIcon);
       audio.addEventListener('volumechange', updateVolumeIcon);
       audio.addEventListener('timeupdate', updateProgress);
-
       audio.addEventListener('loadedmetadata', () => {
         durationEl.textContent = formatTime(audio.duration);
         updateProgress();
         updateVolumeIcon();
         updatePlayIcon();
       });
-
+      audio.addEventListener('ended', () => {
+        const next = (currentIndex + 1) % PLAYLIST.length;
+        loadTrack(next, true);
+      });
       audio.addEventListener('error', () => {
-        document.getElementById('trackName').textContent = 'Không tải được nhạc';
-        progressBar.style.width = '0%';
-        currentTimeEl.textContent = "0:00";
-        durationEl.textContent = "0:00";
+        trackNameEl.textContent = 'Không tải được nhạc';
+        durationEl.textContent = '0:00';
+      });
+
+      loadTrack(currentIndex, false);
+      updateVolumeIcon();
+      loadTrackExternal = loadTrack;
+    })();
+
+    // =========================================
+    // 9. QR CODE MODAL
+    // =========================================
+    (function() {
+      const qrBtn = document.getElementById('qrBtn');
+      const qrModal = document.getElementById('qrModal');
+      const qrModalClose = document.getElementById('qrModalClose');
+      const qrContainer = document.getElementById('qrcodeContainer');
+      const qrUrlEl = document.getElementById('qrUrl');
+      const qrCopyBtn = document.getElementById('qrCopyBtn');
+
+      qrBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const url = window.location.href;
+        qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(url)}" alt="QR Code" width="220" height="220" style="border-radius: 0.5rem;">`;
+        qrUrlEl.textContent = url;
+        qrModal.classList.add('active');
+      });
+
+      function closeModal() { qrModal.classList.remove('active'); }
+      qrModalClose.addEventListener('click', closeModal);
+      qrModal.addEventListener('click', (e) => { if (e.target === qrModal) closeModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+      qrCopyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          qrCopyBtn.innerHTML = '<i class="fas fa-check"></i> Đã copy!';
+          setTimeout(() => {
+            qrCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy link';
+          }, 1800);
+        });
       });
     })();
+
+    // =========================================
+    // 10. AVATAR THEO MÙA
+    // =========================================
+    (function() {
+      const avatarWrapper = document.getElementById('avatarWrapper');
+      if (!avatarWrapper) return;
+
+      const now = new Date();
+      const m = now.getMonth() + 1;
+      const d = now.getDate();
+      let season = null;
+
+      if ((m === 12 && d >= 24) || (m === 1 && d <= 2)) season = 'christmas';
+      else if (m === 10 && d >= 25) season = 'halloween';
+      else if (m === 1 && d >= 1 && d <= 3) season = 'newyear';
+      else if (m === 1 || m === 2) season = 'tet';
+      else if (m >= 10 && m <= 11) season = 'halloween';
+
+      if (season) avatarWrapper.classList.add(`season-${season}`);
+    })();
+
+    // =========================================
+    // 11. PWA SERVICE WORKER
+    // =========================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('✅ PWA SW đã đăng ký:', reg.scope))
+          .catch(err => console.warn('⚠️ PWA SW lỗi:', err));
+      });
+    }
   </script>
 </body>
 </html>
