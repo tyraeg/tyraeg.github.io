@@ -1,0 +1,31 @@
+{
+  "name": "PawDev Bio",
+  "short_name": "PawDev",
+  "description": "Trang bio cá nhân của Lê Trung",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0f1a",
+  "theme_color": "#3a7bd5",
+  "orientation": "portrait",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}
