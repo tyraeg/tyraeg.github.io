@@ -11,22 +11,30 @@
   "theme_color": "#3a7bd5",
   "icons": [
     {
-      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "src": "LINK_ANH_192x192_CUA_BAN.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "src": "LINK_ANH_512x512_CUA_BAN.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "src": "LINK_ANH_512x512_CUA_BAN.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     }
   ]
 }
