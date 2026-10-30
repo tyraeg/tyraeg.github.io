@@ -131,7 +131,6 @@
       border-color: var(--accent1);
     }
 
-    /* Nút QR góc trái */
     .qr-top-btn {
       color: var(--accent3) !important;
       border-color: rgba(32, 213, 236, 0.3) !important;
@@ -432,7 +431,6 @@
       animation: onlinePulse 2s infinite;
     }
 
-    /* Avatar theo mùa - emoji override ::after */
     .avatar-wrapper.season-tet::after,
     .avatar-wrapper.season-christmas::after,
     .avatar-wrapper.season-halloween::after,
@@ -602,7 +600,6 @@
       text-align: left;
     }
 
-    /* Live clock */
     .live-info {
       display: flex;
       align-items: center;
@@ -676,7 +673,7 @@
     .social-icon:hover::before { opacity: 1; }
 
     /* =========================================
-       MUSIC PLAYER
+       MUSIC PLAYER (ĐÃ RÚT GỌN - KHÔNG PLAYLIST)
        ========================================= */
     .music-player {
       background: var(--social-bg);
@@ -823,88 +820,6 @@
       .music-info { flex: 0 1 auto; }
       .progress-wrapper { flex: 1 1 auto; order: 0; min-width: 100px; }
       .visualizer-container { order: 0; width: 60px; flex-shrink: 0; }
-    }
-
-    /* =========================================
-       PLAYLIST PANEL
-       ========================================= */
-    .playlist-panel {
-      position: absolute;
-      bottom: calc(100% + 0.5rem);
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      box-shadow: 0 10px 30px var(--shadow-color);
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
-      z-index: 20;
-    }
-
-    .playlist-panel.active {
-      max-height: 320px;
-      opacity: 1;
-      overflow-y: auto;
-    }
-
-    .playlist-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.8rem 1rem;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text-main);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      background: var(--card-bg);
-      z-index: 2;
-    }
-
-    .playlist-close {
-      background: transparent;
-      border: none;
-      color: var(--text-sub);
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0.2rem;
-    }
-
-    .playlist-list {
-      list-style: none;
-      padding: 0.4rem;
-    }
-
-    .playlist-item {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.6rem 0.8rem;
-      border-radius: 0.6rem;
-      cursor: pointer;
-      font-size: 0.85rem;
-      color: var(--text-body);
-      transition: background 0.2s;
-    }
-
-    .playlist-item:hover { background: var(--social-hover); }
-
-    .playlist-item.active {
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .playlist-item .track-index {
-      font-size: 0.75rem;
-      opacity: 0.7;
-      min-width: 1.2rem;
-      text-align: center;
     }
 
     /* =========================================
@@ -1056,7 +971,6 @@
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
       .verified-tooltip { font-size: 0.65rem; padding: 0.35em 0.65em; }
       .paw-click { width: 30px; height: 30px; }
-      .playlist-panel { max-height: 260px; }
       .qr-modal-content { padding: 1.5rem 1rem 1rem; }
     }
   </style>
@@ -1137,10 +1051,8 @@
       <a href="https://instagram.com/ten-cua-ban" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
       
-      <!-- Locket (Dùng icon camera vì FA không có icon Locket) -->
       <a href="https://locket.cam/" target="_blank" class="social-icon" title="Locket"><i class="fas fa-camera-retro"></i></a>
       
-      <!-- Discord -->
       <a href="https://discord.com/" target="_blank" class="social-icon" title="Discord"><i class="fab fa-discord"></i></a>
       
       <!-- Nút Ngân hàng (Mở Modal) -->
@@ -1149,6 +1061,7 @@
       </button>
     </div>
 
+    <!-- MUSIC PLAYER (ĐÃ RÚT GỌN - CHỈ 1 BÀI MẶC ĐỊNH) -->
     <div class="music-player fade-item">
       <div class="music-info" id="musicInfo">
         <i class="fas fa-compact-disc"></i>
@@ -1156,9 +1069,7 @@
       </div>
 
       <div class="music-controls">
-        <button class="music-btn" id="prevBtn" aria-label="Bài trước"><i class="fas fa-backward-step"></i></button>
         <button class="music-btn" id="playPauseBtn"><i class="fas fa-play" id="playIcon"></i></button>
-        <button class="music-btn" id="nextBtn" aria-label="Bài sau"><i class="fas fa-forward-step"></i></button>
         <button class="music-btn" id="muteBtn"><i class="fas fa-volume-up" id="volumeIcon"></i></button>
       </div>
 
@@ -1171,15 +1082,6 @@
       </div>
       
       <div class="visualizer-container" id="visualizer"></div>
-
-      <!-- Playlist Panel -->
-      <div class="playlist-panel" id="playlistPanel">
-        <div class="playlist-header">
-          <span><i class="fas fa-list-music"></i> Danh sách phát</span>
-          <button class="playlist-close" id="playlistClose"><i class="fas fa-times"></i></button>
-        </div>
-        <ul class="playlist-list" id="playlistList"></ul>
-      </div>
     </div>
   </div>
 
@@ -1200,7 +1102,6 @@
       <button class="qr-modal-close" id="bankModalClose"><i class="fas fa-times"></i></button>
       <h3><i class="fas fa-university"></i> Thông tin chuyển khoản</h3>
       
-      <!-- Thay đổi thông tin ngân hàng của bạn ở đây -->
       <div class="bank-info-list">
         <div class="bank-info-item">
           <span>Ngân hàng: <strong>TPBANK</strong></span>
@@ -1214,7 +1115,6 @@
         </div>
       </div>
 
-      <!-- Mã QR chuyển khoản (Sử dụng VietQR) -->
       <div id="bankQrContainer">
         <img id="bankQrImg" src="" alt="QR Chuyển khoản" width="200" height="200" style="border-radius: 0.5rem;">
       </div>
@@ -1222,7 +1122,6 @@
       <p class="qr-url" style="margin-bottom: 0;">Quét mã trên app ngân hàng để chuyển khoản</p>
     </div>
   </div>
-
   <script>
     // =========================================
     // 1. PARTICLES
@@ -1324,10 +1223,9 @@
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
 
     // =========================================
-    // 5. TYPEWRITER (ĐÃ SỬA LỖI HIỂN THỊ)
+    // 5. TYPEWRITER
     // =========================================
     const typewriterEl = document.getElementById('typewriterText');
-    // Chỉ gõ phần chữ, phần icon để riêng để không bị lỗi cắt ngang thẻ HTML
     const textOnly = "High school student & Developer";
     let typeIndex = 0;
     let typewriterStarted = false;
@@ -1338,10 +1236,9 @@
       
       function type() {
         if (typeIndex < textOnly.length) {
-          // Hiển thị chữ đang gõ + icon ở cuối
           typewriterEl.innerHTML = textOnly.substring(0, typeIndex + 1) + ` <i class="fas fa-code" style="color: var(--accent1); margin-left: 4px;"></i>`;
           typeIndex++;
-          setTimeout(type, 70); // Tốc độ gõ
+          setTimeout(type, 70);
         }
       }
       type();
@@ -1428,25 +1325,25 @@
       updateClock();
       setInterval(updateClock, 1000);
     })();
-
     // =========================================
-    // 8. PLAYLIST NHẠC + VISUALIZER
+    // 8. MUSIC PLAYER ĐƠN GIẢN (CHỈ 1 BÀI MẶC ĐỊNH)
     // =========================================
     (function() {
-      const PLAYLIST = [
-        { name: 'Nhạc Test 1', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
-      ].filter(t => t.src);
+      // 🔥 CHỈNH NHẠC MẶC ĐỊNH Ở ĐÂY
+      const TRACK = {
+        name: 'Nada Montagem',
+        src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+      };
 
       const audio = new Audio();
-      audio.loop = false;
+      audio.loop = true;          // tự lặp lại bài duy nhất
       audio.volume = 0.7;
       audio.preload = 'auto';
+      audio.src = TRACK.src;
 
       const splashScreen = document.getElementById('splashScreen');
       const playPauseBtn = document.getElementById('playPauseBtn');
       const playIcon = document.getElementById('playIcon');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
       const muteBtn = document.getElementById('muteBtn');
       const volumeIcon = document.getElementById('volumeIcon');
       const progressBar = document.getElementById('progressBar');
@@ -1456,10 +1353,10 @@
       const musicInfo = document.getElementById('musicInfo');
       const trackNameEl = document.getElementById('trackName');
       const visualizerContainer = document.getElementById('visualizer');
-      const playlistPanel = document.getElementById('playlistPanel');
-      const playlistList = document.getElementById('playlistList');
-      const playlistClose = document.getElementById('playlistClose');
 
+      trackNameEl.textContent = TRACK.name;
+
+      // Tạo các thanh visualizer
       const bars = [];
       for (let i = 0; i < 15; i++) {
         const bar = document.createElement('div');
@@ -1482,36 +1379,6 @@
       function formatTime(s) {
         if (isNaN(s) || s === Infinity) return "0:00";
         return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
-      }
-
-      function loadTrack(index, autoplay = false) {
-        currentIndex = index;
-        localStorage.setItem('pawdev_track', index);
-        const track = PLAYLIST[index];
-        audio.src = track.src;
-        trackNameEl.textContent = track.name;
-        progressBar.style.width = '0%';
-        currentTimeEl.textContent = '0:00';
-        durationEl.textContent = '0:00';
-        renderPlaylist();
-        if (autoplay) audio.play().catch(e => console.warn(e));
-      }
-
-      function renderPlaylist() {
-        playlistList.innerHTML = '';
-        PLAYLIST.forEach((track, i) => {
-          const li = document.createElement('li');
-          li.className = 'playlist-item' + (i === currentIndex ? ' active' : '');
-          li.innerHTML = `
-            <span class="track-index">${i === currentIndex ? '<i class="fas fa-volume-high"></i>' : (i+1)}</span>
-            <span class="track-name">${track.name}</span>
-          `;
-          li.addEventListener('click', () => {
-            loadTrack(i, true);
-            playlistPanel.classList.remove('active');
-          });
-          playlistList.appendChild(li);
-        });
       }
 
       function updatePlayIcon() {
@@ -1544,7 +1411,6 @@
       }
 
       function togglePlay() {
-        if (!audio.src) loadTrack(currentIndex, false);
         if (audio.paused) audio.play().catch(e => console.warn(e));
         else audio.pause();
         updatePlayIcon();
@@ -1555,14 +1421,15 @@
         updateVolumeIcon();
       }
 
+      // Click splash để vào trang + auto-play
       splashScreen.addEventListener('click', () => {
-        loadTrack(currentIndex, false);
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
         bioCard.classList.add('show');
         setTimeout(() => typeWriter(), 500);
       });
 
+      // Tua nhạc
       progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
@@ -1571,19 +1438,6 @@
 
       playPauseBtn.addEventListener('click', togglePlay);
       muteBtn.addEventListener('click', toggleMute);
-      prevBtn.addEventListener('click', () => {
-        loadTrack((currentIndex - 1 + PLAYLIST.length) % PLAYLIST.length, true);
-      });
-      nextBtn.addEventListener('click', () => {
-        loadTrack((currentIndex + 1) % PLAYLIST.length, true);
-      });
-
-      musicInfo.style.cursor = 'pointer';
-      musicInfo.title = 'Nhấn để xem danh sách phát';
-      musicInfo.addEventListener('click', () => {
-        playlistPanel.classList.toggle('active');
-      });
-      playlistClose.addEventListener('click', () => playlistPanel.classList.remove('active'));
 
       audio.addEventListener('play', updatePlayIcon);
       audio.addEventListener('pause', updatePlayIcon);
@@ -1595,21 +1449,17 @@
         updateVolumeIcon();
         updatePlayIcon();
       });
-      audio.addEventListener('ended', () => {
-        const next = (currentIndex + 1) % PLAYLIST.length;
-        loadTrack(next, true);
-      });
       audio.addEventListener('error', () => {
         trackNameEl.textContent = 'Không tải được nhạc';
         durationEl.textContent = '0:00';
       });
 
-      loadTrack(currentIndex, false);
       updateVolumeIcon();
+      updatePlayIcon();
     })();
 
     // =========================================
-    // 9. MODAL QR CHIA SẺ TRANG WEB (Góc trái)
+    // 9. MODAL QR CHIA SẺ TRANG WEB
     // =========================================
     (function() {
       const qrBtn = document.getElementById('qrBtn');
@@ -1653,14 +1503,12 @@
       const stkValue = document.getElementById('stkValue').textContent;
       const bankQrImg = document.getElementById('bankQrImg');
       
-      // 🔥 TÙY CHỈNH THÔNG TIN NGÂN HÀNG CỦA BẠN Ở ĐÂY:
-      const BANK_ID = 'TPBANK'; // Mã ngân hàng (MB, VCB, ICB, TCB, ACB, BIDV...)
-      const ACCOUNT_NO = '31189838888'; // Số tài khoản
-      const ACCOUNT_NAME = 'LE BAO TRUNG'; // Tên chủ thẻ (Không dấu)
-      const TEMPLATE = 'compact'; // Theme QR (compact, qr_only, print)
+      // 🔥 TÙY CHỈNH THÔNG TIN NGÂN HÀNG
+      const BANK_ID = 'TPBANK';
+      const ACCOUNT_NO = '31189838888';
+      const ACCOUNT_NAME = 'LE BAO TRUNG';
+      const TEMPLATE = 'compact';
 
-      // Tạo link VietQR động
-      // Cú pháp: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.png?amount=<AMOUNT>&addInfo=<DESCRIPTION>&accountName=<ACCOUNT_NAME>
       const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-${TEMPLATE}.png?accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
       
       bankBtn.addEventListener('click', (e) => {
@@ -1674,7 +1522,6 @@
       bankModal.addEventListener('click', (e) => { if (e.target === bankModal) closeBankModal(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBankModal(); });
 
-      // Nút Copy số tài khoản
       copyStkBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(stkValue).then(() => {
           const originalIcon = copyStkBtn.innerHTML;
