@@ -1324,21 +1324,27 @@
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
 
     // =========================================
-    // 5. TYPEWRITER
+    // 5. TYPEWRITER (ĐÃ SỬA LỖI HIỂN THỊ)
     // =========================================
     const typewriterEl = document.getElementById('typewriterText');
-    const textToType = `High school student & Developer <i class="fas fa-code" style="color: var(--accent1); margin-left: 4px;"></i>`;
+    // Chỉ gõ phần chữ, phần icon để riêng để không bị lỗi cắt ngang thẻ HTML
+    const textOnly = "High school student & Developer";
     let typeIndex = 0;
     let typewriterStarted = false;
     
     function typeWriter() {
       if (typewriterStarted) return;
       typewriterStarted = true;
-      if (typeIndex < textToType.length) {
-        typewriterEl.innerHTML = textToType.substring(0, typeIndex + 1);
-        typeIndex++;
-        setTimeout(typeWriter, 80);
+      
+      function type() {
+        if (typeIndex < textOnly.length) {
+          // Hiển thị chữ đang gõ + icon ở cuối
+          typewriterEl.innerHTML = textOnly.substring(0, typeIndex + 1) + ` <i class="fas fa-code" style="color: var(--accent1); margin-left: 4px;"></i>`;
+          typeIndex++;
+          setTimeout(type, 70); // Tốc độ gõ
+        }
       }
+      type();
     }
 
     // =========================================
