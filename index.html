@@ -587,6 +587,18 @@
     .bio-content p { margin-bottom: 0.7rem; }
     .bio-content i { color: var(--accent1); margin-right: 6px; width: 1.2rem; text-align: center; }
 
+    /* ✅ STYLE CHO LINK EMAIL */
+    .bio-content .email-link {
+      color: var(--text-body);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--accent1);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .bio-content .email-link:hover {
+      color: var(--accent1);
+      border-color: var(--accent1);
+    }
+
     .bio-quote {
       font-size: 0.95rem;
       opacity: 0.9;
@@ -673,7 +685,7 @@
     .social-icon:hover::before { opacity: 1; }
 
     /* =========================================
-       MUSIC PLAYER (ĐÃ RÚT GỌN - KHÔNG PLAYLIST)
+       MUSIC PLAYER
        ========================================= */
     .music-player {
       background: var(--social-bg);
@@ -1010,7 +1022,6 @@
   <div class="particles" id="particles"></div>
   <div class="glow"></div>
   <div class="glow2"></div>
-
   <!-- CARD -->
   <div class="bio-card" id="bioCard">
     <div class="avatar-section fade-item">
@@ -1035,6 +1046,9 @@
     <div class="bio-content fade-item">
       <p><i class="fas fa-location-dot"></i> Gia Lai, Việt Nam</p>
       
+      <!-- ✅ DÒNG EMAIL MỚI THÊM -->
+      <p><i class="fas fa-envelope"></i> <a href="lebaotrungtqt2011@gmail.com" class="email-link">yourmail@gmail.com</a></p>
+      
       <p class="live-info">
         <i class="fas fa-clock"></i>
         <span id="greetingText">Xin chào</span> • 
@@ -1044,7 +1058,6 @@
       
       <p class="bio-quote">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
-
     <!-- HÀNG SOCIAL LINKS -->
     <div class="social-links fade-item">
       <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -1053,6 +1066,9 @@
       
       <a href="https://locket.cam/tyraeg16" target="_blank" class="social-icon" title="Locket"><i class="fas fa-camera-retro"></i></a>
       
+      <!-- ✅ SPOTIFY -->
+      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq?si=ksoKckJ9Q2GQuhfzPXBhhg&utm_source=copy-link" target="_blank" class="social-icon" title="Spotify"><i class="fab fa-spotify"></i></a>
+      
       <a href="https://discord.com/@paw162" target="_blank" class="social-icon" title="Discord"><i class="fab fa-discord"></i></a>
       
       <!-- Nút Ngân hàng (Mở Modal) -->
@@ -1060,8 +1076,7 @@
         <i class="fas fa-wallet"></i>
       </button>
     </div>
-
-    <!-- MUSIC PLAYER (ĐÃ RÚT GỌN - CHỈ 1 BÀI MẶC ĐỊNH) -->
+    <!-- MUSIC PLAYER -->
     <div class="music-player fade-item">
       <div class="music-info" id="musicInfo">
         <i class="fas fa-compact-disc"></i>
@@ -1085,7 +1100,7 @@
     </div>
   </div>
 
-  <!-- QR SHARE MODAL (Trang web) -->
+  <!-- QR SHARE MODAL -->
   <div class="qr-modal" id="qrModal">
     <div class="qr-modal-content">
       <button class="qr-modal-close" id="qrModalClose"><i class="fas fa-times"></i></button>
@@ -1096,7 +1111,7 @@
     </div>
   </div>
 
-  <!-- BANK MODAL (Chuyển khoản) -->
+  <!-- BANK MODAL -->
   <div class="qr-modal" id="bankModal">
     <div class="qr-modal-content">
       <button class="qr-modal-close" id="bankModalClose"><i class="fas fa-times"></i></button>
@@ -1221,7 +1236,6 @@
     verifiedWrapper.addEventListener('touchstart', (e) => { e.stopPropagation(); showTooltip(); }, { passive: true });
     document.addEventListener('click', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); });
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
-
     // =========================================
     // 5. TYPEWRITER
     // =========================================
@@ -1326,17 +1340,16 @@
       setInterval(updateClock, 1000);
     })();
     // =========================================
-    // 8. MUSIC PLAYER ĐƠN GIẢN (CHỈ 1 BÀI MẶC ĐỊNH)
+    // 8. MUSIC PLAYER ĐƠN GIẢN
     // =========================================
     (function() {
-      // 🔥 CHỈNH NHẠC MẶC ĐỊNH Ở ĐÂY
       const TRACK = {
         name: 'Nada Montagem',
         src: 'https://www.image2url.com/r2/default/audio/1793385609837-a9fd29ae-0fe6-41e7-9353-33d60c426c6c.mp3'
       };
 
       const audio = new Audio();
-      audio.loop = true;          // tự lặp lại bài duy nhất
+      audio.loop = true;
       audio.volume = 0.7;
       audio.preload = 'auto';
       audio.src = TRACK.src;
@@ -1356,7 +1369,6 @@
 
       trackNameEl.textContent = TRACK.name;
 
-      // Tạo các thanh visualizer
       const bars = [];
       for (let i = 0; i < 15; i++) {
         const bar = document.createElement('div');
@@ -1421,7 +1433,6 @@
         updateVolumeIcon();
       }
 
-      // Click splash để vào trang + auto-play
       splashScreen.addEventListener('click', () => {
         audio.play().catch(err => console.log('Lỗi phát nhạc:', err));
         splashScreen.classList.add('hidden');
@@ -1429,7 +1440,6 @@
         setTimeout(() => typeWriter(), 500);
       });
 
-      // Tua nhạc
       progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
@@ -1457,7 +1467,6 @@
       updateVolumeIcon();
       updatePlayIcon();
     })();
-
     // =========================================
     // 9. MODAL QR CHIA SẺ TRANG WEB
     // =========================================
@@ -1493,7 +1502,7 @@
     })();
 
     // =========================================
-    // 10. MODAL NGÂN HÀNG (Chuyển khoản)
+    // 10. MODAL NGÂN HÀNG
     // =========================================
     (function() {
       const bankBtn = document.getElementById('bankBtn');
@@ -1503,7 +1512,6 @@
       const stkValue = document.getElementById('stkValue').textContent;
       const bankQrImg = document.getElementById('bankQrImg');
       
-      // 🔥 TÙY CHỈNH THÔNG TIN NGÂN HÀNG
       const BANK_ID = 'TPBANK';
       const ACCOUNT_NO = '31189838888';
       const ACCOUNT_NAME = 'LE BAO TRUNG';
@@ -1530,7 +1538,6 @@
         });
       });
     })();
-
     // =========================================
     // 11. AVATAR THEO MÙA
     // =========================================
