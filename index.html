@@ -1434,12 +1434,8 @@
     // =========================================
     (function() {
       const PLAYLIST = [
-        { name: 'Nada Montagem', src: 'https://significant-green-pugkcupp.edgeone.dev/' },
-        { name: 'Kẻ Điên Tin Vào Tình Yêu', src: 'https://handsome-apricot-swtddb8f.edgeone.dev' }
+        { name: 'Nhạc Test 1', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
       ].filter(t => t.src);
-
-      let currentIndex = parseInt(localStorage.getItem('pawdev_track') || '0', 10);
-      if (currentIndex >= PLAYLIST.length) currentIndex = 0;
 
       const audio = new Audio();
       audio.loop = false;
