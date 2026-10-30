@@ -1,13 +1,14 @@
 {
-  "name": "Paw Bio",
+  "id": "/tyraeg16/",
+  "name": "PawDev - Lê Trung",
   "short_name": "PawDev",
   "description": "Trang bio cá nhân của Lê Trung",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0b0f1a",
   "theme_color": "#3a7bd5",
-  "orientation": "portrait",
-  "lang": "vi",
   "icons": [
     {
       "src": "https://cdn.upanhlaylink.com/i/3m20ZXQv.jpeg",
