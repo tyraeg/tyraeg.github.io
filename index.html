@@ -712,14 +712,20 @@
       min-width: 140px;
     }
 
-    .music-info i {
-      color: var(--accent1);
-      font-size: 1.1rem;
-      animation: spinMusic 3s linear infinite paused;
+    /* ✅ CSS MỚI CHO LOGO TRONG MUSIC PLAYER */
+    .music-logo {
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent1);
+      box-shadow: 0 0 8px var(--glow-1);
       flex-shrink: 0;
+      animation: spinMusic 6s linear infinite paused;
     }
 
-    .music-info.playing i { animation-play-state: running; }
+    .music-info.playing .music-logo { animation-play-state: running; }
+    
     @keyframes spinMusic { to { transform: rotate(360deg); } }
 
     #trackName {
@@ -1019,6 +1025,7 @@
   <div class="particles" id="particles"></div>
   <div class="glow"></div>
   <div class="glow2"></div>
+  
   <!-- CARD -->
   <div class="bio-card" id="bioCard">
     <div class="avatar-section fade-item">
@@ -1056,7 +1063,7 @@
       <p class="bio-quote">"Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt"</p>
     </div>
     
-<!-- HÀNG SOCIAL LINKS -->
+    <!-- HÀNG SOCIAL LINKS -->
     <div class="social-links fade-item">
       <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
       <a href="https://instagram.com/@tyraeg_" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1074,10 +1081,12 @@
         <i class="fas fa-wallet"></i>
       </button>
     </div>
+    
     <!-- MUSIC PLAYER -->
     <div class="music-player fade-item">
       <div class="music-info" id="musicInfo">
-        <i class="fas fa-compact-disc"></i>
+        <!-- ✅ ĐÃ THAY ICON BẰNG LOGO CỦA BẠN -->
+        <img src="https://cdn.upanhlaylink.com/i/ZxM7M0wt.png" alt="Logo" class="music-logo">
         <span id="trackName">Để Dành Cho Em</span>
       </div>
 
@@ -1135,6 +1144,7 @@
       <p class="qr-url" style="margin-bottom: 0;">Quét mã trên app ngân hàng để chuyển khoản</p>
     </div>
   </div>
+  
   <script>
     // =========================================
     // 1. PARTICLES
@@ -1234,6 +1244,7 @@
     verifiedWrapper.addEventListener('touchstart', (e) => { e.stopPropagation(); showTooltip(); }, { passive: true });
     document.addEventListener('click', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); });
     document.addEventListener('touchstart', (e) => { if (!verifiedWrapper.contains(e.target)) verifiedWrapper.classList.remove('active'); }, { passive: true });
+    
     // =========================================
     // 5. TYPEWRITER
     // =========================================
@@ -1337,6 +1348,7 @@
       updateClock();
       setInterval(updateClock, 1000);
     })();
+    
     // =========================================
     // 8. MUSIC PLAYER ĐƠN GIẢN
     // =========================================
@@ -1465,6 +1477,7 @@
       updateVolumeIcon();
       updatePlayIcon();
     })();
+    
     // =========================================
     // 9. MODAL QR CHIA SẺ TRANG WEB
     // =========================================
@@ -1536,6 +1549,7 @@
         });
       });
     })();
+    
     // =========================================
     // 11. AVATAR THEO MÙA
     // =========================================
