@@ -18,23 +18,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <style>
     /* =========================================
        VARIABLES — NEO BRUTALISM
        ========================================= */
     :root {
-      --bg: #f5f0e8;              /* nền kem giấy */
-      --bg-alt: #ffe600;          /* vàng neon */
-      --ink: #0a0a0a;             /* đen tuyền */
+      --bg: #f5f0e8;
+      --bg-alt: #ffe600;
+      --ink: #0a0a0a;
       --paper: #ffffff;
       --neon-pink: #ff3d7f;
       --neon-cyan: #00e0ff;
       --neon-lime: #c6ff00;
       --neon-purple: #b088ff;
       --neon-orange: #ff7a00;
-      --accent: var(--neon-pink); /* đổi qua theme */
+      --accent: var(--neon-pink);
       --border: 3px solid var(--ink);
       --shadow: 6px 6px 0 var(--ink);
       --shadow-sm: 4px 4px 0 var(--ink);
@@ -78,20 +77,18 @@
       overflow-x: hidden;
       position: relative;
       transition: background 0.3s, color 0.3s;
-
-      /* Grid paper background */
       background-image:
         linear-gradient(var(--ink) 1px, transparent 1px),
         linear-gradient(90deg, var(--ink) 1px, transparent 1px);
       background-size: 40px 40px;
       background-position: -1px -1px;
     }
-    body.dark { background-image:
+    body.dark {
+      background-image:
         linear-gradient(rgba(245,240,232,0.08) 1px, transparent 1px),
         linear-gradient(90deg, rgba(245,240,232,0.08) 1px, transparent 1px);
     }
 
-    /* Grid overlay fading */
     body::before {
       content: '';
       position: fixed;
@@ -100,6 +97,24 @@
       z-index: 0;
       pointer-events: none;
     }
+
+    /* =========================================
+       ICON SVG SYSTEM
+       ========================================= */
+    .icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.125em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+      flex-shrink: 0;
+    }
+    .icon-lg { font-size: 1.3em; }
+    .icon-sm { font-size: 0.85em; }
 
     /* =========================================
        TOP CONTROLS
@@ -207,7 +222,6 @@
     }
     .bio-card.show { opacity: 1; transform: translateY(0); }
 
-    /* Sticker góc */
     .sticker {
       position: absolute;
       top: -18px;
@@ -271,7 +285,6 @@
       box-shadow: 2px 2px 0 var(--ink);
     }
 
-    /* Name */
     .bio-name {
       font-family: 'Archivo Black', sans-serif;
       font-size: clamp(2rem, 6vw, 3rem);
@@ -295,19 +308,19 @@
     }
 
     .verified {
-      width: 0.5em;
-      height: 0.5em;
+      width: 1.5rem;
+      height: 1.5rem;
       background: var(--neon-cyan);
       border: 3px solid var(--ink);
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.35em;
       color: var(--ink);
-      font-weight: 900;
       cursor: help;
+      flex-shrink: 0;
     }
+    .verified .icon { width: 0.8rem; height: 0.8rem; }
 
     .bio-tagline {
       font-size: 0.95rem;
@@ -324,7 +337,7 @@
     }
 
     /* =========================================
-       BENTO (dùng lại layout, đổi style)
+       INFO GRID
        ========================================= */
     .info-grid {
       display: grid;
@@ -345,8 +358,6 @@
       box-shadow: 6px 6px 0 var(--ink);
       background: var(--accent);
     }
-    .info-card:hover .info-label,
-    .info-card:hover .info-value { color: var(--ink); }
 
     .info-card.wide { grid-column: span 2; }
 
@@ -392,7 +403,7 @@
     .quote-card:hover { background: var(--accent); color: var(--ink); }
 
     /* =========================================
-       SOCIAL ICONS — neo-brutalism
+       SOCIALS
        ========================================= */
     .socials {
       display: flex;
@@ -452,12 +463,15 @@
       flex: 1 1 auto;
       min-width: 130px;
     }
-    .music-info i {
+    .music-info .icon {
       color: var(--accent);
-      animation: spin 2s linear infinite paused;
-      -webkit-text-stroke: 1px var(--ink);
+      animation: spin 2s linear infinite;
+      animation-play-state: paused;
+      transition: color 0.2s;
     }
-    .music-info.playing i { animation-play-state: running; }
+    .music-info.playing .icon {
+      animation-play-state: running;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     #trackName {
@@ -490,7 +504,6 @@
       transform: translate(2px, 2px);
       box-shadow: 0 0 0 var(--ink);
     }
-
     #playPauseBtn { background: var(--accent); }
 
     .progress-wrapper {
@@ -603,6 +616,10 @@
       text-transform: uppercase;
       letter-spacing: -0.5px;
       margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
     }
 
     #qrcodeContainer, #bankQrContainer {
@@ -683,7 +700,7 @@
     .copy-icon-btn:hover { transform: rotate(-8deg) scale(1.1); }
 
     /* =========================================
-       THEME SWITCHER (5 ô vuông)
+       THEME SWATCHES
        ========================================= */
     .theme-bar {
       display: flex;
@@ -740,6 +757,7 @@
       opacity: 0;
       transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4), opacity 0.35s;
       pointer-events: none;
+      color: var(--ink);
     }
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
 
@@ -755,15 +773,152 @@
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 0.95rem; }
       .sticker { top: -12px; right: -10px; font-size: 0.7rem; padding: 0.3rem 0.6rem; }
     }
+
+    /* =========================================
+       REDUCED MOTION
+       ========================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body data-accent="pink">
 
+  <!-- =========================================
+       SVG ICON SPRITE — ĐỘC QUYỀN
+       ========================================= -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-facebook" viewBox="0 0 24 24">
+      <path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+    </symbol>
+
+    <symbol id="i-instagram" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="4"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-tiktok" viewBox="0 0 24 24">
+      <path d="M14 4v10a4 4 0 1 1-4-4"/>
+      <path d="M14 4c0 3 2 5 5 5"/>
+    </symbol>
+
+    <symbol id="i-locket" viewBox="0 0 24 24">
+      <rect x="3" y="6" width="18" height="15"/>
+      <path d="M8 6V3h8v3"/>
+      <circle cx="12" cy="13.5" r="3.5"/>
+      <circle cx="18" cy="9" r="0.8" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-spotify" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M7.5 14.5c3-1 6-1 9 0"/>
+      <path d="M7 11c3.5-1.2 7-1.2 10 0"/>
+      <path d="M7 7.5c3.7-1.3 7.3-1.3 10 0"/>
+    </symbol>
+
+    <symbol id="i-discord" viewBox="0 0 24 24">
+      <path d="M4 6c3-1.5 5-1.5 8-1.5S17 4.5 20 6c2 5 2.5 9.5 2 13-2 1.5-4 2-5.5 2L15 19c-2 .5-4 .5-6 0l-1.5 2C6 21 4 20.5 2 19c-.5-3.5 0-8 2-13z"/>
+      <circle cx="9" cy="13" r="1.5" fill="currentColor" stroke="none"/>
+      <circle cx="15" cy="13" r="1.5" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-wallet" viewBox="0 0 24 24">
+      <rect x="3" y="6" width="18" height="13"/>
+      <path d="M3 10h18"/>
+      <rect x="15" y="13" width="4" height="3" fill="currentColor" stroke="none"/>
+      <path d="M6 6V4h12v2"/>
+    </symbol>
+
+    <symbol id="i-qr" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+      <path d="M14 14h3v3h-3z M20 14v3 M14 20h3 M20 20h1"/>
+    </symbol>
+
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M20 15A8.5 8.5 0 0 1 9 4a8.5 8.5 0 1 0 11 11z"/>
+    </symbol>
+
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+    </symbol>
+
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path d="M7 4l13 8-13 8z" fill="currentColor" stroke-linejoin="miter"/>
+    </symbol>
+
+    <symbol id="i-pause" viewBox="0 0 24 24">
+      <rect x="6" y="4" width="4" height="16" fill="currentColor" stroke="none"/>
+      <rect x="14" y="4" width="4" height="16" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-volume" viewBox="0 0 24 24">
+      <path d="M4 9h4l5-4v14l-5-4H4z"/>
+      <path d="M17 8a6 6 0 0 1 0 8"/>
+      <path d="M20 5a10 10 0 0 1 0 14"/>
+    </symbol>
+
+    <symbol id="i-mute" viewBox="0 0 24 24">
+      <path d="M4 9h4l5-4v14l-5-4H4z"/>
+      <path d="M17 9l5 6M22 9l-5 6"/>
+    </symbol>
+
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="M4 12l5 6L20 5" stroke-width="3.5"/>
+    </symbol>
+
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="M5 5l14 14M19 5L5 19" stroke-width="3.5"/>
+    </symbol>
+
+    <symbol id="i-copy" viewBox="0 0 24 24">
+      <rect x="8" y="8" width="13" height="13"/>
+      <path d="M16 8V3H3v13h5"/>
+    </symbol>
+
+    <symbol id="i-disc" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <circle cx="12" cy="12" r="6"/>
+      <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-location" viewBox="0 0 24 24">
+      <path d="M12 2c-4 0-7 3-7 7 0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/>
+      <circle cx="12" cy="9" r="2.5"/>
+    </symbol>
+
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v5l3 2"/>
+    </symbol>
+
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="14"/>
+      <path d="M3 5l9 7 9-7"/>
+    </symbol>
+
+    <symbol id="i-sparkle" viewBox="0 0 24 24">
+      <path d="M12 3v6M12 15v6M3 12h6M15 12h6"/>
+      <path d="M6 6l3 3M15 15l3 3M6 18l3-3M15 9l3-3"/>
+    </symbol>
+  </svg>
+
   <!-- TOP CONTROLS -->
   <div class="top-controls">
-    <button class="control-btn" id="qrBtn" title="Mã QR"><i class="fas fa-qrcode"></i></button>
+    <button class="control-btn" id="qrBtn" title="Mã QR" aria-label="Mã QR">
+      <svg class="icon icon-lg"><use href="#i-qr"/></svg>
+    </button>
     <div class="top-controls-right">
-      <button class="control-btn" id="darkBtn" title="Sáng/Tối"><i class="fas fa-moon" id="darkIcon"></i></button>
+      <button class="control-btn" id="darkBtn" title="Sáng/Tối" aria-label="Sáng/Tối">
+        <svg class="icon icon-lg" id="darkIcon"><use href="#i-moon"/></svg>
+      </button>
     </div>
   </div>
 
@@ -785,22 +940,24 @@
       <h1 class="bio-name">
         <span>LÊ</span>
         <span class="accent-word">TRUNG</span>
-        <span class="verified" title="Đã xác minh">✓</span>
+        <span class="verified" title="Đã xác minh">
+          <svg class="icon"><use href="#i-check"/></svg>
+        </span>
       </h1>
       <div class="bio-tagline"><span id="typewriterText"></span></div>
     </div>
 
     <div class="info-grid">
       <div class="info-card">
-        <div class="info-label">📍 Vị trí</div>
+        <div class="info-label">Vị trí</div>
         <div class="info-value">Gia Lai, VN</div>
       </div>
       <div class="info-card">
-        <div class="info-label">🕐 Bây giờ</div>
+        <div class="info-label">Bây giờ</div>
         <div class="info-value"><span id="liveClock">--:--:--</span></div>
       </div>
       <div class="info-card wide">
-        <div class="info-label">✉️ Email</div>
+        <div class="info-label">Email</div>
         <div class="info-value"><a href="mailto:lebaotrungtqt2011@gmail.com">lebaotrungtqt2011@gmail.com</a></div>
       </div>
       <div class="info-card wide quote-card">
@@ -809,23 +966,41 @@
     </div>
 
     <div class="socials">
-      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://instagram.com/@tyraeg_" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener" class="social-btn" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://locket.cam/tyraeg16" target="_blank" rel="noopener" class="social-btn" title="Locket"><i class="fas fa-camera-retro"></i></a>
-      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" rel="noopener" class="social-btn" title="Spotify"><i class="fab fa-spotify"></i></a>
-      <a href="https://discord.com/@paw162" target="_blank" rel="noopener" class="social-btn" title="Discord"><i class="fab fa-discord"></i></a>
-      <button class="social-btn" id="bankBtn" title="Chuyển khoản"><i class="fas fa-wallet"></i></button>
+      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook">
+        <svg class="icon icon-lg"><use href="#i-facebook"/></svg>
+      </a>
+      <a href="https://instagram.com/@tyraeg_" target="_blank" rel="noopener" class="social-btn" title="Instagram">
+        <svg class="icon icon-lg"><use href="#i-instagram"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener" class="social-btn" title="TikTok">
+        <svg class="icon icon-lg"><use href="#i-tiktok"/></svg>
+      </a>
+      <a href="https://locket.cam/tyraeg16" target="_blank" rel="noopener" class="social-btn" title="Locket">
+        <svg class="icon icon-lg"><use href="#i-locket"/></svg>
+      </a>
+      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" rel="noopener" class="social-btn" title="Spotify">
+        <svg class="icon icon-lg"><use href="#i-spotify"/></svg>
+      </a>
+      <a href="https://discord.com/@paw162" target="_blank" rel="noopener" class="social-btn" title="Discord">
+        <svg class="icon icon-lg"><use href="#i-discord"/></svg>
+      </a>
+      <button class="social-btn" id="bankBtn" title="Chuyển khoản">
+        <svg class="icon icon-lg"><use href="#i-wallet"/></svg>
+      </button>
     </div>
 
     <div class="music-player">
       <div class="music-info" id="musicInfo">
-        <i class="fas fa-compact-disc"></i>
+        <svg class="icon icon-lg"><use href="#i-disc"/></svg>
         <span id="trackName">Để Dành Cho Em</span>
       </div>
       <div class="music-controls">
-        <button class="music-btn" id="playPauseBtn"><i class="fas fa-play" id="playIcon"></i></button>
-        <button class="music-btn" id="muteBtn"><i class="fas fa-volume-up" id="volumeIcon"></i></button>
+        <button class="music-btn" id="playPauseBtn" aria-label="Play/Pause">
+          <svg class="icon" id="playIcon"><use href="#i-play"/></svg>
+        </button>
+        <button class="music-btn" id="muteBtn" aria-label="Mute">
+          <svg class="icon" id="volumeIcon"><use href="#i-volume"/></svg>
+        </button>
       </div>
       <div class="progress-wrapper">
         <span class="time-display" id="currentTime">0:00</span>
@@ -837,7 +1012,6 @@
       <div class="visualizer" id="visualizer"></div>
     </div>
 
-    <!-- THEME SWATCHES -->
     <div class="theme-bar">
       <div class="theme-swatch active" data-accent="pink" title="Hồng neon"></div>
       <div class="theme-swatch" data-accent="cyan" title="Xanh cyan"></div>
@@ -850,24 +1024,39 @@
   <!-- QR MODAL -->
   <div class="modal" id="qrModal">
     <div class="modal-box">
-      <button class="modal-close" id="qrModalClose">✕</button>
-      <h3>📱 Quét QR</h3>
+      <button class="modal-close" id="qrModalClose" aria-label="Đóng">
+        <svg class="icon"><use href="#i-close"/></svg>
+      </button>
+      <h3>
+        <svg class="icon"><use href="#i-qr"/></svg>
+        Quét QR
+      </h3>
       <div id="qrcodeContainer"></div>
       <p class="qr-url" id="qrUrl"></p>
-      <button class="btn-gradient" id="qrCopyBtn"><i class="fas fa-copy"></i> Copy link</button>
+      <button class="btn-gradient" id="qrCopyBtn">
+        <svg class="icon icon-sm"><use href="#i-copy"/></svg>
+        Copy link
+      </button>
     </div>
   </div>
 
   <!-- BANK MODAL -->
   <div class="modal" id="bankModal">
     <div class="modal-box">
-      <button class="modal-close" id="bankModalClose">✕</button>
-      <h3>💳 Chuyển khoản</h3>
+      <button class="modal-close" id="bankModalClose" aria-label="Đóng">
+        <svg class="icon"><use href="#i-close"/></svg>
+      </button>
+      <h3>
+        <svg class="icon"><use href="#i-wallet"/></svg>
+        Chuyển khoản
+      </h3>
       <div class="bank-info-list">
         <div class="bank-info-item"><span>Ngân hàng: <strong>TPBANK</strong></span></div>
         <div class="bank-info-item">
           <span>STK: <strong id="stkValue">31189838888</strong></span>
-          <button class="copy-icon-btn" id="copyStkBtn"><i class="fas fa-copy"></i></button>
+          <button class="copy-icon-btn" id="copyStkBtn" aria-label="Copy STK">
+            <svg class="icon icon-sm"><use href="#i-copy"/></svg>
+          </button>
         </div>
         <div class="bank-info-item"><span>Chủ thẻ: <strong>LE BAO TRUNG</strong></span></div>
       </div>
@@ -883,6 +1072,9 @@
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
 
+    // =========================================
+    // TOAST
+    // =========================================
     function toast(msg) {
       const t = $('#toast');
       $('#toastText').textContent = msg;
@@ -918,12 +1110,12 @@
       const saved = localStorage.getItem('brutal_dark');
       if (saved === '1') {
         document.body.classList.add('dark');
-        icon.className = 'fas fa-sun';
+        icon.setAttribute('href', '#i-sun');
       }
       btn.addEventListener('click', () => {
         document.body.classList.toggle('dark');
         const isDark = document.body.classList.contains('dark');
-        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        icon.setAttribute('href', isDark ? '#i-sun' : '#i-moon');
         localStorage.setItem('brutal_dark', isDark ? '1' : '0');
       });
     })();
@@ -990,9 +1182,35 @@
         bars.push(b);
       }
 
+      let analyser = null;
+      let dataArray = null;
+      try {
+        if (window.AudioContext || window.webkitAudioContext) {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = ctx.createAnalyser();
+          analyser.fftSize = 64;
+          const source = ctx.createMediaElementSource(audio);
+          source.connect(analyser);
+          analyser.connect(ctx.destination);
+          dataArray = new Uint8Array(analyser.frequencyBinCount);
+          audio.addEventListener('play', () => {
+            if (ctx.state === 'suspended') ctx.resume();
+          });
+        }
+      } catch (e) {
+        console.warn('Web Audio API không khả dụng');
+      }
+
       function animate() {
         if (!audio.paused) {
-          bars.forEach(b => b.style.height = (Math.random() * 85 + 15) + '%');
+          if (analyser && dataArray) {
+            analyser.getByteFrequencyData(dataArray);
+            bars.forEach((b, i) => {
+              b.style.height = Math.max(10, (dataArray[i] / 255) * 100) + '%';
+            });
+          } else {
+            bars.forEach(b => b.style.height = (Math.random() * 85 + 15) + '%');
+          }
         } else {
           bars.forEach(b => b.style.height = '5%');
         }
@@ -1007,16 +1225,15 @@
 
       function updateIcon() {
         if (audio.paused) {
-          playIcon.className = 'fas fa-play';
+          playIcon.setAttribute('href', '#i-play');
           musicInfo.classList.remove('playing');
         } else {
-          playIcon.className = 'fas fa-pause';
+          playIcon.setAttribute('href', '#i-pause');
           musicInfo.classList.add('playing');
         }
       }
       function updateVol() {
-        if (audio.muted) volIcon.className = 'fas fa-volume-mute';
-        else volIcon.className = 'fas fa-volume-up';
+        volIcon.setAttribute('href', audio.muted ? '#i-mute' : '#i-volume');
       }
       function updateProg() {
         if (audio.duration) {
@@ -1045,6 +1262,9 @@
         updateProg();
         updateVol();
         updateIcon();
+      });
+      audio.addEventListener('error', () => {
+        $('#trackName').textContent = 'Không tải được nhạc';
       });
 
       updateVol();
@@ -1104,7 +1324,9 @@
       });
     })();
 
+    // =========================================
     // PWA
+    // =========================================
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
