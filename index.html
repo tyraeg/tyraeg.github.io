@@ -252,7 +252,7 @@
     .bio-card.show { opacity: 1; transform: translateY(0); }
 
     /* =========================================
-       AVATAR & VERIFIED BADGE ĐỘC QUYỀN
+       AVATAR
        ========================================= */
     .avatar-section {
       display: flex;
@@ -307,46 +307,25 @@
       color: var(--ink);
     }
 
-    /* TICK XÁC MINH ĐỘC QUYỀN (ĐA GIÁC 8 CẠNH + KIM CƯƠNG) */
+    /* TICK XANH DƯƠNG GIỐNG FACEBOOK */
     .verified {
-      position: relative;
-      width: 1.4rem;
-      height: 1.4rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      cursor: help;
+      width: 1.4rem;
+      height: 1.4rem;
+      background: #1877F2; /* Màu xanh Facebook */
+      border-radius: 50%;
+      color: #ffffff;
       flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
-      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-      box-shadow: 0 2px 10px rgba(124, 109, 242, 0.5);
-      animation: spinDiamond 6s linear infinite;
+      cursor: help;
     }
     
-    /* Lớp ánh sáng kim cương (Diamond Shine) */
-    .verified::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.4) 100%);
-      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-      z-index: 1;
-    }
-
-    /* Icon check bên trong tick */
-    .verified .icon { 
-      width: 0.8rem; 
-      height: 0.8rem; 
-      stroke-width: 3; 
-      color: #fff;
-      z-index: 2;
-      position: relative;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
-    }
-
-    @keyframes spinDiamond {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .verified .icon {
+      width: 0.8rem;
+      height: 0.8rem;
+      stroke-width: 3.5; /* Nét dày để giống tick face */
+      margin-top: -1px;  /* Căn chỉnh cho thật chuẩn tâm */
     }
 
     .bio-tagline {
@@ -899,7 +878,7 @@
       </div>
       <h1 class="bio-name">
         Lê Trung
-        <!-- TICK XÁC MINH ĐỘC QUYỀN -->
+        <!-- TICK XANH FACEBOOK -->
         <span class="verified" title="Đã xác minh">
           <svg class="icon"><use href="#i-check"/></svg>
         </span>
@@ -1181,7 +1160,6 @@
         return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
       }
 
-      // Cập nhật giao diện Play/Pause
       function updateIcon() {
         if (audio.paused) {
           playIcon.setAttribute('href', '#i-play');
@@ -1236,7 +1214,7 @@
     })();
 
     // =========================================
-    // SPLASH — AUTOPLAY (ĐÃ FIX ICON)
+    // SPLASH — AUTOPLAY (FIX ICON NGAY LẬP TỨC)
     // =========================================
     $('#splash').addEventListener('click', function() {
       // Ẩn splash, hiện card
@@ -1246,15 +1224,14 @@
       // Gọi play() ngay lập tức
       const playPromise = bgAudio.play();
 
-      // ĐỔI ICON SANG PAUSE NGAY LẬP TỨC (Không chờ event)
+      // ĐỔI ICON SANG PAUSE NGAY (Không chờ event)
       $('#playIcon').setAttribute('href', '#i-pause');
       $('#musicInfo').classList.add('playing');
 
-      // Xử lý bất đồng bộ
+      // Xử lý lỗi nếu có
       if (playPromise !== undefined) {
         playPromise.catch(err => {
           console.warn('Autoplay bị chặn:', err.name);
-          // Nếu bị chặn -> trả icon về Play
           $('#playIcon').setAttribute('href', '#i-play');
           $('#musicInfo').classList.remove('playing');
           toast('Nhấn ▶ để phát nhạc');
