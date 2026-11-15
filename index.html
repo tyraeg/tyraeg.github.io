@@ -81,11 +81,11 @@
     body[data-accent="orange"] { --accent-1: #f59e0b; --accent-2: #fbbf24; --accent-3: #fb923c; --accent-soft: #fffbeb; --accent-text: #d97706; }
     body[data-accent="rose"]   { --accent-1: #f43f5e; --accent-2: #fb7185; --accent-3: #f472b6; --accent-soft: #fff1f2; --accent-text: #e11d48; }
 
-    body.dark[data-accent="purple"] { --accent-soft: #2a2440; }
-    body.dark[data-accent="blue"]   { --accent-soft: #1e293b; }
-    body.dark[data-accent="green"]  { --accent-soft: #1a2e28; }
-    body.dark[data-accent="orange"] { --accent-soft: #2e2519; }
-    body.dark[data-accent="rose"]   { --accent-soft: #2e1a20; }
+    body.dark[data-accent="purple"] { --accent-soft: #2a2440; --accent-text: #a78bfa; }
+    body.dark[data-accent="blue"]   { --accent-soft: #1e293b; --accent-text: #60a5fa; }
+    body.dark[data-accent="green"]  { --accent-soft: #1a2e28; --accent-text: #34d399; }
+    body.dark[data-accent="orange"] { --accent-soft: #2e2519; --accent-text: #fbbf24; }
+    body.dark[data-accent="rose"]   { --accent-soft: #2e1a20; --accent-text: #fb7185; }
 
     /* =========================================
        RESET
@@ -112,7 +112,6 @@
       transition: background 0.4s, color 0.4s;
     }
 
-    /* Soft gradient background */
     body::before {
       content: '';
       position: fixed;
@@ -124,9 +123,7 @@
       pointer-events: none;
     }
 
-    /* =========================================
-       ICON SYSTEM
-       ========================================= */
+    /* ICON SYSTEM */
     .icon {
       display: inline-block;
       width: 1em;
@@ -142,9 +139,7 @@
     .icon-lg { font-size: 1.3em; }
     .icon-sm { font-size: 0.9em; }
 
-    /* =========================================
-       TOP CONTROLS
-       ========================================= */
+    /* TOP CONTROLS */
     .top-controls {
       position: fixed;
       top: 1.2rem;
@@ -179,9 +174,7 @@
     }
     .control-btn:active { transform: translateY(0) scale(0.96); }
 
-    /* =========================================
-       SPLASH
-       ========================================= */
+    /* SPLASH */
     .splash {
       position: fixed;
       inset: 0;
@@ -238,9 +231,7 @@
       50% { transform: translateY(4px); }
     }
 
-    /* =========================================
-       BIO CARD
-       ========================================= */
+    /* BIO CARD */
     .bio-card {
       position: relative;
       z-index: 10;
@@ -257,9 +248,7 @@
     }
     .bio-card.show { opacity: 1; transform: translateY(0); }
 
-    /* =========================================
-       AVATAR
-       ========================================= */
+    /* AVATAR */
     .avatar-section {
       display: flex;
       flex-direction: column;
@@ -330,7 +319,6 @@
     .bio-tagline {
       font-size: 0.9rem;
       font-weight: 500;
-      color: var(--ink-sub);
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -342,9 +330,7 @@
     }
     .bio-tagline .icon { font-size: 0.85em; }
 
-    /* =========================================
-       INFO GRID
-       ========================================= */
+    /* INFO GRID */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -427,9 +413,7 @@
       font-family: Georgia, serif;
     }
 
-    /* =========================================
-       SOCIALS
-       ========================================= */
+    /* SOCIALS */
     .socials {
       display: flex;
       flex-wrap: wrap;
@@ -463,9 +447,7 @@
     }
     .social-btn:active { transform: translateY(-1px) scale(0.98); }
 
-    /* =========================================
-       MUSIC PLAYER
-       ========================================= */
+    /* MUSIC PLAYER */
     .music-player {
       background: var(--surface);
       border: 1px solid var(--border-light);
@@ -593,9 +575,7 @@
       .visualizer { order: 0; width: 55px; flex-shrink: 0; }
     }
 
-    /* =========================================
-       MODALS
-       ========================================= */
+    /* MODALS */
     .modal {
       position: fixed;
       inset: 0;
@@ -743,9 +723,7 @@
       border-color: var(--accent-1);
     }
 
-    /* =========================================
-       THEME SWATCHES
-       ========================================= */
+    /* THEME SWATCHES */
     .theme-bar {
       display: flex;
       gap: 0.6rem;
@@ -778,9 +756,7 @@
     .theme-swatch[data-accent="orange"] { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
     .theme-swatch[data-accent="rose"]   { background: linear-gradient(135deg, #f43f5e, #fb7185); }
 
-    /* =========================================
-       TOAST
-       ========================================= */
+    /* TOAST */
     .toast {
       position: fixed;
       bottom: 1.5rem;
@@ -804,9 +780,7 @@
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
 
-    /* =========================================
-       MOBILE
-       ========================================= */
+    /* MOBILE */
     @media (max-width: 520px) {
       body { padding: 4.5rem 0.8rem 2rem; }
       .bio-card { padding: 2rem 1.2rem 1.5rem; border-radius: var(--radius-lg); }
@@ -819,7 +793,6 @@
       .avatar-wrapper { width: 100px; height: 100px; }
     }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -1181,11 +1154,15 @@
       setInterval(tick, 1000);
     })();
 
-    // MUSIC PLAYER
+    // =========================================
+    // MUSIC PLAYER — có expose audio ra window
+    // =========================================
     (function() {
       const audio = new Audio();
+      window.__bioAudio = audio; // ← expose để splash dùng
       audio.loop = true;
       audio.volume = 0.7;
+      audio.preload = 'auto';
       audio.src = 'https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3';
 
       const playBtn = $('#playPauseBtn');
@@ -1290,11 +1267,24 @@
       updateVol(); updateIcon();
     })();
 
-    // SPLASH
+    // =========================================
+    // SPLASH — TỰ PHÁT NHẠC KHI CLICK
+    // =========================================
     $('#splash').addEventListener('click', () => {
       $('#splash').classList.add('hidden');
       $('#bioCard').classList.add('show');
       setTimeout(() => window.startType?.(), 400);
+
+      // Tự phát nhạc
+      const audio = window.__bioAudio;
+      if (audio && audio.paused) {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            toast('Nhấn ▶ để phát nhạc');
+          });
+        }
+      }
     });
 
     // QR MODAL
