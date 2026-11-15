@@ -252,7 +252,7 @@
     .bio-card.show { opacity: 1; transform: translateY(0); }
 
     /* =========================================
-       AVATAR
+       AVATAR & TICK XANH FACEBOOK
        ========================================= */
     .avatar-section {
       display: flex;
@@ -307,14 +307,13 @@
       color: var(--ink);
     }
 
-    /* TICK XANH DƯƠNG GIỐNG FACEBOOK */
     .verified {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 1.4rem;
       height: 1.4rem;
-      background: #1877F2; /* Màu xanh Facebook */
+      background: #1877F2;
       border-radius: 50%;
       color: #ffffff;
       flex-shrink: 0;
@@ -324,8 +323,8 @@
     .verified .icon {
       width: 0.8rem;
       height: 0.8rem;
-      stroke-width: 3.5; /* Nét dày để giống tick face */
-      margin-top: -1px;  /* Căn chỉnh cho thật chuẩn tâm */
+      stroke-width: 3.5;
+      margin-top: -1px;
     }
 
     .bio-tagline {
@@ -878,7 +877,6 @@
       </div>
       <h1 class="bio-name">
         Lê Trung
-        <!-- TICK XANH FACEBOOK -->
         <span class="verified" title="Đã xác minh">
           <svg class="icon"><use href="#i-check"/></svg>
         </span>
@@ -889,7 +887,6 @@
       </div>
     </div>
 
-    <!-- INFO GRID -->
     <div class="info-grid">
       <div class="info-card">
         <div class="info-label">
@@ -917,7 +914,6 @@
       </div>
     </div>
 
-    <!-- SOCIALS -->
     <div class="socials">
       <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook">
         <svg class="icon icon-lg"><use href="#i-facebook"/></svg>
@@ -943,6 +939,11 @@
     </div>
 
     <!-- MUSIC PLAYER -->
+    <!-- THÊM THẺ AUDIO VÀO ĐÂY ĐỂ TRÌNH DUYỆT QUẢN LÝ DỄ HƠN -->
+    <audio id="bgAudio" loop preload="auto" style="display:none;">
+      <source src="https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="music-player">
       <div class="music-info" id="musicInfo">
         <svg class="icon"><use href="#i-disc"/></svg>
@@ -966,7 +967,6 @@
       <div class="visualizer" id="visualizer"></div>
     </div>
 
-    <!-- THEME SWATCHES -->
     <div class="theme-bar">
       <div class="theme-swatch active" data-accent="purple" title="Tím"></div>
       <div class="theme-swatch" data-accent="blue" title="Xanh"></div>
@@ -1022,7 +1022,6 @@
     </div>
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="toast">
     <svg class="icon"><use href="#i-check"/></svg>
     <span id="toastText">Đã copy!</span>
@@ -1041,15 +1040,9 @@
     }
 
     // =========================================
-    // KHỞI TẠO AUDIO SỚM (ĐỂ AUTOPLAY KHÔNG BỊ CHẶN)
+    // THAM CHIẾU AUDIO (DÙNG THẺ AUDIO HTML)
     // =========================================
-    const bgAudio = new Audio();
-    bgAudio.loop = true;
-    bgAudio.volume = 1.0;
-    bgAudio.preload = 'auto';
-    bgAudio.src = 'https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3';
-    bgAudio.load(); 
-    window.__bioAudio = bgAudio;
+    const bgAudio = $('#bgAudio');
 
     // =========================================
     // THEME ACCENT
@@ -1122,10 +1115,9 @@
     })();
 
     // =========================================
-    // MUSIC PLAYER
+    // MUSIC PLAYER CONTROLS (GẮN SỰ KIỆN TRỰC TIẾP)
     // =========================================
     (function() {
-      const audio = bgAudio;
       const playBtn = $('#playPauseBtn');
       const playIcon = $('#playIcon');
       const muteBtn = $('#muteBtn');
@@ -1137,6 +1129,7 @@
       const musicInfo = $('#musicInfo');
       const visC = $('#visualizer');
 
+      // Khởi tạo visualizer
       const bars = [];
       for (let i = 0; i < 13; i++) {
         const b = document.createElement('div');
@@ -1146,7 +1139,7 @@
       }
 
       function animate() {
-        if (!audio.paused) {
+        if (!bgAudio.paused) {
           bars.forEach(b => b.style.height = (Math.random() * 85 + 15) + '%');
         } else {
           bars.forEach(b => b.style.height = '5%');
@@ -1160,8 +1153,9 @@
         return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
       }
 
-      function updateIcon() {
-        if (audio.paused) {
+      // Hàm đồng bộ UI
+      function syncUI() {
+        if (bgAudio.paused) {
           playIcon.setAttribute('href', '#i-play');
           musicInfo.classList.remove('playing');
         } else {
@@ -1169,76 +1163,70 @@
           musicInfo.classList.add('playing');
         }
       }
-      function updateVol() {
-        volIcon.setAttribute('href', audio.muted ? '#i-mute' : '#i-volume');
-      }
-      function updateProg() {
-        if (audio.duration && !isNaN(audio.duration)) {
-          progressBar.style.width = (audio.currentTime / audio.duration) * 100 + '%';
-          curTime.textContent = fmt(audio.currentTime);
-        }
-      }
 
-      playBtn.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play().catch(() => toast('Không phát được 😢'));
-        } else {
-          audio.pause();
+      // Lắng nghe sự kiện từ thẻ audio
+      bgAudio.addEventListener('play', syncUI);
+      bgAudio.addEventListener('pause', syncUI);
+      bgAudio.addEventListener('volumechange', () => {
+        volIcon.setAttribute('href', bgAudio.muted ? '#i-mute' : '#i-volume');
+      });
+      bgAudio.addEventListener('timeupdate', () => {
+        if (bgAudio.duration && !isNaN(bgAudio.duration)) {
+          progressBar.style.width = (bgAudio.currentTime / bgAudio.duration) * 100 + '%';
+          curTime.textContent = fmt(bgAudio.currentTime);
         }
       });
-      muteBtn.addEventListener('click', () => {
-        audio.muted = !audio.muted;
+      bgAudio.addEventListener('loadedmetadata', () => {
+        durEl.textContent = fmt(bgAudio.duration);
       });
+
+      // Nút Play/Pause
+      playBtn.addEventListener('click', () => {
+        if (bgAudio.paused) {
+          bgAudio.play().catch(err => toast('Không phát được 😢'));
+        } else {
+          bgAudio.pause();
+        }
+      });
+
+      // Nút Mute
+      muteBtn.addEventListener('click', () => {
+        bgAudio.muted = !bgAudio.muted;
+      });
+
+      // Thanh tiến trình
       progressC.addEventListener('click', e => {
         const r = progressC.getBoundingClientRect();
         const pos = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-        if (audio.duration && !isNaN(audio.duration)) {
-          audio.currentTime = pos * audio.duration;
+        if (bgAudio.duration && !isNaN(bgAudio.duration)) {
+          bgAudio.currentTime = pos * bgAudio.duration;
         }
       });
 
-      audio.addEventListener('play', updateIcon);
-      audio.addEventListener('pause', updateIcon);
-      audio.addEventListener('volumechange', updateVol);
-      audio.addEventListener('timeupdate', updateProg);
-      audio.addEventListener('loadedmetadata', () => {
-        durEl.textContent = fmt(audio.duration);
-        updateProg();
-      });
-      audio.addEventListener('error', () => {
-        $('#trackName').textContent = 'Không tải được nhạc';
-      });
-
-      updateVol();
-      updateIcon();
+      // Đặt âm lượng mặc định
+      bgAudio.volume = 1.0;
+      syncUI();
     })();
 
     // =========================================
-    // SPLASH — AUTOPLAY (FIX ICON NGAY LẬP TỨC)
+    // SPLASH — TỰ ĐỘNG PHÁT NHẠC KHI CLICK
     // =========================================
     $('#splash').addEventListener('click', function() {
-      // Ẩn splash, hiện card
       $('#splash').classList.add('hidden');
       $('#bioCard').classList.add('show');
 
-      // Gọi play() ngay lập tức
+      const bgAudio = $('#bgAudio');
+      // Gọi play() trực tiếp. Nếu thành công thẻ audio sẽ tự bắn sự kiện 'play' -> UI tự đổi icon
       const playPromise = bgAudio.play();
 
-      // ĐỔI ICON SANG PAUSE NGAY (Không chờ event)
-      $('#playIcon').setAttribute('href', '#i-pause');
-      $('#musicInfo').classList.add('playing');
-
-      // Xử lý lỗi nếu có
       if (playPromise !== undefined) {
         playPromise.catch(err => {
           console.warn('Autoplay bị chặn:', err.name);
-          $('#playIcon').setAttribute('href', '#i-play');
-          $('#musicInfo').classList.remove('playing');
-          toast('Nhấn ▶ để phát nhạc');
+          // Không cần làm gì cả, vì thẻ audio chưa play -> icon vẫn là Play
+          // Người dùng có thể tự bấm nút Play
         });
       }
 
-      // Typewriter chạy
       setTimeout(() => window.startType?.(), 400);
     });
 
