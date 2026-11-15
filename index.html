@@ -66,10 +66,8 @@
       --ink-muted: #6b7280;
       --border: #2a2e38;
       --border-light: #232730;
-
       --accent-soft: #2a2440;
       --accent-text: #a78bfa;
-
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
       --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -81,15 +79,12 @@
     body[data-accent="orange"] { --accent-1: #f59e0b; --accent-2: #fbbf24; --accent-3: #fb923c; --accent-soft: #fffbeb; --accent-text: #d97706; }
     body[data-accent="rose"]   { --accent-1: #f43f5e; --accent-2: #fb7185; --accent-3: #f472b6; --accent-soft: #fff1f2; --accent-text: #e11d48; }
 
-    body.dark[data-accent="purple"] { --accent-soft: #2a2440; --accent-text: #a78bfa; }
-    body.dark[data-accent="blue"]   { --accent-soft: #1e293b; --accent-text: #60a5fa; }
-    body.dark[data-accent="green"]  { --accent-soft: #1a2e28; --accent-text: #34d399; }
-    body.dark[data-accent="orange"] { --accent-soft: #2e2519; --accent-text: #fbbf24; }
-    body.dark[data-accent="rose"]   { --accent-soft: #2e1a20; --accent-text: #fb7185; }
+    body.dark[data-accent="purple"] { --accent-soft: #2a2440; }
+    body.dark[data-accent="blue"]   { --accent-soft: #1e293b; }
+    body.dark[data-accent="green"]  { --accent-soft: #1a2e28; }
+    body.dark[data-accent="orange"] { --accent-soft: #2e2519; }
+    body.dark[data-accent="rose"]   { --accent-soft: #2e1a20; }
 
-    /* =========================================
-       RESET
-       ========================================= */
     * {
       margin: 0;
       padding: 0;
@@ -123,7 +118,6 @@
       pointer-events: none;
     }
 
-    /* ICON SYSTEM */
     .icon {
       display: inline-block;
       width: 1em;
@@ -780,7 +774,6 @@
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
 
-    /* MOBILE */
     @media (max-width: 520px) {
       body { padding: 4.5rem 0.8rem 2rem; }
       .bio-card { padding: 2rem 1.2rem 1.5rem; border-radius: var(--radius-lg); }
@@ -803,106 +796,32 @@
 </head>
 <body data-accent="purple">
 
-  <!-- SVG SPRITE -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-    <symbol id="i-facebook" viewBox="0 0 24 24">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-    </symbol>
-    <symbol id="i-instagram" viewBox="0 0 24 24">
-      <rect x="2" y="2" width="20" height="20" rx="5"/>
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-    </symbol>
-    <symbol id="i-tiktok" viewBox="0 0 24 24">
-      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
-    </symbol>
-    <symbol id="i-locket" viewBox="0 0 24 24">
-      <rect x="3" y="6" width="18" height="15" rx="3"/>
-      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-      <circle cx="12" cy="13.5" r="3.5"/>
-    </symbol>
-    <symbol id="i-spotify" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M8 14.5c2.5-.8 5.5-.6 8 .5"/>
-      <path d="M7.5 11c3-1 7-.8 10 .5"/>
-      <path d="M7 7.5c3.5-1 8.5-.8 11.5.8"/>
-    </symbol>
-    <symbol id="i-discord" viewBox="0 0 24 24">
-      <path d="M5 5.5c2-1 4-1.3 7-1.3s5 .3 7 1.3c1.5 4 2 8 1.5 12-1.5 1.5-3.5 2-5 2L14 17.5c-1.3.3-2.7.3-4 0L8.5 19.5c-1.5 0-3.5-.5-5-2-.5-4 0-8 1.5-12z"/>
-      <circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/>
-      <circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-wallet" viewBox="0 0 24 24">
-      <path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/>
-      <path d="M16 12h.01"/>
-    </symbol>
-    <symbol id="i-qr" viewBox="0 0 24 24">
-      <rect x="3" y="3" width="7" height="7" rx="1"/>
-      <rect x="14" y="3" width="7" height="7" rx="1"/>
-      <rect x="3" y="14" width="7" height="7" rx="1"/>
-      <path d="M14 14h3v3M21 14v3M14 21h3M21 21h0"/>
-    </symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-    </symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="4"/>
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-    </symbol>
-    <symbol id="i-play" viewBox="0 0 24 24">
-      <polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-pause" viewBox="0 0 24 24">
-      <rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/>
-      <rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-volume" viewBox="0 0 24 24">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </symbol>
-    <symbol id="i-mute" viewBox="0 0 24 24">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
-    </symbol>
-    <symbol id="i-check" viewBox="0 0 24 24">
-      <polyline points="20 6 9 17 4 12"/>
-    </symbol>
-    <symbol id="i-close" viewBox="0 0 24 24">
-      <line x1="18" y1="6" x2="6" y2="18"/>
-      <line x1="6" y1="6" x2="18" y2="18"/>
-    </symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24">
-      <rect x="9" y="9" width="13" height="13" rx="2"/>
-      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-    </symbol>
-    <symbol id="i-disc" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10"/>
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-location" viewBox="0 0 24 24">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-      <circle cx="12" cy="10" r="3"/>
-    </symbol>
-    <symbol id="i-clock" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10"/>
-      <polyline points="12 6 12 12 16 14"/>
-    </symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24">
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-      <polyline points="22,6 12,13 2,6"/>
-    </symbol>
-    <symbol id="i-code" viewBox="0 0 24 24">
-      <polyline points="16 18 22 12 16 6"/>
-      <polyline points="8 6 2 12 8 18"/>
-    </symbol>
-    <symbol id="i-sparkle" viewBox="0 0 24 24">
-      <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
-      <circle cx="12" cy="12" r="3"/>
-    </symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></symbol>
+    <symbol id="i-locket" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="15" rx="3"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+    <symbol id="i-spotify" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14.5c2.5-.8 5.5-.6 8 .5"/><path d="M7.5 11c3-1 7-.8 10 .5"/><path d="M7 7.5c3.5-1 8.5-.8 11.5.8"/></symbol>
+    <symbol id="i-discord" viewBox="0 0 24 24"><path d="M5 5.5c2-1 4-1.3 7-1.3s5 .3 7 1.3c1.5 4 2 8 1.5 12-1.5 1.5-3.5 2-5 2L14 17.5c-1.3.3-2.7.3-4 0L8.5 19.5c-1.5 0-3.5-.5-5-2-.5-4 0-8 1.5-12z"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M16 12h.01"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v3M14 21h3M21 21h0"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-location" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></symbol>
   </svg>
 
-  <!-- TOP CONTROLS -->
   <div class="top-controls">
     <button class="control-btn" id="qrBtn" title="Mã QR" aria-label="Mã QR">
       <svg class="icon icon-lg"><use href="#i-qr"/></svg>
@@ -914,7 +833,6 @@
     </div>
   </div>
 
-  <!-- SPLASH -->
   <div class="splash" id="splash">
     <div class="splash-logo">LT</div>
     <div class="splash-text">Lê Trung</div>
@@ -924,7 +842,6 @@
     </div>
   </div>
 
-  <!-- BIO CARD -->
   <div class="bio-card" id="bioCard">
     <div class="avatar-section">
       <div class="avatar-wrapper">
@@ -1026,7 +943,6 @@
     </div>
   </div>
 
-  <!-- QR MODAL -->
   <div class="modal" id="qrModal">
     <div class="modal-box">
       <button class="modal-close" id="qrModalClose" aria-label="Đóng">
@@ -1045,7 +961,6 @@
     </div>
   </div>
 
-  <!-- BANK MODAL -->
   <div class="modal" id="bankModal">
     <div class="modal-box">
       <button class="modal-close" id="bankModalClose" aria-label="Đóng">
@@ -1073,7 +988,6 @@
     </div>
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="toast">
     <svg class="icon"><use href="#i-check"/></svg>
     <span id="toastText">Đã copy!</span>
@@ -1091,7 +1005,9 @@
       t._timer = setTimeout(() => t.classList.remove('show'), 2000);
     }
 
+    // =========================================
     // THEME ACCENT
+    // =========================================
     (function() {
       const saved = localStorage.getItem('soft_accent') || 'purple';
       document.body.dataset.accent = saved;
@@ -1107,7 +1023,9 @@
       });
     })();
 
+    // =========================================
     // DARK MODE
+    // =========================================
     (function() {
       const btn = $('#darkBtn');
       const icon = $('#darkIcon');
@@ -1124,7 +1042,9 @@
       });
     })();
 
+    // =========================================
     // TYPEWRITER
+    // =========================================
     (function() {
       const el = $('#typewriterText');
       const text = 'Student & Developer';
@@ -1140,7 +1060,9 @@
       };
     })();
 
+    // =========================================
     // CLOCK
+    // =========================================
     (function() {
       const c = $('#liveClock');
       const tick = () => {
@@ -1155,11 +1077,11 @@
     })();
 
     // =========================================
-    // MUSIC PLAYER — có expose audio ra window
+    // MUSIC PLAYER — audio được gán ra window
     // =========================================
     (function() {
       const audio = new Audio();
-      window.__bioAudio = audio; // ← expose để splash dùng
+      window.__bioAudio = audio;   // ← KEY: cho splash truy cập
       audio.loop = true;
       audio.volume = 0.7;
       audio.preload = 'auto';
@@ -1198,7 +1120,7 @@
             if (ctx.state === 'suspended') ctx.resume();
           });
         }
-      } catch (e) {}
+      } catch (e) { console.warn('Web Audio API không khả dụng'); }
 
       function animate() {
         if (!audio.paused) {
@@ -1268,26 +1190,29 @@
     })();
 
     // =========================================
-    // SPLASH — TỰ PHÁT NHẠC KHI CLICK
+    // SPLASH — TỰ PHÁT NHẠC
     // =========================================
     $('#splash').addEventListener('click', () => {
       $('#splash').classList.add('hidden');
       $('#bioCard').classList.add('show');
       setTimeout(() => window.startType?.(), 400);
 
-      // Tự phát nhạc
       const audio = window.__bioAudio;
-      if (audio && audio.paused) {
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {
+      if (!audio) return;
+      if (audio.paused) {
+        const p = audio.play();
+        if (p !== undefined) {
+          p.catch(err => {
+            console.warn('Autoplay bị chặn:', err);
             toast('Nhấn ▶ để phát nhạc');
           });
         }
       }
     });
 
+    // =========================================
     // QR MODAL
+    // =========================================
     (function() {
       const modal = $('#qrModal');
       $('#qrBtn').addEventListener('click', e => {
@@ -1306,7 +1231,9 @@
       });
     })();
 
+    // =========================================
     // BANK MODAL
+    // =========================================
     (function() {
       const modal = $('#bankModal');
       $('#bankBtn').addEventListener('click', e => {
@@ -1323,7 +1250,9 @@
       });
     })();
 
+    // =========================================
     // PWA
+    // =========================================
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
