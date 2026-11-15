@@ -1,9 +1,8 @@
-const CACHE_NAME = 'pawdev-bio-v1';
+const CACHE_NAME = 'pawdev-bio-v2';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (e) => {
@@ -24,7 +23,9 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
-  if (e.request.destination === 'audio') return;
+
+  // ✅ KHÔNG chặn audio (đã xóa dòng if destination === 'audio' return)
+  // ✅ Chỉ cache CSS/JS/image/font
 
   e.respondWith(
     caches.match(e.request).then(cached => {
