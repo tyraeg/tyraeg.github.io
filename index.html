@@ -20,6 +20,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    /* =========================================
+       VARIABLES — SOFT MODERN
+       ========================================= */
     :root {
       --bg: #f7f5f2;
       --bg-gradient-1: #fef9f3;
@@ -31,17 +34,21 @@
       --ink-muted: #9ca3af;
       --border: #e8e6e1;
       --border-light: #f0eeea;
+
       --accent-1: #7c6df2;
       --accent-2: #a78bfa;
       --accent-3: #f472b6;
       --accent-soft: #f3f0ff;
       --accent-text: #5b4bc4;
+
       --success: #10b981;
       --success-soft: #d1fae5;
+
       --shadow-sm: 0 1px 2px rgba(20, 20, 40, 0.04);
       --shadow-md: 0 4px 16px rgba(20, 20, 40, 0.06), 0 2px 4px rgba(20, 20, 40, 0.04);
       --shadow-lg: 0 20px 50px rgba(20, 20, 40, 0.08), 0 8px 20px rgba(20, 20, 40, 0.04);
       --shadow-accent: 0 12px 30px rgba(124, 109, 242, 0.25);
+
       --radius-sm: 12px;
       --radius-md: 16px;
       --radius-lg: 24px;
@@ -111,6 +118,9 @@
       pointer-events: none;
     }
 
+    /* =========================================
+       ICON SYSTEM
+       ========================================= */
     .icon {
       display: inline-block;
       width: 1em;
@@ -126,6 +136,9 @@
     .icon-lg { font-size: 1.3em; }
     .icon-sm { font-size: 0.9em; }
 
+    /* =========================================
+       TOP CONTROLS
+       ========================================= */
     .top-controls {
       position: fixed;
       top: 1.2rem;
@@ -160,6 +173,9 @@
     }
     .control-btn:active { transform: translateY(0) scale(0.96); }
 
+    /* =========================================
+       SPLASH
+       ========================================= */
     .splash {
       position: fixed;
       inset: 0;
@@ -216,6 +232,9 @@
       50% { transform: translateY(4px); }
     }
 
+    /* =========================================
+       BIO CARD
+       ========================================= */
     .bio-card {
       position: relative;
       z-index: 10;
@@ -232,6 +251,9 @@
     }
     .bio-card.show { opacity: 1; transform: translateY(0); }
 
+    /* =========================================
+       AVATAR & VERIFIED BADGE ĐỘC QUYỀN
+       ========================================= */
     .avatar-section {
       display: flex;
       flex-direction: column;
@@ -285,19 +307,47 @@
       color: var(--ink);
     }
 
+    /* TICK XÁC MINH ĐỘC QUYỀN (ĐA GIÁC 8 CẠNH + KIM CƯƠNG) */
     .verified {
+      position: relative;
       width: 1.4rem;
       height: 1.4rem;
-      background: var(--accent-1);
-      border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
       cursor: help;
       flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+      box-shadow: 0 2px 10px rgba(124, 109, 242, 0.5);
+      animation: spinDiamond 6s linear infinite;
     }
-    .verified .icon { width: 0.85rem; height: 0.85rem; stroke-width: 2.5; }
+    
+    /* Lớp ánh sáng kim cương (Diamond Shine) */
+    .verified::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.4) 100%);
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+      z-index: 1;
+    }
+
+    /* Icon check bên trong tick */
+    .verified .icon { 
+      width: 0.8rem; 
+      height: 0.8rem; 
+      stroke-width: 3; 
+      color: #fff;
+      z-index: 2;
+      position: relative;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+    }
+
+    @keyframes spinDiamond {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
     .bio-tagline {
       font-size: 0.9rem;
@@ -313,6 +363,9 @@
     }
     .bio-tagline .icon { font-size: 0.85em; }
 
+    /* =========================================
+       INFO GRID
+       ========================================= */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -395,6 +448,9 @@
       font-family: Georgia, serif;
     }
 
+    /* =========================================
+       SOCIALS
+       ========================================= */
     .socials {
       display: flex;
       flex-wrap: wrap;
@@ -428,6 +484,9 @@
     }
     .social-btn:active { transform: translateY(-1px) scale(0.98); }
 
+    /* =========================================
+       MUSIC PLAYER
+       ========================================= */
     .music-player {
       background: var(--surface);
       border: 1px solid var(--border-light);
@@ -555,6 +614,9 @@
       .visualizer { order: 0; width: 55px; flex-shrink: 0; }
     }
 
+    /* =========================================
+       MODALS & TOAST
+       ========================================= */
     .modal {
       position: fixed;
       inset: 0;
@@ -779,6 +841,7 @@
 </head>
 <body data-accent="purple">
 
+  <!-- SVG SPRITE -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
     <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
     <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
@@ -805,6 +868,7 @@
     <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></symbol>
   </svg>
 
+  <!-- TOP CONTROLS -->
   <div class="top-controls">
     <button class="control-btn" id="qrBtn" title="Mã QR" aria-label="Mã QR">
       <svg class="icon icon-lg"><use href="#i-qr"/></svg>
@@ -816,6 +880,7 @@
     </div>
   </div>
 
+  <!-- SPLASH -->
   <div class="splash" id="splash">
     <div class="splash-logo">LT</div>
     <div class="splash-text">Lê Trung</div>
@@ -825,6 +890,7 @@
     </div>
   </div>
 
+  <!-- BIO CARD -->
   <div class="bio-card" id="bioCard">
     <div class="avatar-section">
       <div class="avatar-wrapper">
@@ -833,6 +899,7 @@
       </div>
       <h1 class="bio-name">
         Lê Trung
+        <!-- TICK XÁC MINH ĐỘC QUYỀN -->
         <span class="verified" title="Đã xác minh">
           <svg class="icon"><use href="#i-check"/></svg>
         </span>
@@ -843,6 +910,7 @@
       </div>
     </div>
 
+    <!-- INFO GRID -->
     <div class="info-grid">
       <div class="info-card">
         <div class="info-label">
@@ -870,6 +938,7 @@
       </div>
     </div>
 
+    <!-- SOCIALS -->
     <div class="socials">
       <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook">
         <svg class="icon icon-lg"><use href="#i-facebook"/></svg>
@@ -894,6 +963,7 @@
       </button>
     </div>
 
+    <!-- MUSIC PLAYER -->
     <div class="music-player">
       <div class="music-info" id="musicInfo">
         <svg class="icon"><use href="#i-disc"/></svg>
@@ -917,6 +987,7 @@
       <div class="visualizer" id="visualizer"></div>
     </div>
 
+    <!-- THEME SWATCHES -->
     <div class="theme-bar">
       <div class="theme-swatch active" data-accent="purple" title="Tím"></div>
       <div class="theme-swatch" data-accent="blue" title="Xanh"></div>
@@ -926,6 +997,7 @@
     </div>
   </div>
 
+  <!-- MODALS -->
   <div class="modal" id="qrModal">
     <div class="modal-box">
       <button class="modal-close" id="qrModalClose" aria-label="Đóng">
@@ -971,6 +1043,7 @@
     </div>
   </div>
 
+  <!-- TOAST -->
   <div class="toast" id="toast">
     <svg class="icon"><use href="#i-check"/></svg>
     <span id="toastText">Đã copy!</span>
@@ -989,14 +1062,14 @@
     }
 
     // =========================================
-    // TẠO AUDIO NGAY TỪ ĐẦU — load sớm
+    // KHỞI TẠO AUDIO SỚM (ĐỂ AUTOPLAY KHÔNG BỊ CHẶN)
     // =========================================
     const bgAudio = new Audio();
     bgAudio.loop = true;
     bgAudio.volume = 1.0;
     bgAudio.preload = 'auto';
     bgAudio.src = 'https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3';
-    bgAudio.load();  // ← Preload ngay, không chờ user click
+    bgAudio.load(); 
     window.__bioAudio = bgAudio;
 
     // =========================================
@@ -1070,7 +1143,7 @@
     })();
 
     // =========================================
-    // MUSIC PLAYER — KHÔNG Web Audio API
+    // MUSIC PLAYER
     // =========================================
     (function() {
       const audio = bgAudio;
@@ -1108,6 +1181,7 @@
         return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
       }
 
+      // Cập nhật giao diện Play/Pause
       function updateIcon() {
         if (audio.paused) {
           playIcon.setAttribute('href', '#i-play');
@@ -1162,29 +1236,32 @@
     })();
 
     // =========================================
-    // SPLASH — autoplay: gọi play() NGAY, KHÔNG await
+    // SPLASH — AUTOPLAY (ĐÃ FIX ICON)
     // =========================================
     $('#splash').addEventListener('click', function() {
       // Ẩn splash, hiện card
       $('#splash').classList.add('hidden');
       $('#bioCard').classList.add('show');
 
-      // ⚠️ QUAN TRỌNG: Gọi play() ĐỒNG BỘ, ngay trong click handler
-      // Không await, không setTimeout, không promise delay
+      // Gọi play() ngay lập tức
       const playPromise = bgAudio.play();
 
-      // Xử lý promise sau đó (không ảnh hưởng autoplay)
+      // ĐỔI ICON SANG PAUSE NGAY LẬP TỨC (Không chờ event)
+      $('#playIcon').setAttribute('href', '#i-pause');
+      $('#musicInfo').classList.add('playing');
+
+      // Xử lý bất đồng bộ
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          console.log('✅ Nhạc đang phát');
-        }).catch(err => {
-          console.warn('❌ Autoplay bị chặn:', err.name);
-          // Fallback: hiện toast nhắc user
+        playPromise.catch(err => {
+          console.warn('Autoplay bị chặn:', err.name);
+          // Nếu bị chặn -> trả icon về Play
+          $('#playIcon').setAttribute('href', '#i-play');
+          $('#musicInfo').classList.remove('playing');
           toast('Nhấn ▶ để phát nhạc');
         });
       }
 
-      // Typewriter chạy sau 400ms (không ảnh hưởng audio)
+      // Typewriter chạy
       setTimeout(() => window.startType?.(), 400);
     });
 
@@ -1228,9 +1305,7 @@
       });
     })();
 
-    // =========================================
     // PWA
-    // =========================================
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
