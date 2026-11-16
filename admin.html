@@ -509,28 +509,19 @@
       const data = snap.val();
 
       if (!data) {
-        // /apps trống hoặc không tồn tại
         apps = [];
-
         if (!firebaseReady) {
           firebaseReady = true;
-
-          // Kiểm tra flag đã seed chưa
           let hasSeeded = false;
           try {
             const seededSnap = await metaRef.child('seeded').get();
             hasSeeded = seededSnap.exists() && seededSnap.val() === true;
-          } catch (e) {
-            console.warn('Không đọc được meta/seeded:', e);
-          }
-
+          } catch (e) {}
           if (!hasSeeded) {
-            console.log('🌱 Lần đầu → seed app mẫu');
             setSyncStatus('ok', 'Lần đầu • Tạo app mẫu...');
             await seedDefaults();
-            return; // seedDefaults sẽ trigger listener lại
+            return; 
           } else {
-            console.log('📭 DB trống (đã seed trước đó, user tự xoá)');
             setSyncStatus('ok', 'Đã kết nối • 0 app');
           }
         } else {
@@ -541,7 +532,6 @@
         firebaseReady = true;
         setSyncStatus('ok', `Đã kết nối • ${apps.length} app`);
       }
-
       render();
     }, err => {
       console.error('Firebase error:', err);
@@ -555,7 +545,6 @@
       return Object.keys(data).map(k => data[k]).filter(Boolean);
     }
 
-    // Lưu app lên Firebase
     async function saveApps() {
       if (isSaving) return;
       isSaving = true;
@@ -564,31 +553,18 @@
 
       try {
         setSyncStatus('syncing', 'Đang lưu...');
-        console.log('📤 Saving to Firebase:', JSON.stringify(apps));
-
         if (apps.length === 0) {
-          // Mảng rỗng → xoá hẳn node /apps
           await appsRef.remove();
-          console.log('🗑️ Removed /apps (empty list)');
         } else {
           await appsRef.set(apps);
-          console.log('✅ Set /apps OK');
         }
-
         setSyncStatus('ok', `Đã lưu • ${apps.length} app`);
         toast('Đã lưu lên Firebase');
       } catch (err) {
         console.error('❌ Save error:', err);
         setSyncStatus('error', 'Lỗi lưu: ' + err.code);
         toast('LỖI LƯU: ' + err.message, true);
-        alert(
-          'KHÔNG LƯU ĐƯỢC LÊN FIREBASE!\n\n' +
-          'Lỗi: ' + err.code + '\n' +
-          'Chi tiết: ' + err.message + '\n\n' +
-          '→ Vào Firebase Console → Realtime Database → Rules\n' +
-          '→ Đặt: { "rules": { ".read": true, ".write": true } }\n' +
-          '→ Bấm Publish'
-        );
+        alert('KHÔNG LƯU ĐƯỢC LÊN FIREBASE!\n\nLỗi: ' + err.code + '\n' + err.message);
       } finally {
         isSaving = false;
         if (saveBtn) saveBtn.disabled = false;
@@ -603,11 +579,10 @@
 
     async function seedDefaults() {
       try {
-        apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
+        const now = new Date().toISOString();
+        apps = JSON.parse(JSON.stringify(DEFAULT_APPS)).map(a => ({...a, createdAt: now}));
         await appsRef.set(apps);
-        // Đánh dấu đã seed → lần sau không seed nữa
         await metaRef.child('seeded').set(true);
-        console.log('🌱 Seeded defaults + set meta/seeded=true');
       } catch (err) {
         console.error('Seed error:', err);
         toast('Lỗi seed app mẫu: ' + err.message, true);
@@ -675,8 +650,8 @@
         const idx = +del.dataset.del;
         if (confirm(`Xóa app "${apps[idx].name}"?`)) {
           apps.splice(idx, 1);
-          render();       // render ngay để UI phản hồi nhanh
-          await saveApps(); // rồi lưu lên Firebase
+          render();       
+          await saveApps();
         }
       }
     });
@@ -736,6 +711,9 @@
     $('#appForm').addEventListener('submit', async e => {
       e.preventDefault();
       const index = +$('#f-index').value;
+      const now = new Date().toISOString();
+      const oldApp = index !== -1 ? apps[index] : null;
+      
       const newApp = {
         name: $('#f-name').value.trim(),
         slug: $('#f-slug').value.trim().replace(/^\/+/, ''),
@@ -747,6 +725,7 @@
         desc: $('#f-desc').value.trim(),
         features: $('#f-features').value.split('\n').map(s => s.trim()).filter(Boolean),
         isNew: $('#f-isNew').checked,
+        createdAt: oldApp ? (oldApp.createdAt || now) : now
       };
 
       if (!newApp.name || !newApp.slug || !newApp.url) {
