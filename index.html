@@ -426,7 +426,6 @@
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
 
-    /* FOOTER BẢN QUYỀN */
     .copyright {
       position: relative; z-index: 10;
       margin-top: 1.5rem; text-align: center;
@@ -626,7 +625,7 @@
 
     <!-- FOOTER BẢN QUYỀN -->
     <footer class="copyright">
-      © 2026 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.<br>
+      © 2025 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.<br>
     </footer>
   </div>
 
@@ -666,7 +665,7 @@
     <span id="toastText">Đã copy!</span>
   </div>
 
-  <!-- FIREBASE SDK (compat) -->
+  <!-- FIREBASE SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
@@ -972,17 +971,11 @@
       renderApps();
     });
 
-    // ================== FIREBASE REALTIME LISTENER ==================
-    // Cấu trúc dữ liệu trên Firebase: /apps là 1 object { key: appObject }
+    // ================== FIREBASE LISTENER ==================
     function normalizeApps(data) {
       if (!data) return [];
       if (Array.isArray(data)) return data.filter(Boolean);
-      // object -> array, sắp xếp theo order nếu có
-      return Object.keys(data).map(k => {
-        const v = data[k];
-        if (!v || typeof v !== 'object') return null;
-        return v;
-      }).filter(Boolean);
+      return Object.keys(data).map(k => data[k]).filter(Boolean);
     }
 
     appsRef.on('value', (snap) => {
@@ -990,7 +983,6 @@
       APPS = normalizeApps(data);
       console.log('Firebase load apps:', APPS.length);
       renderApps();
-      // Nếu đang ở detail page, re-render lại nếu slug đổi data
       const path = location.pathname;
       if (path && path !== '/' && path !== '/index.html') {
         const slug = path.replace(/^\//, '').split('/')[0];
@@ -1003,13 +995,11 @@
       countEl.textContent = 'lỗi';
     });
 
-    // ================== INITIAL ROUTE ==================
     (function handleInitialRoute() {
       const path = location.pathname;
       if (path && path !== '/' && path !== '/index.html') {
         splash.classList.add('hidden');
         bioCard.classList.add('show');
-        // Sẽ render detail sau khi Firebase load xong
       }
     })();
   </script>
