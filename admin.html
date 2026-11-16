@@ -15,7 +15,6 @@
       fill: none; stroke: currentColor; stroke-width: 1.8;
       stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    /* ===== LOGIN ===== */
     .login-screen {
       position: fixed; inset: 0; z-index: 5000;
       background: linear-gradient(135deg, #fef9f3, #f0f4f8);
@@ -80,7 +79,6 @@
     }
     .login-copyright strong { color: #3b82f6; font-weight: 700; }
 
-    /* ===== ADMIN ===== */
     .wrap { max-width: 900px; margin: 0 auto; display: none; }
     .wrap.active { display: block; }
     header {
@@ -194,11 +192,15 @@
     .toast.error { background: #dc2626; }
     .toast .icon { width: 1rem; height: 1rem; }
 
-    .json-output {
-      background: #1a1d23; color: #f5f7fa; font-family: 'Courier New', monospace;
-      font-size: 0.75rem; padding: 1rem; border-radius: 12px; overflow-x: auto;
-      max-height: 300px; white-space: pre; line-height: 1.5;
+    .sync-status {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.72rem; font-weight: 600; color: #10b981;
+      background: #ecfdf5; padding: 0.3rem 0.7rem; border-radius: 999px;
     }
+    .sync-status.syncing { color: #f59e0b; background: #fffbeb; }
+    .sync-status.error { color: #dc2626; background: #fef2f2; }
+    .sync-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     @media (max-width: 520px) {
       header h1 { font-size: 1.3rem; }
@@ -213,7 +215,6 @@
 </head>
 <body>
 
-  <!-- SVG SPRITE -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
@@ -228,10 +229,9 @@
     <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
-    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
     <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
   </svg>
 
   <!-- LOGIN SCREEN -->
@@ -280,10 +280,10 @@
         Admin <span>Kho App</span>
       </h1>
       <div class="header-actions">
-        <button class="btn btn-ghost" id="resetBtn">
-          <svg class="icon"><use href="#i-refresh"/></svg>
-          Khôi phục
-        </button>
+        <span class="sync-status syncing" id="syncStatus">
+          <span class="dot"></span>
+          <span id="syncText">Đang kết nối Firebase...</span>
+        </span>
         <button class="btn btn-primary" id="addBtn">
           <svg class="icon"><use href="#i-plus"/></svg>
           Thêm app
@@ -381,41 +381,18 @@
           </button>
           <button type="submit" class="btn btn-primary">
             <svg class="icon"><use href="#i-save"/></svg>
-            Lưu
+            Lưu lên Firebase
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal JSON export -->
-  <div class="modal" id="jsonModal">
-    <div class="modal-box">
-      <button class="close-x" id="closeJsonModal" aria-label="Đóng">
-        <svg class="icon"><use href="#i-close"/></svg>
-      </button>
-      <h2>
-        <svg class="icon"><use href="#i-code"/></svg>
-        <span>JSON để dán vào code</span>
-      </h2>
-      <p style="font-size:0.8rem;color:#6b7280;margin-bottom:0.75rem;">
-        Copy đoạn dưới, thay vào biến <code>DEFAULT_APPS</code> trong <code>index.html</code>.
-      </p>
-      <pre class="json-output" id="jsonOutput"></pre>
-      <div class="modal-actions">
-        <button class="btn btn-ghost" id="downloadJsonBtn">
-          <svg class="icon"><use href="#i-download"/></svg>
-          Tải .json
-        </button>
-        <button class="btn btn-primary" id="copyJsonBtn">
-          <svg class="icon"><use href="#i-copy"/></svg>
-          Copy
-        </button>
-      </div>
-    </div>
-  </div>
-
   <div class="toast" id="toast"></div>
+
+  <!-- FIREBASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
   <script>
     // ============================================
@@ -457,7 +434,6 @@
         }));
         $('#loginError').classList.remove('show');
         showAdmin();
-        render();
         toast('Đăng nhập thành công');
       } else {
         $('#loginError').classList.add('show');
@@ -489,27 +465,20 @@
     if (isLoggedIn()) showAdmin(); else showLogin();
 
     // ============================================
+    // FIREBASE INIT
+    // ============================================
+    const firebaseConfig = {
+      databaseURL: "https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const appsRef = db.ref('apps');
+
+    // ============================================
     // QUẢN LÝ APP
     // ============================================
-    const STORAGE_KEY = 'bio_apps';
-
-    const DEFAULT_APPS = [
-      { name: 'Facebook', version: 'v400.0', size: '250 MB', type: 'ipa', url: 'https://example.com/files/facebook.ipa', isNew: true, icon: '#logo-facebook', slug: 'facebook', desc: 'Mạng xã hội phổ biến nhất thế giới.', features: ['Bảng tin & story', 'Messenger tích hợp', 'Live stream', 'Marketplace', 'Bảo mật 2 lớp'] },
-      { name: 'TikTok', version: 'v30.5', size: '180 MB', type: 'tipa', url: 'https://example.com/files/tiktok.tipa', icon: '#logo-tiktok', slug: 'tiktok', desc: 'Nền tảng video ngắn hàng đầu.', features: ['Video ngắn', 'Hiệu ứng độc đáo', 'Âm nhạc bản quyền', 'Live stream'] },
-      { name: 'Spotify Premium', version: 'v8.9', size: '80 MB', type: 'apk', url: 'https://example.com/files/spotify.apk', isNew: true, icon: '#logo-spotify', slug: 'spotify', desc: 'Nghe nhạc không quảng cáo.', features: ['Không quảng cáo', 'Tải offline', 'Chất lượng cao'] },
-    ];
-
-    function loadApps() {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const p = JSON.parse(stored);
-          if (Array.isArray(p)) return p;
-        }
-      } catch (e) {}
-      return JSON.parse(JSON.stringify(DEFAULT_APPS));
-    }
-    function saveApps(apps) { localStorage.setItem(STORAGE_KEY, JSON.stringify(apps)); }
+    let apps = [];
+    let firebaseReady = false;
 
     function toast(msg, isError) {
       const t = $('#toast');
@@ -519,7 +488,66 @@
       t._timer = setTimeout(() => t.classList.remove('show'), 2200);
     }
 
-    let apps = loadApps();
+    function setSyncStatus(state, text) {
+      const el = $('#syncStatus');
+      el.className = 'sync-status ' + (state === 'ok' ? '' : state);
+      $('#syncText').textContent = text;
+    }
+
+    // Load realtime từ Firebase
+    appsRef.on('value', snap => {
+      const data = snap.val();
+      if (!data) {
+        apps = [];
+        // Nếu Firebase trống -> seed default
+        if (!firebaseReady) {
+          firebaseReady = true;
+          setSyncStatus('ok', 'Đã kết nối • Firebase trống');
+          seedDefaults();
+        }
+      } else {
+        apps = normalizeApps(data);
+        firebaseReady = true;
+        setSyncStatus('ok', `Đã kết nối • ${apps.length} app`);
+      }
+      render();
+    }, err => {
+      console.error('Firebase error:', err);
+      setSyncStatus('error', 'Lỗi kết nối Firebase');
+      toast('Không kết nối được Firebase: ' + err.message, true);
+    });
+
+    function normalizeApps(data) {
+      if (!data) return [];
+      if (Array.isArray(data)) return data.filter(Boolean);
+      return Object.keys(data).map(k => data[k]).filter(Boolean);
+    }
+
+    // Ghi toàn bộ mảng lên Firebase
+    async function saveApps() {
+      try {
+        setSyncStatus('syncing', 'Đang lưu...');
+        // Chuyển array -> object key 0,1,2... để Firebase không bị mất thứ tự
+        await appsRef.set(apps);
+        setSyncStatus('ok', `Đã lưu • ${apps.length} app`);
+        toast('Đã lưu lên Firebase');
+      } catch (err) {
+        console.error(err);
+        setSyncStatus('error', 'Lỗi lưu Firebase');
+        toast('Lỗi lưu: ' + err.message, true);
+      }
+    }
+
+    const DEFAULT_APPS = [
+      { name: 'Facebook', version: 'v400.0', size: '250 MB', type: 'ipa', url: 'https://example.com/files/facebook.ipa', isNew: true, icon: '#logo-facebook', slug: 'facebook', desc: 'Mạng xã hội phổ biến nhất thế giới.', features: ['Bảng tin & story', 'Messenger tích hợp', 'Live stream', 'Marketplace', 'Bảo mật 2 lớp'] },
+      { name: 'TikTok', version: 'v30.5', size: '180 MB', type: 'tipa', url: 'https://example.com/files/tiktok.tipa', icon: '#logo-tiktok', slug: 'tiktok', desc: 'Nền tảng video ngắn hàng đầu.', features: ['Video ngắn', 'Hiệu ứng độc đáo', 'Âm nhạc bản quyền', 'Live stream'] },
+      { name: 'Spotify Premium', version: 'v8.9', size: '80 MB', type: 'apk', url: 'https://example.com/files/spotify.apk', isNew: true, icon: '#logo-spotify', slug: 'spotify', desc: 'Nghe nhạc không quảng cáo.', features: ['Không quảng cáo', 'Tải offline', 'Chất lượng cao'] },
+    ];
+
+    async function seedDefaults() {
+      apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
+      await saveApps();
+    }
 
     function iconHtml(icon) {
       if (!icon) return '<svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>';
@@ -576,9 +604,7 @@
       if (del) {
         if (confirm('Xóa app này?')) {
           apps.splice(+del.dataset.del, 1);
-          saveApps(apps);
-          render();
-          toast('Đã xóa');
+          saveApps().then(render);
         }
       }
     });
@@ -592,7 +618,6 @@
       $('#f-index').value = index;
       $('#f-name').value = app.name || '';
       $('#f-slug').value = app.slug || '';
-      $('#f-slug').dataset.touched = '1';
       $('#f-version').value = app.version || '';
       $('#f-size').value = app.size || '';
       $('#f-type').value = app.type || 'ipa';
@@ -604,40 +629,49 @@
       updatePreview();
       $('#editModal').classList.add('active');
     }
-    function closeEdit() { $('#editModal').classList.remove('active'); }
 
-    $('#f-name').addEventListener('input', e => {
-      const slug = $('#f-slug');
-      if (!slug.dataset.touched || !slug.value) {
-        slug.value = e.target.value.toLowerCase()
-          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-          .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-          .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      }
-      updatePreview();
-    });
-    $('#f-slug').addEventListener('input', e => { e.target.dataset.touched = '1'; });
-    ['#f-name','#f-version','#f-size','#f-type','#f-icon'].forEach(s => {
-      $(s).addEventListener('input', updatePreview);
-      $(s).addEventListener('change', updatePreview);
-    });
+    function closeModal() {
+      $('#editModal').classList.remove('active');
+    }
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#cancelBtn').addEventListener('click', closeModal);
+    $('#editModal').addEventListener('click', e => { if (e.target.id === 'editModal') closeModal(); });
+
+    $('#addBtn').addEventListener('click', () => openEdit(-1));
 
     function updatePreview() {
-      const name = $('#f-name').value || 'Tên app';
-      const version = $('#f-version').value || 'v1.0';
-      const type = $('#f-type').value;
-      const icon = $('#f-icon').value;
-      $('#previewIcon').innerHTML = iconHtml(icon);
-      $('#previewName').textContent = name;
-      $('#previewMeta').textContent = `${version} • ${type.toUpperCase()}`;
+      $('#previewIcon').innerHTML = iconHtml($('#f-icon').value.trim());
+      $('#previewName').textContent = $('#f-name').value || 'Tên app';
+      $('#previewMeta').textContent = ($('#f-version').value || 'v1.0') + ' • ' + $('#f-type').value.toUpperCase();
     }
 
-    $('#appForm').addEventListener('submit', e => {
+    ['#f-name','#f-version','#f-type','#f-icon'].forEach(sel => {
+      $(sel).addEventListener('input', updatePreview);
+      $(sel).addEventListener('change', updatePreview);
+    });
+
+    // Auto slug từ tên
+    $('#f-name').addEventListener('input', e => {
+      const slugEl = $('#f-slug');
+      if (!slugEl.dataset.touched) {
+        slugEl.value = e.target.value
+          .toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+    });
+    $('#f-slug').addEventListener('input', e => {
+      e.target.dataset.touched = '1';
+    });
+
+    $('#appForm').addEventListener('submit', async e => {
       e.preventDefault();
-      const idx = +$('#f-index').value;
+      const index = +$('#f-index').value;
       const newApp = {
         name: $('#f-name').value.trim(),
-        slug: $('#f-slug').value.trim(),
+        slug: $('#f-slug').value.trim().replace(/^\/+/, ''),
         version: $('#f-version').value.trim(),
         size: $('#f-size').value.trim(),
         type: $('#f-type').value,
@@ -645,57 +679,37 @@
         icon: $('#f-icon').value.trim(),
         desc: $('#f-desc').value.trim(),
         features: $('#f-features').value.split('\n').map(s => s.trim()).filter(Boolean),
-        isNew: $('#f-isNew').checked
+        isNew: $('#f-isNew').checked,
       };
+
       if (!newApp.name || !newApp.slug || !newApp.url) {
-        toast('Điền đủ Tên, Slug, Link tải', true); return;
+        toast('Vui lòng nhập đủ Tên, Slug và Link tải', true);
+        return;
       }
-      const dup = apps.findIndex((a, i) => a.slug === newApp.slug && i !== idx);
-      if (dup !== -1) { toast('Slug đã tồn tại', true); return; }
 
-      if (idx === -1) apps.push(newApp);
-      else apps[idx] = newApp;
-      saveApps(apps);
-      closeEdit();
+      // Check slug trùng
+      const dup = apps.findIndex((a, i) => a.slug === newApp.slug && i !== index);
+      if (dup !== -1) {
+        toast('Slug đã tồn tại, chọn slug khác', true);
+        return;
+      }
+
+      if (index === -1) apps.push(newApp);
+      else apps[index] = newApp;
+
+      await saveApps();
       render();
-      toast(idx === -1 ? 'Đã thêm app' : 'Đã lưu');
+      closeModal();
     });
 
-    $('#addBtn').addEventListener('click', () => openEdit(-1));
-    $('#closeModal').addEventListener('click', closeEdit);
-    $('#cancelBtn').addEventListener('click', closeEdit);
-    $('#editModal').addEventListener('click', e => { if (e.target === $('#editModal')) closeEdit(); });
-
-    $('#resetBtn').addEventListener('click', () => {
-      if (confirm('Khôi phục danh sách mặc định? Mọi thay đổi sẽ mất.')) {
-        localStorage.removeItem(STORAGE_KEY);
-        apps = loadApps();
-        render();
-        toast('Đã khôi phục');
+    // ============================================
+    // ĐĂNG XUẤT KHI MẤT SESSION
+    // ============================================
+    setInterval(() => {
+      if (!isLoggedIn() && !$('#loginScreen').classList.contains('hidden') === false) {
+        // session hết hạn
       }
-    });
-
-    const exportBtn = document.createElement('button');
-    exportBtn.className = 'btn btn-ghost';
-    exportBtn.innerHTML = '<svg class="icon"><use href="#i-code"/></svg> Xuất JSON';
-    exportBtn.addEventListener('click', () => {
-      $('#jsonOutput').textContent = 'const DEFAULT_APPS = ' + JSON.stringify(apps, null, 2) + ';';
-      $('#jsonModal').classList.add('active');
-    });
-    document.querySelector('.header-actions').insertBefore(exportBtn, document.querySelector('#logoutBtn'));
-
-    $('#closeJsonModal').addEventListener('click', () => $('#jsonModal').classList.remove('active'));
-    $('#jsonModal').addEventListener('click', e => { if (e.target === $('#jsonModal')) $('#jsonModal').classList.remove('active'); });
-    $('#copyJsonBtn').addEventListener('click', () => {
-      navigator.clipboard.writeText($('#jsonOutput').textContent).then(() => toast('Đã copy!'));
-    });
-    $('#downloadJsonBtn').addEventListener('click', () => {
-      const blob = new Blob([$('#jsonOutput').textContent], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'apps.json';
-      a.click();
-    });
+    }, 60000);
   </script>
 </body>
 </html>
