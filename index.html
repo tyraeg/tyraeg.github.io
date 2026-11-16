@@ -60,10 +60,8 @@
       --ink-muted: #6b7280;
       --border: #2a2e38;
       --border-light: #232730;
-      
       --accent-soft: #1e293b;
       --accent-text: #60a5fa;
-      
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
       --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -109,12 +107,14 @@
       position: fixed; top: 1.2rem; left: 1.2rem; right: 1.2rem;
       display: flex; justify-content: space-between; align-items: center;
       z-index: 1000;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    
-    .top-controls-right { 
-      display: flex; align-items: center; gap: 0.5rem; 
+    .top-controls.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
-
+    .top-controls-right { display: flex; align-items: center; gap: 0.5rem; }
     .control-btn {
       width: 2.6rem; height: 2.6rem;
       background: var(--surface); border: 1px solid var(--border);
@@ -128,6 +128,7 @@
     }
     .control-btn:active { transform: translateY(0) scale(0.96); }
 
+    /* SPLASH */
     .splash {
       position: fixed; inset: 0;
       background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
@@ -135,7 +136,6 @@
       z-index: 9999; cursor: pointer; transition: opacity 0.6s, visibility 0.6s;
     }
     .splash.hidden { opacity: 0; visibility: hidden; }
-
     .splash-logo {
       width: 80px; height: 80px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
@@ -147,7 +147,6 @@
       0%, 100% { transform: scale(1); box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25); }
       50% { transform: scale(1.05); box-shadow: 0 20px 50px rgba(59, 130, 246, 0.4); }
     }
-
     .splash-text { font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: -0.5px; }
     .splash-sub {
       font-size: 0.85rem; color: var(--ink-sub); font-weight: 500;
@@ -156,6 +155,7 @@
     }
     @keyframes bounceHint { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 
+    /* BIO CARD */
     .bio-card {
       position: relative; z-index: 10;
       background: var(--surface);
@@ -168,411 +168,277 @@
       transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
     .bio-card.show { opacity: 1; transform: translateY(0); }
+    .bio-card.hidden { display: none; }
 
-    .avatar-section {
-      display: flex; flex-direction: column; align-items: center;
-      margin-bottom: 1.5rem; text-align: center;
-    }
-
+    .avatar-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; text-align: center; }
     .avatar-wrapper {
-      position: relative; width: 120px; height: 120px; margin-bottom: 1rem;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      padding: 3px;
-      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
-      transition: transform 0.3s ease;
+      position: relative; width: 120px; height: 120px; margin-bottom: 1rem; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); padding: 3px;
+      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2); transition: transform 0.3s ease;
     }
     .avatar-wrapper:hover { transform: scale(1.04); }
-
     .avatar {
       width: 100%; height: 100%; border-radius: 50%;
       background: url('https://cdn.upanhlaylink.com/i/ZxM7M0wt.png') center/cover no-repeat;
       border: 3px solid var(--surface);
     }
-
     .online-badge {
-      position: absolute; bottom: 4px; right: 4px;
-      width: 20px; height: 20px; background: var(--success);
-      border: 3px solid var(--surface); border-radius: 50%;
+      position: absolute; bottom: 4px; right: 4px; width: 20px; height: 20px;
+      background: var(--success); border: 3px solid var(--surface); border-radius: 50%;
       box-shadow: 0 0 0 2px var(--success-soft);
     }
-
     .bio-name {
-      font-size: 1.8rem; font-weight: 700; letter-spacing: -0.8px;
-      margin-bottom: 0.4rem; display: flex; align-items: center;
-      justify-content: center; gap: 0.35em; color: var(--ink);
+      font-size: 1.8rem; font-weight: 700; letter-spacing: -0.8px; margin-bottom: 0.4rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.35em; color: var(--ink);
     }
-
     .verified {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 1.4rem; height: 1.4rem; background: #1877F2;
-      border-radius: 50%; color: #ffffff; flex-shrink: 0; cursor: help;
+      display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem;
+      background: #1877F2; border-radius: 50%; color: #ffffff; flex-shrink: 0; cursor: help;
     }
     .verified .icon { width: 0.8rem; height: 0.8rem; stroke-width: 3.5; margin-top: -1px; }
-
     .bio-tagline {
-      font-size: 0.9rem; font-weight: 500;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.35rem 0.9rem;
-      background: var(--accent-soft); border-radius: 999px;
+      font-size: 0.9rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.9rem; background: var(--accent-soft); border-radius: 999px;
       color: var(--accent-text); margin-top: 0.4rem;
     }
     .bio-tagline .icon { font-size: 0.85em; }
 
-    .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1.75rem 0; }
-
+    .info-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.75rem; margin: 1.75rem 0; }
     .info-card {
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-md); padding: 1rem 1.1rem;
-      transition: all 0.2s ease;
-      display: flex; flex-direction: column; gap: 0.35rem;
+      background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-md);
+      padding: 1rem 1.1rem; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 0.35rem;
     }
     .info-card:hover { border-color: var(--border); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
     .info-card.wide { grid-column: span 2; }
-
-    .info-label {
-      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.5px; color: var(--ink-muted);
-      display: flex; align-items: center; gap: 0.4rem;
-    }
+    .info-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-muted); display: flex; align-items: center; gap: 0.4rem; }
     .info-label .icon { font-size: 0.9em; color: var(--accent-1); }
-
-    .info-value {
-      font-size: 0.95rem; font-weight: 600; color: var(--ink);
-      word-break: break-word; line-height: 1.4;
-    }
+    .info-value { font-size: 0.95rem; font-weight: 600; color: var(--ink); word-break: break-word; line-height: 1.4; }
     .info-value a { color: var(--accent-1); text-decoration: none; font-weight: 600; transition: color 0.2s; }
     .info-value a:hover { color: var(--accent-text); text-decoration: underline; }
-
     #liveClock { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent-1); }
 
     .quote-card {
-      background: var(--accent-soft); border-color: transparent;
-      font-size: 0.88rem; font-style: italic; font-weight: 500;
-      line-height: 1.6; color: var(--accent-text);
-      padding: 1.1rem 1.3rem; position: relative;
+      background: var(--accent-soft); border-color: transparent; font-size: 0.88rem; font-style: italic;
+      font-weight: 500; line-height: 1.6; color: var(--accent-text); padding: 1.1rem 1.3rem; position: relative;
     }
-    .quote-card::before {
-      content: '"'; position: absolute; top: 0.2rem; left: 0.6rem;
-      font-size: 2.5rem; line-height: 1; color: var(--accent-2);
-      opacity: 0.4; font-family: Georgia, serif;
-    }
+    .quote-card::before { content: '"'; position: absolute; top: 0.2rem; left: 0.6rem; font-size: 2.5rem; line-height: 1; color: var(--accent-2); opacity: 0.4; font-family: Georgia, serif; }
 
     .socials { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin: 1.5rem 0; }
-
     .social-btn {
-      width: 2.9rem; height: 2.9rem;
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-md); color: var(--ink); cursor: pointer;
-      font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
-      text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
-      box-shadow: var(--shadow-sm);
+      width: 2.9rem; height: 2.9rem; background: var(--surface); border: 1px solid var(--border-light);
+      border-radius: var(--radius-md); color: var(--ink); cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center; text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.2,0.9,0.3,1); box-shadow: var(--shadow-sm);
     }
-    .social-btn:hover {
-      background: var(--accent-1); color: #fff; border-color: var(--accent-1);
-      transform: translateY(-3px) scale(1.05); box-shadow: var(--shadow-accent);
-    }
+    .social-btn:hover { background: var(--accent-1); color: #fff; border-color: var(--accent-1); transform: translateY(-3px) scale(1.05); box-shadow: var(--shadow-accent); }
     .social-btn:active { transform: translateY(-1px) scale(0.98); }
 
-    /* MUSIC PLAYER */
     .music-player {
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-md); padding: 1rem;
-      display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem;
-      box-shadow: var(--shadow-sm);
+      background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-md);
+      padding: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-sm);
     }
-
-    .music-info {
-      display: flex; align-items: center; gap: 0.6rem;
-      font-size: 0.85rem; font-weight: 600; color: var(--ink);
-      flex: 1 1 auto; min-width: 130px;
-    }
-    .music-info .icon {
-      color: var(--accent-1); font-size: 1.1rem;
-      animation: spin 3s linear infinite; animation-play-state: paused;
-    }
+    .music-info { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 600; color: var(--ink); flex: 1 1 auto; min-width: 130px; }
+    .music-info .icon { color: var(--accent-1); font-size: 1.1rem; animation: spin 3s linear infinite; animation-play-state: paused; }
     .music-info.playing .icon { animation-play-state: running; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     #trackName { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
     .music-controls { display: flex; gap: 0.4rem; }
-
     .music-btn {
-      width: 2.3rem; height: 2.3rem;
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: 50%; color: var(--ink); cursor: pointer;
-      font-size: 0.85rem; display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s ease;
+      width: 2.3rem; height: 2.3rem; background: var(--surface); border: 1px solid var(--border-light);
+      border-radius: 50%; color: var(--ink); cursor: pointer; font-size: 0.85rem;
+      display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
     }
     .music-btn:hover { background: var(--surface-hover); border-color: var(--border); transform: scale(1.05); }
     .music-btn:active { transform: scale(0.95); }
-
-    #playPauseBtn {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      color: #fff; border: none;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-    #playPauseBtn:hover { box-shadow: 0 6px 16px rgba(59, 130, 246, 0.45); }
-
+    #playPauseBtn { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; border: none; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+    #playPauseBtn:hover { box-shadow: 0 6px 16px rgba(59,130,246,0.45); }
     .progress-wrapper { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 100%; order: 3; }
-    .time-display {
-      font-size: 0.7rem; font-weight: 600; color: var(--ink-sub);
-      font-variant-numeric: tabular-nums; min-width: 32px; text-align: center;
-    }
-    .progress-container {
-      flex: 1; height: 4px; background: var(--border);
-      border-radius: 4px; cursor: pointer; position: relative;
-      transition: height 0.15s;
-    }
+    .time-display { font-size: 0.7rem; font-weight: 600; color: var(--ink-sub); font-variant-numeric: tabular-nums; min-width: 32px; text-align: center; }
+    .progress-container { flex: 1; height: 4px; background: var(--border); border-radius: 4px; cursor: pointer; position: relative; transition: height 0.15s; }
     .progress-container:hover { height: 6px; }
-    .progress-bar {
-      height: 100%; width: 0%;
-      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-      border-radius: 4px; pointer-events: none;
-    }
-
-    .visualizer {
-      width: 100%; height: 24px;
-      display: flex; align-items: flex-end; justify-content: center;
-      gap: 3px; order: 4; opacity: 0.7;
-    }
-    .vis-bar {
-      width: 3px; height: 5%;
-      background: linear-gradient(to top, var(--accent-1), var(--accent-2));
-      border-radius: 2px; transition: height 0.1s;
-    }
-
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); border-radius: 4px; pointer-events: none; }
+    .visualizer { width: 100%; height: 24px; display: flex; align-items: flex-end; justify-content: center; gap: 3px; order: 4; opacity: 0.7; }
+    .vis-bar { width: 3px; height: 5%; background: linear-gradient(to top, var(--accent-1), var(--accent-2)); border-radius: 2px; transition: height 0.1s; }
     @media (min-width: 521px) {
       .music-info { flex: 0 1 auto; }
       .progress-wrapper { flex: 1 1 auto; order: 0; min-width: 100px; }
       .visualizer { order: 0; width: 55px; flex-shrink: 0; }
     }
 
-    /* =========================================
-       KHO IPA - TIPA - APK - DEB (DƯỚI CÙNG)
-       ========================================= */
-    .app-store {
-      margin-top: 1.75rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border-light);
-    }
-
-    .app-store-header {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 0.5rem; margin-bottom: 0.75rem;
-    }
-
-    .app-store-title {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 1rem; font-weight: 700; color: var(--ink);
-      letter-spacing: -0.3px;
-    }
+    /* APP STORE */
+    .app-store { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); }
+    .app-store-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .app-store-title { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; }
     .app-store-title .icon { color: var(--accent-1); font-size: 1.15em; }
-
-    .app-store-count {
-      font-size: 0.7rem; font-weight: 600;
-      color: var(--accent-text); background: var(--accent-soft);
-      padding: 0.2rem 0.6rem; border-radius: 999px;
-    }
-
+    .app-store-count { font-size: 0.7rem; font-weight: 600; color: var(--accent-text); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 999px; }
     .app-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
-
     .app-tab {
-      font-family: inherit; font-size: 0.72rem; font-weight: 600;
-      padding: 0.35rem 0.75rem;
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: 999px; color: var(--ink-sub); cursor: pointer;
-      transition: all 0.2s;
+      font-family: inherit; font-size: 0.72rem; font-weight: 600; padding: 0.35rem 0.75rem;
+      background: var(--surface); border: 1px solid var(--border-light); border-radius: 999px;
+      color: var(--ink-sub); cursor: pointer; transition: all 0.2s;
     }
     .app-tab:hover { border-color: var(--border); color: var(--ink); }
-    .app-tab.active {
-      background: var(--accent-1); border-color: var(--accent-1);
-      color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-
+    .app-tab.active { background: var(--accent-1); border-color: var(--accent-1); color: #fff; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
     .app-search { position: relative; margin-bottom: 0.75rem; }
     .app-search input {
       width: 100%; font-family: inherit; font-size: 0.82rem; font-weight: 500;
-      padding: 0.6rem 0.9rem 0.6rem 2.2rem;
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm); color: var(--ink);
-      outline: none; transition: all 0.2s;
+      padding: 0.6rem 0.9rem 0.6rem 2.2rem; background: var(--surface); border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm); color: var(--ink); outline: none; transition: all 0.2s;
     }
-    .app-search input:focus {
-      border-color: var(--accent-1);
-      box-shadow: 0 0 0 3px var(--accent-soft);
-    }
+    .app-search input:focus { border-color: var(--accent-1); box-shadow: 0 0 0 3px var(--accent-soft); }
     .app-search input::placeholder { color: var(--ink-muted); }
-    .app-search .icon {
-      position: absolute; left: 0.8rem; top: 50%;
-      transform: translateY(-50%); color: var(--ink-muted);
-      font-size: 0.95rem; pointer-events: none;
-    }
-
+    .app-search .icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--ink-muted); font-size: 0.95rem; pointer-events: none; }
     .app-list { display: flex; flex-direction: column; gap: 0.6rem; }
-
     .app-item {
-      display: flex; align-items: center; gap: 0.85rem;
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-md); padding: 0.8rem 0.9rem;
-      transition: all 0.2s ease; text-decoration: none; color: inherit;
-      position: relative; overflow: hidden;
+      display: flex; align-items: center; gap: 0.85rem; background: var(--surface); border: 1px solid var(--border-light);
+      border-radius: var(--radius-md); padding: 0.8rem 0.9rem; transition: all 0.2s ease;
+      text-decoration: none; color: inherit; position: relative; overflow: hidden;
     }
     .app-item:hover { border-color: var(--border); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-
-    /* ICON APP ĐỘC QUYỀN (HỖ TRỢ CẢ SVG VÀ IMG) */
     .app-icon {
-      width: 2.8rem; height: 2.8rem; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; box-shadow: var(--shadow-sm);
-      overflow: hidden; background: var(--bg);
-      border: 1px solid var(--border-light);
+      width: 2.8rem; height: 2.8rem; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; box-shadow: var(--shadow-sm); overflow: hidden; background: var(--bg); border: 1px solid var(--border-light);
     }
     .app-icon svg { width: 100%; height: 100%; }
     .app-icon img { width: 100%; height: 100%; object-fit: cover; }
-
     .app-info { flex: 1 1 auto; min-width: 0; }
-
-    .app-name {
-      font-size: 0.9rem; font-weight: 700; color: var(--ink);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      margin-bottom: 0.15rem;
-      display: flex; align-items: center; gap: 0.4rem;
-    }
-
-    .app-meta {
-      display: flex; align-items: center; gap: 0.4rem;
-      font-size: 0.72rem; color: var(--ink-sub); font-weight: 500;
-      flex-wrap: wrap;
-    }
-
-    .app-type-badge {
-      display: inline-flex; align-items: center;
-      font-size: 0.6rem; font-weight: 800; letter-spacing: 0.4px;
-      padding: 0.12rem 0.4rem; border-radius: 5px; text-transform: uppercase;
-    }
-    .app-type-badge.ipa  { background: var(--accent-soft); color: var(--accent-text); }
+    .app-name { font-size: 0.9rem; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.15rem; display: flex; align-items: center; gap: 0.4rem; }
+    .app-meta { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--ink-sub); font-weight: 500; flex-wrap: wrap; }
+    .app-type-badge { display: inline-flex; align-items: center; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.4px; padding: 0.12rem 0.4rem; border-radius: 5px; text-transform: uppercase; }
+    .app-type-badge.ipa { background: var(--accent-soft); color: var(--accent-text); }
     .app-type-badge.tipa { background: #fffbeb; color: #d97706; }
-    .app-type-badge.apk  { background: #ecfdf5; color: #059669; }
-    .app-type-badge.deb  { background: #fef2f2; color: #dc2626; } /* Badge màu đỏ cho DEB */
-    
+    .app-type-badge.apk { background: #ecfdf5; color: #059669; }
+    .app-type-badge.deb { background: #fef2f2; color: #dc2626; }
     body.dark .app-type-badge.tipa { background: #2e2519; }
-    body.dark .app-type-badge.apk  { background: #1a2e28; }
-    body.dark .app-type-badge.deb  { background: #3b1a1a; color: #f87171; }
-
-    .app-new-badge {
-      font-size: 0.55rem; font-weight: 800; letter-spacing: 0.4px;
-      padding: 0.12rem 0.35rem; border-radius: 5px;
-      background: #f43f5e; color: #fff; text-transform: uppercase;
-      animation: newPulse 1.5s ease-in-out infinite;
-    }
-    @keyframes newPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
+    body.dark .app-type-badge.apk { background: #1a2e28; }
+    body.dark .app-type-badge.deb { background: #3b1a1a; color: #f87171; }
+    .app-new-badge { font-size: 0.55rem; font-weight: 800; letter-spacing: 0.4px; padding: 0.12rem 0.35rem; border-radius: 5px; background: #f43f5e; color: #fff; text-transform: uppercase; animation: newPulse 1.5s ease-in-out infinite; }
+    @keyframes newPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
     .app-download {
-      width: 2rem; height: 2rem; border-radius: 50%;
-      background: var(--bg); border: 1px solid var(--border-light);
-      color: var(--ink-sub); display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: all 0.2s ease;
+      width: 2rem; height: 2rem; border-radius: 50%; background: var(--bg); border: 1px solid var(--border-light);
+      color: var(--ink-sub); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease;
     }
-    .app-item:hover .app-download {
-      background: var(--accent-1); border-color: var(--accent-1);
-      color: #fff; transform: scale(1.05);
-    }
-
+    .app-item:hover .app-download { background: var(--accent-1); border-color: var(--accent-1); color: #fff; transform: scale(1.05); }
     .app-empty { text-align: center; padding: 1.5rem 1rem; font-size: 0.82rem; color: var(--ink-muted); font-weight: 500; }
     .app-note { margin-top: 0.7rem; font-size: 0.72rem; color: var(--ink-muted); text-align: center; line-height: 1.5; }
 
+    /* =========================================
+       GIAO DIỆN TRANG TẢI ĐÃ NÂNG CẤP
+       ========================================= */
+    .detail-page { display: none; position: relative; z-index: 10; max-width: 620px; width: 100%; }
+    .detail-page.active { display: block; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.85rem; font-weight: 600; color: var(--accent-text);
+      background: var(--accent-soft); border: none;
+      padding: 0.55rem 1rem; border-radius: 999px;
+      cursor: pointer; margin-bottom: 1.25rem; font-family: inherit;
+      transition: all 0.2s; border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    .back-btn:hover { transform: translateX(-3px); box-shadow: 0 4px 12px rgba(59,130,246,0.15); }
+
+    /* Thẻ Card trắng bao bọc toàn bộ nội dung */
+    .detail-card {
+      background: var(--surface); border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
+      padding: 2.5rem 2rem;
+    }
+
+    .detail-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem; }
+    .detail-header .app-icon { 
+      width: 5rem; height: 5rem; border-radius: 20px; 
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid var(--border-light);
+    }
+    .detail-title h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.3rem; letter-spacing: -0.5px; color: var(--ink); }
+    .detail-title p { font-size: 0.85rem; color: var(--ink-sub); display: flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+
+    .detail-desc {
+      font-size: 0.95rem; line-height: 1.7; color: var(--ink-sub);
+      margin-bottom: 2rem; padding: 1.2rem;
+      background: var(--bg); border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .detail-section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.3px; color: var(--ink); }
+
+    .feature-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.95rem; color: var(--ink); font-weight: 500;
+      padding: 0.9rem 1.1rem;
+      background: var(--surface); border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .feature-item:hover { border-color: var(--success); transform: translateX(4px); }
+    .feature-item .icon { color: var(--success); margin-top: 2px; stroke-width: 3; width: 1.1rem; height: 1.1rem; }
+
+    .download-btn {
+      width: 100%; justify-content: center;
+      padding: 1.1rem; font-size: 1rem; border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff; text-decoration: none; display: flex; align-items: center; gap: 0.6rem;
+      font-weight: 800; border: none; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4); }
+    .download-btn .icon { width: 1.2rem; height: 1.2rem; }
+
     /* MODALS */
     .modal {
-      position: fixed; inset: 0;
-      background: rgba(20, 20, 40, 0.4);
+      position: fixed; inset: 0; background: rgba(20,20,40,0.4);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10000; opacity: 0; visibility: hidden;
-      transition: opacity 0.25s, visibility 0.25s; padding: 1rem;
+      display: flex; align-items: center; justify-content: center; z-index: 10000;
+      opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; padding: 1rem;
     }
     .modal.active { opacity: 1; visibility: visible; }
-
     .modal-box {
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg); padding: 2rem 1.5rem 1.5rem;
-      max-width: 340px; width: 100%; text-align: center;
-      position: relative; box-shadow: var(--shadow-lg);
-      transform: scale(0.92);
-      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+      background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem 1.5rem; max-width: 340px; width: 100%; text-align: center;
+      position: relative; box-shadow: var(--shadow-lg); transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.2,0.9,0.3,1);
     }
     .modal.active .modal-box { transform: scale(1); }
-
     .modal-close {
-      position: absolute; top: 0.8rem; right: 0.8rem;
-      width: 2rem; height: 2rem;
-      background: var(--bg); border: none; border-radius: 50%;
-      color: var(--ink-sub); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
+      position: absolute; top: 0.8rem; right: 0.8rem; width: 2rem; height: 2rem;
+      background: var(--bg); border: none; border-radius: 50%; color: var(--ink-sub);
+      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
     .modal-close:hover { background: var(--border); color: var(--ink); transform: rotate(90deg); }
-
-    .modal-box h3 {
-      font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
-      display: flex; align-items: center; justify-content: center;
-      gap: 0.5rem; color: var(--ink);
-    }
+    .modal-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: var(--ink); }
     .modal-box h3 .icon { color: var(--accent-1); }
-
-    #qrcodeContainer, #bankQrContainer {
-      display: inline-block; padding: 0.6rem;
-      background: #fff; border-radius: var(--radius-md);
-      margin: 0.5rem auto 1rem; border: 1px solid var(--border-light);
-    }
+    #qrcodeContainer, #bankQrContainer { display: inline-block; padding: 0.6rem; background: #fff; border-radius: var(--radius-md); margin: 0.5rem auto 1rem; border: 1px solid var(--border-light); }
     #qrcodeContainer img, #bankQrContainer img { display: block; border-radius: 8px; }
-
     .qr-url { font-size: 0.72rem; color: var(--ink-sub); word-break: break-all; margin-bottom: 1rem; }
-
     .btn-gradient {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      color: #fff; border: none; border-radius: var(--radius-sm);
-      padding: 0.65rem 1.3rem; cursor: pointer;
-      font-weight: 600; font-size: 0.85rem;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-      font-family: inherit;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; border: none;
+      border-radius: var(--radius-sm); padding: 0.65rem 1.3rem; cursor: pointer; font-weight: 600;
+      font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: all 0.2s; box-shadow: 0 4px 12px rgba(59,130,246,0.3); font-family: inherit;
     }
-    .btn-gradient:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.45); }
+    .btn-gradient:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59,130,246,0.45); }
     .btn-gradient:active { transform: translateY(0) scale(0.98); }
-
     .bank-info-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; text-align: left; }
     .bank-info-item {
-      background: var(--bg); border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm); padding: 0.7rem 0.9rem;
-      display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg); border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+      padding: 0.7rem 0.9rem; display: flex; justify-content: space-between; align-items: center;
       font-size: 0.85rem; color: var(--ink-sub);
     }
     .bank-info-item strong { color: var(--ink); font-weight: 700; }
-
     .copy-icon-btn {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--accent-1); cursor: pointer;
-      width: 1.9rem; height: 1.9rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--accent-1); cursor: pointer; width: 1.9rem; height: 1.9rem;
+      display: flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
     .copy-icon-btn:hover { background: var(--accent-1); color: #fff; border-color: var(--accent-1); }
-
     .toast {
-      position: fixed; bottom: 1.5rem; left: 50%;
-      transform: translate(-50%, 150%);
-      background: var(--ink); color: var(--surface);
-      border-radius: var(--radius-sm); padding: 0.75rem 1.2rem;
-      font-weight: 600; font-size: 0.85rem;
-      display: flex; align-items: center; gap: 0.5rem;
-      box-shadow: var(--shadow-lg); z-index: 10001;
-      opacity: 0;
-      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.35s;
-      pointer-events: none;
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translate(-50%, 150%);
+      background: var(--ink); color: var(--surface); border-radius: var(--radius-sm);
+      padding: 0.75rem 1.2rem; font-weight: 600; font-size: 0.85rem;
+      display: flex; align-items: center; gap: 0.5rem; box-shadow: var(--shadow-lg);
+      z-index: 10001; opacity: 0; transition: transform 0.35s cubic-bezier(0.2,0.9,0.3,1.2), opacity 0.35s; pointer-events: none;
     }
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
@@ -588,13 +454,16 @@
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
       .avatar-wrapper { width: 100px; height: 100px; }
       .app-icon { width: 2.6rem; height: 2.6rem; border-radius: 12px; }
+      
+      .detail-card { padding: 2rem 1.2rem; border-radius: var(--radius-lg); }
+      .detail-page .app-icon { width: 4rem; height: 4rem; border-radius: 16px; }
+      .detail-title h2 { font-size: 1.4rem; }
+      .detail-desc { padding: 1rem; font-size: 0.9rem; }
+      .feature-item { padding: 0.8rem; font-size: 0.9rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
@@ -628,50 +497,17 @@
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
     <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
 
-    <!-- LOGO SVG (Dùng cho app cơ bản) -->
-    <symbol id="logo-facebook" viewBox="0 0 48 48">
-      <rect width="48" height="48" rx="12" fill="#1877F2"/>
-      <path d="M32 24h-5v14h-6V24h-4v-5h4v-3c0-4.5 1.5-7 7-7h4v5h-3c-2 0-2 .5-2 2v3h6l-1 5z" fill="#fff"/>
-    </symbol>
-    
-    <symbol id="logo-tiktok" viewBox="0 0 48 48">
-      <rect width="48" height="48" rx="12" fill="#000"/>
-      <path d="M33.3 19.2a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V12h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#fff"/>
-      <path d="M34.5 20.4a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V13.2h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#FE2C55" opacity="0.85"/>
-      <path d="M32.1 18a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V10.8h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#25F4EE" opacity="0.85"/>
-    </symbol>
-
-    <symbol id="logo-spotify" viewBox="0 0 48 48">
-      <rect width="48" height="48" rx="12" fill="#1DB954"/>
-      <path d="M24 10C16.3 10 10 16.3 10 24s6.3 14 14 14 14-6.3 14-14S31.7 10 24 10zm6.4 20.2c-.2.4-.8.5-1.2.3-3.3-2-7.4-2.5-12.3-1.4-.4.1-.9-.2-1-.6-.1-.4.2-.9.6-1 5.4-1.2 10-.7 13.7 1.5.4.3.5.8.2 1.2zm1.7-3.8c-.3.5-1 .6-1.5.3-3.8-2.3-9.5-3-14-1.6-.6.2-1.2-.2-1.4-.8-.2-.6.2-1.2.8-1.4 5.2-1.6 11.6-.8 16 1.9.5.3.6 1.1.1 1.6zm.2-4c-4.5-2.7-12-3-16.4-1.7-.7.2-1.4-.2-1.6-.9-.2-.7.2-1.4.9-1.6 5-1.5 13.4-1.2 18.7 1.9.6.4.8 1.2.4 1.8-.4.6-1.2.8-1.8.4z" fill="#fff"/>
-    </symbol>
-
-    <symbol id="logo-instagram" viewBox="0 0 48 48">
-      <defs>
-        <linearGradient id="ig-grad-new" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#F5C33B" />
-          <stop offset="25%" stop-color="#F56141" />
-          <stop offset="50%" stop-color="#D62D7B" />
-          <stop offset="75%" stop-color="#8E3AB5" />
-          <stop offset="100%" stop-color="#4B5BD8" />
-        </linearGradient>
-      </defs>
-      <rect width="48" height="48" rx="12" fill="url(#ig-grad-new)"/>
-      <rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/>
-      <circle cx="24" cy="24" r="6" fill="none" stroke="#fff" stroke-width="2.5"/>
-      <circle cx="32.5" cy="15.5" r="2" fill="#fff"/>
-    </symbol>
-
-    <symbol id="logo-youtube" viewBox="0 0 48 48">
-      <rect width="48" height="48" rx="12" fill="#FF0000"/>
-      <path d="M37.2 17.7c-.3-1.2-1.2-2.1-2.4-2.4-2.1-.5-10.8-.5-10.8-.5s-8.7 0-10.8.5c-1.2.3-2.1 1.2-2.4 2.4-.5 2.1-.5 6.3-.5 6.3s0 4.2.5 6.3c.3 1.2 1.2 2.1 2.4 2.4 2.1.5 10.8.5 10.8.5s8.7 0 10.8-.5c1.2-.3 2.1-1.2 2.4-2.4.5-2.1.5-6.3.5-6.3s0-4.2-.5-6.3z" fill="#fff"/>
-      <polygon points="21,28.5 28.5,24 21,19.5" fill="#FF0000"/>
-    </symbol>
+    <symbol id="logo-facebook" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1877F2"/><path d="M32 24h-5v14h-6V24h-4v-5h4v-3c0-4.5 1.5-7 7-7h4v5h-3c-2 0-2 .5-2 2v3h6l-1 5z" fill="#fff"/></symbol>
+    <symbol id="logo-tiktok" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><path d="M33.3 19.2a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V12h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#fff"/><path d="M34.5 20.4a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V13.2h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#FE2C55" opacity="0.85"/><path d="M32.1 18a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V10.8h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#25F4EE" opacity="0.85"/></symbol>
+    <symbol id="logo-spotify" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1DB954"/><path d="M24 10C16.3 10 10 16.3 10 24s6.3 14 14 14 14-6.3 14-14S31.7 10 24 10zm6.4 20.2c-.2.4-.8.5-1.2.3-3.3-2-7.4-2.5-12.3-1.4-.4.1-.9-.2-1-.6-.1-.4.2-.9.6-1 5.4-1.2 10-.7 13.7 1.5.4.3.5.8.2 1.2zm1.7-3.8c-.3.5-1 .6-1.5.3-3.8-2.3-9.5-3-14-1.6-.6.2-1.2-.2-1.4-.8-.2-.6.2-1.2.8-1.4 5.2-1.6 11.6-.8 16 1.9.5.3.6 1.1.1 1.6zm.2-4c-4.5-2.7-12-3-16.4-1.7-.7.2-1.4-.2-1.6-.9-.2-.7.2-1.4.9-1.6 5-1.5 13.4-1.2 18.7 1.9.6.4.8 1.2.4 1.8-.4.6-1.2.8-1.8.4z" fill="#fff"/></symbol>
+    <symbol id="logo-instagram" viewBox="0 0 48 48"><defs><linearGradient id="ig-grad-new" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F5C33B"/><stop offset="25%" stop-color="#F56141"/><stop offset="50%" stop-color="#D62D7B"/><stop offset="75%" stop-color="#8E3AB5"/><stop offset="100%" stop-color="#4B5BD8"/></linearGradient></defs><rect width="48" height="48" rx="12" fill="url(#ig-grad-new)"/><rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="24" cy="24" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="32.5" cy="15.5" r="2" fill="#fff"/></symbol>
+    <symbol id="logo-youtube" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#FF0000"/><path d="M37.2 17.7c-.3-1.2-1.2-2.1-2.4-2.4-2.1-.5-10.8-.5-10.8-.5s-8.7 0-10.8.5c-1.2.3-2.1 1.2-2.4 2.4-.5 2.1-.5 6.3-.5 6.3s0 4.2.5 6.3c.3 1.2 1.2 2.1 2.4 2.4 2.1.5 10.8.5 10.8.5s8.7 0 10.8-.5c1.2-.3 2.1-1.2 2.4-2.4.5-2.1.5-6.3.5-6.3s0-4.2-.5-6.3z" fill="#fff"/><polygon points="21,28.5 28.5,24 21,19.5" fill="#FF0000"/></symbol>
   </svg>
 
   <!-- TOP CONTROLS -->
-  <div class="top-controls">
+  <div class="top-controls" id="topControls">
     <button class="control-btn" id="qrBtn" title="Mã QR" aria-label="Mã QR">
       <svg class="icon icon-lg"><use href="#i-qr"/></svg>
     </button>
@@ -701,9 +537,7 @@
       </div>
       <h1 class="bio-name">
         Lê Trung
-        <span class="verified" title="Đã xác minh">
-          <svg class="icon"><use href="#i-check"/></svg>
-        </span>
+        <span class="verified" title="Đã xác minh"><svg class="icon"><use href="#i-check"/></svg></span>
       </h1>
       <div class="bio-tagline">
         <svg class="icon"><use href="#i-code"/></svg>
@@ -713,24 +547,15 @@
 
     <div class="info-grid">
       <div class="info-card">
-        <div class="info-label">
-          <svg class="icon"><use href="#i-location"/></svg>
-          Vị trí
-        </div>
+        <div class="info-label"><svg class="icon"><use href="#i-location"/></svg>Vị trí</div>
         <div class="info-value">Gia Lai, VN</div>
       </div>
       <div class="info-card">
-        <div class="info-label">
-          <svg class="icon"><use href="#i-clock"/></svg>
-          Bây giờ
-        </div>
+        <div class="info-label"><svg class="icon"><use href="#i-clock"/></svg>Bây giờ</div>
         <div class="info-value"><span id="liveClock">--:--:--</span></div>
       </div>
       <div class="info-card wide">
-        <div class="info-label">
-          <svg class="icon"><use href="#i-mail"/></svg>
-          Email
-        </div>
+        <div class="info-label"><svg class="icon"><use href="#i-mail"/></svg>Email</div>
         <div class="info-value"><a href="mailto:lebaotrungtqt2011@gmail.com">lebaotrungtqt2011@gmail.com</a></div>
       </div>
       <div class="info-card wide quote-card">
@@ -739,30 +564,15 @@
     </div>
 
     <div class="socials">
-      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook">
-        <svg class="icon icon-lg"><use href="#i-facebook"/></svg>
-      </a>
-      <a href="https://instagram.com/@tyraeg_" target="_blank" rel="noopener" class="social-btn" title="Instagram">
-        <svg class="icon icon-lg"><use href="#i-instagram"/></svg>
-      </a>
-      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener" class="social-btn" title="TikTok">
-        <svg class="icon icon-lg"><use href="#i-tiktok"/></svg>
-      </a>
-      <a href="https://locket.cam/tyraeg16" target="_blank" rel="noopener" class="social-btn" title="Locket">
-        <svg class="icon icon-lg"><use href="#i-locket"/></svg>
-      </a>
-      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" rel="noopener" class="social-btn" title="Spotify">
-        <svg class="icon icon-lg"><use href="#i-spotify"/></svg>
-      </a>
-      <a href="https://discord.com/@paw162" target="_blank" rel="noopener" class="social-btn" title="Discord">
-        <svg class="icon icon-lg"><use href="#i-discord"/></svg>
-      </a>
-      <button class="social-btn" id="bankBtn" title="Chuyển khoản">
-        <svg class="icon icon-lg"><use href="#i-wallet"/></svg>
-      </button>
+      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook"><svg class="icon icon-lg"><use href="#i-facebook"/></svg></a>
+      <a href="https://instagram.com/@tyraeg_" target="_blank" rel="noopener" class="social-btn" title="Instagram"><svg class="icon icon-lg"><use href="#i-instagram"/></svg></a>
+      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener" class="social-btn" title="TikTok"><svg class="icon icon-lg"><use href="#i-tiktok"/></svg></a>
+      <a href="https://locket.cam/tyraeg16" target="_blank" rel="noopener" class="social-btn" title="Locket"><svg class="icon icon-lg"><use href="#i-locket"/></svg></a>
+      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" rel="noopener" class="social-btn" title="Spotify"><svg class="icon icon-lg"><use href="#i-spotify"/></svg></a>
+      <a href="https://discord.com/@paw162" target="_blank" rel="noopener" class="social-btn" title="Discord"><svg class="icon icon-lg"><use href="#i-discord"/></svg></a>
+      <button class="social-btn" id="bankBtn" title="Chuyển khoản"><svg class="icon icon-lg"><use href="#i-wallet"/></svg></button>
     </div>
 
-    <!-- MUSIC PLAYER -->
     <audio id="bgAudio" loop preload="auto" style="display:none;">
       <source src="https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3" type="audio/mpeg">
     </audio>
@@ -782,15 +592,12 @@
       </div>
       <div class="progress-wrapper">
         <span class="time-display" id="currentTime">0:00</span>
-        <div class="progress-container" id="progressContainer">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
+        <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
         <span class="time-display" id="duration">0:00</span>
       </div>
       <div class="visualizer" id="visualizer"></div>
     </div>
 
-    <!-- KHO IPA - TIPA - APK - DEB -->
     <div class="app-store">
       <div class="app-store-header">
         <div class="app-store-title">
@@ -799,8 +606,6 @@
         </div>
         <span class="app-store-count" id="appCount">0 file</span>
       </div>
-
-      <!-- Đã thêm nút lọc DEB -->
       <div class="app-tabs" id="appTabs">
         <button class="app-tab active" data-filter="all">Tất cả</button>
         <button class="app-tab" data-filter="ipa">IPA</button>
@@ -808,57 +613,40 @@
         <button class="app-tab" data-filter="apk">APK</button>
         <button class="app-tab" data-filter="deb">DEB</button>
       </div>
-
       <div class="app-search">
         <svg class="icon"><use href="#i-search"/></svg>
         <input type="text" id="appSearch" placeholder="Tìm ứng dụng...">
       </div>
-
       <div class="app-list" id="appList"></div>
-
-      <p class="app-note">
-        File được chia sẻ miễn phí • Cài đặt an toàn từ nguồn tin cậy
-      </p>
+      <p class="app-note">File được chia sẻ miễn phí • Cài đặt an toàn từ nguồn tin cậy</p>
     </div>
   </div>
+
+  <!-- DETAIL PAGE -->
+  <div class="detail-page" id="detailPage"></div>
 
   <!-- MODALS -->
   <div class="modal" id="qrModal">
     <div class="modal-box">
-      <button class="modal-close" id="qrModalClose" aria-label="Đóng">
-        <svg class="icon"><use href="#i-close"/></svg>
-      </button>
-      <h3>
-        <svg class="icon"><use href="#i-qr"/></svg>
-        Quét QR
-      </h3>
+      <button class="modal-close" id="qrModalClose" aria-label="Đóng"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h3><svg class="icon"><use href="#i-qr"/></svg>Quét QR</h3>
       <div id="qrcodeContainer"></div>
       <p class="qr-url" id="qrUrl"></p>
-      <button class="btn-gradient" id="qrCopyBtn">
-        <svg class="icon icon-sm"><use href="#i-copy"/></svg>
-        Copy link
-      </button>
+      <button class="btn-gradient" id="qrCopyBtn"><svg class="icon icon-sm"><use href="#i-copy"/></svg>Copy link</button>
     </div>
   </div>
 
   <div class="modal" id="bankModal">
     <div class="modal-box">
-      <button class="modal-close" id="bankModalClose" aria-label="Đóng">
-        <svg class="icon"><use href="#i-close"/></svg>
-      </button>
-      <h3>
-        <svg class="icon"><use href="#i-wallet"/></svg>
-        Chuyển khoản
-      </h3>
+      <button class="modal-close" id="bankModalClose" aria-label="Đóng"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h3><svg class="icon"><use href="#i-wallet"/></svg>Chuyển khoản</h3>
       <div class="bank-info-list">
         <div class="bank-info-item"><span>Ngân hàng</span><strong>TPBANK</strong></div>
         <div class="bank-info-item">
           <span>Số TK</span>
           <div style="display:flex;align-items:center;gap:0.4rem;">
             <strong id="stkValue">31189838888</strong>
-            <button class="copy-icon-btn" id="copyStkBtn" aria-label="Copy">
-              <svg class="icon icon-sm"><use href="#i-copy"/></svg>
-            </button>
+            <button class="copy-icon-btn" id="copyStkBtn" aria-label="Copy"><svg class="icon icon-sm"><use href="#i-copy"/></svg></button>
           </div>
         </div>
         <div class="bank-info-item"><span>Chủ thẻ</span><strong>LE BAO TRUNG</strong></div>
@@ -893,23 +681,18 @@
 
     function setPlayIcon(isPlaying) {
       if (isPlaying) {
-        playIcon.innerHTML = '<use href="#i-pause" xlink:href="#i-pause"/>';
+        playIcon.innerHTML = '<use href="#i-pause"/>';
         musicInfo.classList.add('playing');
       } else {
-        playIcon.innerHTML = '<use href="#i-play" xlink:href="#i-play"/>';
+        playIcon.innerHTML = '<use href="#i-play"/>';
         musicInfo.classList.remove('playing');
       }
     }
-
     bgAudio.addEventListener('play', () => setPlayIcon(true));
     bgAudio.addEventListener('pause', () => setPlayIcon(false));
-
     bgAudio.addEventListener('volumechange', () => {
-      $('#volumeIcon').innerHTML = bgAudio.muted
-        ? '<use href="#i-mute" xlink:href="#i-mute"/>'
-        : '<use href="#i-volume" xlink:href="#i-volume"/>';
+      $('#volumeIcon').innerHTML = bgAudio.muted ? '<use href="#i-mute"/>' : '<use href="#i-volume"/>';
     });
-
     bgAudio.addEventListener('timeupdate', () => {
       if (bgAudio.duration && !isNaN(bgAudio.duration)) {
         $('#progressBar').style.width = (bgAudio.currentTime / bgAudio.duration) * 100 + '%';
@@ -918,23 +701,16 @@
         $('#currentTime').textContent = `${m}:${s}`;
       }
     });
-
     bgAudio.addEventListener('loadedmetadata', () => {
       const m = Math.floor(bgAudio.duration / 60);
       const s = Math.floor(bgAudio.duration % 60).toString().padStart(2, '0');
       $('#duration').textContent = `${m}:${s}`;
     });
-
     playBtn.addEventListener('click', () => {
-      if (bgAudio.paused) {
-        bgAudio.play().catch(() => toast('Không phát được 😢'));
-      } else {
-        bgAudio.pause();
-      }
+      if (bgAudio.paused) bgAudio.play().catch(() => toast('Không phát được 😢'));
+      else bgAudio.pause();
     });
-
     $('#muteBtn').addEventListener('click', () => { bgAudio.muted = !bgAudio.muted; });
-
     $('#progressContainer').addEventListener('click', e => {
       const r = $('#progressContainer').getBoundingClientRect();
       const pos = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
@@ -982,22 +758,16 @@
       const c = $('#liveClock');
       const tick = () => {
         c.textContent = new Date().toLocaleTimeString('vi-VN', {
-          timeZone: 'Asia/Ho_Chi_Minh',
-          hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+          timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
         });
       };
-      tick();
-      setInterval(tick, 1000);
+      tick(); setInterval(tick, 1000);
     })();
 
     (function() {
-      const btn = $('#darkBtn');
-      const icon = $('#darkIcon');
+      const btn = $('#darkBtn'), icon = $('#darkIcon');
       const saved = localStorage.getItem('soft_dark');
-      if (saved === '1') {
-        document.body.classList.add('dark');
-        icon.setAttribute('href', '#i-sun');
-      }
+      if (saved === '1') { document.body.classList.add('dark'); icon.setAttribute('href', '#i-sun'); }
       btn.addEventListener('click', () => {
         document.body.classList.toggle('dark');
         const isDark = document.body.classList.contains('dark');
@@ -1041,196 +811,187 @@
     })();
 
     // =========================================
-    // KHO IPA - TIPA - APK - DEB
+    // APPS DATA + ROUTING
     // =========================================
-    (function() {
-      const APPS = [
-        { 
-          name: 'Facebook', 
-          version: 'v400.0', 
-          size: '250 MB', 
-          type: 'ipa', 
-          url: 'https://example.com/files/facebook.ipa', 
-          isNew: true,
-          icon: '#logo-facebook'
-        },
-        { 
-          name: 'TikTok', 
-          version: 'v30.5', 
-          size: '180 MB', 
-          type: 'tipa', 
-          url: 'https://example.com/files/tiktok.tipa',
-          icon: '#logo-tiktok'
-        },
-        { 
-          name: 'Spotify Premium', 
-          version: 'v8.9', 
-          size: '80 MB', 
-          type: 'apk', 
-          url: 'https://example.com/files/spotify.apk', 
-          isNew: true,
-          icon: '#logo-spotify'
-        },
-        { 
-          name: 'Instagram', 
-          version: 'v320.0', 
-          size: '150 MB', 
-          type: 'ipa', 
-          url: 'https://example.com/files/instagram.ipa',
-          icon: '#logo-instagram'
-        },
-        { 
-          name: 'YouTube ReVanced', 
-          version: 'v19.0', 
-          size: '120 MB', 
-          type: 'apk', 
-          url: 'https://example.com/files/youtube-revanced.apk',
-          icon: '#logo-youtube'
-        },
-        { 
-          name: 'Locket Widget', 
-          version: 'v1.50', 
-          size: '45 MB', 
-          type: 'ipa', 
-          url: 'https://example.com/files/locket.ipa',
-          isNew: true,
-          icon: 'https://play-lh.googleusercontent.com/2ZgO8wO2J-_12o9m0T4z8K1s5R4e6Y1U4h1G9d0s9d8f7g6h5j4k3l2m1n' 
-        },
-        { 
-          name: 'Blox Blast', 
-          version: 'v2.1', 
-          size: '110 MB', 
-          type: 'apk', 
-          url: 'https://example.com/files/blox-blast.apk',
-          icon: 'https://play-lh.googleusercontent.com/1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q1r2s3t4u5v6w7x8y9z0a' 
-        },
-        { 
-          name: 'Messenger', 
-          version: 'v430.0', 
-          size: '90 MB', 
-          type: 'ipa', 
-          url: 'https://example.com/files/messenger.ipa',
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Facebook_Messenger_logo_2020.svg/240px-Facebook_Messenger_logo_2020.svg.png'
-        },
-        { 
-          name: 'Shopee', 
-          version: 'v3.20', 
-          size: '105 MB', 
-          type: 'apk', 
-          url: 'https://example.com/files/shopee.apk',
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee_logo.svg/240px-Shopee_logo.svg.png'
-        },
-        { 
-          name: 'Zalo', 
-          version: 'v23.5', 
-          size: '95 MB', 
-          type: 'apk', 
-          url: 'https://example.com/files/zalo.apk',
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/240px-Icon_of_Zalo.svg.png'
-        },
-        { 
-          name: 'CapCut Pro', 
-          version: 'v12.0', 
-          size: '200 MB', 
-          type: 'tipa', 
-          url: 'https://example.com/files/capcut-pro.tipa',
-          isNew: true,
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/CapCut_logo.svg/240px-CapCut_logo.svg.png'
-        },
-        // --- APP ĐỊNH DẠNG DEB MỚI ---
-        { 
-          name: 'Filza Escaped', 
-          version: 'v3.8', 
-          size: '15 MB', 
-          type: 'deb', 
-          url: 'https://example.com/files/filza.deb',
-          isNew: true,
-          icon: 'https://play-lh.googleusercontent.com/1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q1r2s3t4u5v6w7x8y9z0a' // Bạn có thể thay bằng link ảnh Filza
-        },
-        { 
-          name: 'Cydia', 
-          version: 'v1.1.36', 
-          size: '10 MB', 
-          type: 'deb', 
-          url: 'https://example.com/files/cydia.deb',
-          icon: '#logo-youtube' // Placeholder, bạn có thể đổi link ảnh Cydia
+    const DEFAULT_APPS = [
+      { name: 'Facebook', version: 'v400.0', size: '250 MB', type: 'ipa', url: 'https://example.com/files/facebook.ipa', isNew: true, icon: '#logo-facebook', slug: 'facebook', desc: 'Mạng xã hội phổ biến nhất thế giới, kết nối bạn bè và chia sẻ khoảnh khắc.', features: ['Xem bảng tin & story', 'Nhắn tin Messenger tích hợp', 'Live stream chất lượng cao', 'Marketplace mua bán', 'Bảo mật 2 lớp'] },
+      { name: 'TikTok', version: 'v30.5', size: '180 MB', type: 'tipa', url: 'https://example.com/files/tiktok.tipa', icon: '#logo-tiktok', slug: 'tiktok', desc: 'Nền tảng video ngắn hàng đầu với hàng triệu nội dung sáng tạo.', features: ['Video ngắn 15s-3p', 'Hiệu ứng & filter độc đáo', 'Âm nhạc bản quyền', 'Live stream', 'Tùy chỉnh chất lượng tải'] },
+      { name: 'Spotify Premium', version: 'v8.9', size: '80 MB', type: 'apk', url: 'https://example.com/files/spotify.apk', isNew: true, icon: '#logo-spotify', slug: 'spotify', desc: 'Nghe nhạc không quảng cáo, tải offline chất lượng cao.', features: ['Không quảng cáo', 'Tải nhạc offline', 'Chất lượng âm thanh cao', 'Bỏ qua bài hát không giới hạn', 'Chế độ ngủ'] },
+      { name: 'Instagram', version: 'v320.0', size: '150 MB', type: 'ipa', url: 'https://example.com/files/instagram.ipa', icon: '#logo-instagram', slug: 'instagram', desc: 'Chia sẻ ảnh, reel và story với bạn bè toàn cầu.', features: ['Đăng ảnh & reel', 'Story 24h', 'Nhắn tin trực tiếp', 'Khám phá xu hướng', 'Chỉnh sửa ảnh chuyên nghiệp'] },
+      { name: 'YouTube ReVanced', version: 'v19.0', size: '120 MB', type: 'apk', url: 'https://example.com/files/youtube-revanced.apk', icon: '#logo-youtube', slug: 'youtube-revanced', desc: 'YouTube không quảng cáo, phát nền, tải video.', features: ['Chặn quảng cáo', 'Phát nền', 'Tải video', 'PiP', 'Tùy chỉnh giao diện'] },
+      { name: 'Locket Widget', version: 'v1.50', size: '45 MB', type: 'ipa', url: 'https://example.com/files/locket.ipa', isNew: true, icon: 'https://play-lh.googleusercontent.com/2ZgO8wO2J-_12o9m0T4z8K1s5R4e6Y1U4h1G9d0s9d8f7g6h5j4k3l2m1n', slug: 'locket', desc: 'Widget ảnh trên màn hình chính, chia sẻ khoảnh khắc với bạn bè.', features: ['Widget ảnh', 'Chia sẻ tức thì', 'Tùy chỉnh khung', 'Thông báo realtime', 'Đồng bộ iCloud'] },
+      { name: 'Messenger', version: 'v430.0', size: '90 MB', type: 'ipa', url: 'https://example.com/files/messenger.ipa', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Facebook_Messenger_logo_2020.svg/240px-Facebook_Messenger_logo_2020.svg.png', slug: 'messenger', desc: 'Nhắn tin miễn phí, gọi video chất lượng cao.', features: ['Nhắn tin miễn phí', 'Gọi video HD', 'Gửi file lớn', 'Story', 'Mã hóa đầu cuối'] },
+      { name: 'Shopee', version: 'v3.20', size: '105 MB', type: 'apk', url: 'https://example.com/files/shopee.apk', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee_logo.svg/240px-Shopee_logo.svg.png', slug: 'shopee', desc: 'Mua sắm online giá rẻ, giao hàng nhanh.', features: ['Flash sale', 'Miễn phí ship', 'Voucher độc quyền', 'Theo dõi đơn hàng', 'Thanh toán an toàn'] },
+      { name: 'Zalo', version: 'v23.5', size: '95 MB', type: 'apk', url: 'https://example.com/files/zalo.apk', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/240px-Icon_of_Zalo.svg.png', slug: 'zalo', desc: 'Ứng dụng nhắn tin phổ biến tại Việt Nam.', features: ['Nhắn tin miễn phí', 'Gọi video', 'Zalo Pay', 'Nhật ký', 'Bảo mật cao'] },
+      { name: 'CapCut Pro', version: 'v12.0', size: '200 MB', type: 'tipa', url: 'https://example.com/files/capcut-pro.tipa', isNew: true, icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/CapCut_logo.svg/240px-CapCut_logo.svg.png', slug: 'capcut-pro', desc: 'Chỉnh sửa video chuyên nghiệp miễn phí.', features: ['Cắt ghép video', 'Hiệu ứng chuyển cảnh', 'Âm thanh bản quyền', 'Xuất 4K', 'Không watermark'] },
+      { name: 'Filza Escaped', version: 'v3.8', size: '15 MB', type: 'deb', url: 'https://example.com/files/filza.deb', isNew: true, icon: 'https://play-lh.googleusercontent.com/1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q1r2s3t4u5v6w7x8y9z0a', slug: 'filza-escaped', desc: 'Trình quản lý file mạnh mẽ cho iOS.', features: ['Duyệt file hệ thống', 'Chỉnh sửa file', 'Cài đặt deb', 'Backup dữ liệu', 'Hỗ trợ root'] },
+      { name: 'Cydia', version: 'v1.1.36', size: '10 MB', type: 'deb', url: 'https://example.com/files/cydia.deb', icon: '#logo-youtube', slug: 'cydia', desc: 'Kho ứng dụng jailbreak kinh điển.', features: ['Kho tweak lớn', 'Quản lý package', 'Cài đặt dễ dàng', 'Cộng đồng lớn', 'Miễn phí'] }
+    ];
+
+    function loadApps() {
+      try {
+        const stored = localStorage.getItem('bio_apps');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
         }
-      ];
+      } catch (e) { console.warn('loadApps error:', e); }
+      return DEFAULT_APPS;
+    }
 
-      const listEl = $('#appList');
-      const countEl = $('#appCount');
-      const searchEl = $('#appSearch');
-      const tabsEl = $('#appTabs');
+    const APPS = loadApps();
+    const listEl = $('#appList');
+    const countEl = $('#appCount');
+    const searchEl = $('#appSearch');
+    const tabsEl = $('#appTabs');
+    const bioCard = $('#bioCard');
+    const detailPage = $('#detailPage');
+    const splash = $('#splash');
+    const topControls = $('#topControls');
 
-      let currentFilter = 'all';
-      let currentSearch = '';
+    let currentFilter = 'all';
+    let currentSearch = '';
 
-      function getFilteredApps() {
-        return APPS.filter(app => {
-          const matchFilter = currentFilter === 'all' || app.type === currentFilter;
-          const matchSearch = !currentSearch ||
-            app.name.toLowerCase().includes(currentSearch) ||
-            (app.version || '').toLowerCase().includes(currentSearch);
-          return matchFilter && matchSearch;
-        });
-      }
-
-      function renderApps() {
-        const filtered = getFilteredApps();
-        if (!filtered.length) {
-          listEl.innerHTML = '<div class="app-empty">Không tìm thấy ứng dụng nào 😢</div>';
-          countEl.textContent = '0 file';
-          return;
-        }
-        
-        listEl.innerHTML = filtered.map(app => {
-          const isSvg = app.icon.startsWith('#');
-          const iconHtml = isSvg 
-            ? `<svg><use href="${app.icon}"/></svg>`
-            : `<img src="${app.icon}" alt="${app.name}">`;
-            
-          return `
-            <a class="app-item" href="${app.url}" target="_blank" rel="noopener">
-              <div class="app-icon">
-                ${iconHtml}
-              </div>
-              <div class="app-info">
-                <div class="app-name">
-                  ${app.name}
-                  ${app.isNew ? '<span class="app-new-badge">Mới</span>' : ''}
-                </div>
-                <div class="app-meta">
-                  <span class="app-type-badge ${app.type}">${app.type.toUpperCase()}</span>
-                  <span>${app.version || ''}</span>
-                  ${app.size ? `<span>•</span><span>${app.size}</span>` : ''}
-                </div>
-              </div>
-              <div class="app-download" aria-hidden="true">
-                <svg class="icon"><use href="#i-download"/></svg>
-              </div>
-            </a>
-          `;
-        }).join('');
-        
-        countEl.textContent = filtered.length + ' file';
-      }
-
-      tabsEl.addEventListener('click', e => {
-        const tab = e.target.closest('.app-tab');
-        if (!tab) return;
-        tabsEl.querySelectorAll('.app-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentFilter = tab.dataset.filter;
-        renderApps();
+    function getFilteredApps() {
+      return APPS.filter(app => {
+        const matchFilter = currentFilter === 'all' || app.type === currentFilter;
+        const matchSearch = !currentSearch || app.name.toLowerCase().includes(currentSearch) || (app.version || '').toLowerCase().includes(currentSearch);
+        return matchFilter && matchSearch;
       });
+    }
 
-      searchEl.addEventListener('input', e => {
-        currentSearch = e.target.value.trim().toLowerCase();
-        renderApps();
-      });
+    function iconHtml(app) {
+      const isSvg = app.icon.startsWith('#');
+      return isSvg ? `<svg><use href="${app.icon}"/></svg>` : `<img src="${app.icon}" alt="${app.name}">`;
+    }
 
-      renderApps();
+    function renderApps() {
+      const filtered = getFilteredApps();
+      if (!filtered.length) {
+        listEl.innerHTML = '<div class="app-empty">Không tìm thấy ứng dụng nào 😢</div>';
+        countEl.textContent = '0 file';
+        return;
+      }
+      
+      listEl.innerHTML = filtered.map(app => `
+        <a class="app-item" href="/${app.slug}" data-slug="${app.slug}">
+          <div class="app-icon">${iconHtml(app)}</div>
+          <div class="app-info">
+            <div class="app-name">${app.name}${app.isNew ? '<span class="app-new-badge">Mới</span>' : ''}</div>
+            <div class="app-meta">
+              <span class="app-type-badge ${app.type}">${app.type.toUpperCase()}</span>
+              <span>${app.version || ''}</span>
+              ${app.size ? `<span>•</span><span>${app.size}</span>` : ''}
+            </div>
+          </div>
+          <div class="app-download" aria-hidden="true"><svg class="icon"><use href="#i-download"/></svg></div>
+        </a>
+      `).join('');
+      
+      countEl.textContent = filtered.length + ' file';
+    }
+
+    // GIAO DIỆN TRANG TẢI ĐÃ NÂNG CẤP
+    function renderDetail(app) {
+      detailPage.innerHTML = `
+        <button class="back-btn" id="backBtn">
+          <svg class="icon"><use href="#i-arrow-left"/></svg>
+          Quay lại
+        </button>
+        
+        <div class="detail-card">
+          <div class="detail-header">
+            <div class="app-icon">${iconHtml(app)}</div>
+            <div class="detail-title">
+              <h2>${app.name}</h2>
+              <p>
+                <span class="app-type-badge ${app.type}">${app.type.toUpperCase()}</span>
+                ${app.version} • ${app.size}
+              </p>
+            </div>
+          </div>
+          
+          <div class="detail-desc">${app.desc || ''}</div>
+          
+          ${(app.features && app.features.length) ? `
+            <h3 class="detail-section-title">Tính năng nổi bật</h3>
+            <div class="feature-list">
+              ${app.features.map(f => `
+                <div class="feature-item">
+                  <svg class="icon"><use href="#i-check"/></svg>
+                  <span>${f}</span>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          
+          <a href="${app.url}" target="_blank" rel="noopener" class="download-btn">
+            <svg class="icon"><use href="#i-download"/></svg>
+            Tải xuống ${app.type.toUpperCase()} (${app.size})
+          </a>
+        </div>
+      `;
+    }
+
+    function navigate(path, push = true) {
+      const slug = path.replace(/^\//, '').split('/')[0];
+      const app = APPS.find(a => a.slug === slug);
+      if (app) {
+        renderDetail(app);
+        bioCard.classList.add('hidden');
+        detailPage.classList.add('active');
+        topControls.classList.add('hide'); // Ẩn 2 nút QR và Sáng/Tối
+        if (splash && !splash.classList.contains('hidden')) splash.classList.add('hidden');
+        if (push) history.pushState({ slug }, '', '/' + slug);
+      } else {
+        bioCard.classList.remove('hidden');
+        detailPage.classList.remove('active');
+        topControls.classList.remove('hide'); // Hiện lại 2 nút khi về trang chủ
+        if (push) history.pushState({}, '', '/');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    listEl.addEventListener('click', e => {
+      const item = e.target.closest('.app-item');
+      if (!item) return;
+      e.preventDefault();
+      navigate('/' + item.dataset.slug);
+    });
+
+    document.addEventListener('click', e => {
+      if (e.target.closest('#backBtn')) {
+        e.preventDefault();
+        navigate('/');
+      }
+    });
+
+    window.addEventListener('popstate', () => navigate(location.pathname, false));
+
+    (function handleInitialRoute() {
+      const path = location.pathname;
+      if (path && path !== '/' && path !== '/index.html') {
+        splash.classList.add('hidden');
+        bioCard.classList.add('show');
+        setTimeout(() => navigate(path, false), 50);
+      }
     })();
+
+    tabsEl.addEventListener('click', e => {
+      const tab = e.target.closest('.app-tab');
+      if (!tab) return;
+      tabsEl.querySelectorAll('.app-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentFilter = tab.dataset.filter;
+      renderApps();
+    });
+
+    searchEl.addEventListener('input', e => {
+      currentSearch = e.target.value.trim().toLowerCase();
+      renderApps();
+    });
+
+    renderApps();
   </script>
 </body>
 </html>
