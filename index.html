@@ -43,6 +43,19 @@
       --radius-md: 16px;
       --radius-lg: 24px;
       --radius-xl: 32px;
+      
+      /* TestFlight Variables (Light) */
+      --tf-bg-system: #f2f2f7;
+      --tf-card: rgba(255, 255, 255, 0.85);
+      --tf-card-solid: #ffffff;
+      --tf-text: #000000;
+      --tf-text-sub: #8e8e93;
+      --tf-border: rgba(60, 60, 67, 0.08);
+      --tf-separator: rgba(60, 60, 67, 0.12);
+      --tf-header-grad-1: #3a2518;
+      --tf-header-grad-2: #8f6b53;
+      --tf-btn-bg: #ffffff;
+      --tf-btn-text: #000000;
     }
 
     body.dark {
@@ -61,6 +74,19 @@
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
       --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.2);
+      
+      /* TestFlight Variables (Dark) */
+      --tf-bg-system: #000000;
+      --tf-card: rgba(28, 28, 30, 0.75);
+      --tf-card-solid: #1c1c1e;
+      --tf-text: #ffffff;
+      --tf-text-sub: #98989d;
+      --tf-border: rgba(255, 255, 255, 0.05);
+      --tf-separator: rgba(255, 255, 255, 0.1);
+      --tf-header-grad-1: #110b08;
+      --tf-header-grad-2: #3a2619;
+      --tf-btn-bg: #ffffff;
+      --tf-btn-text: #000000;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
@@ -324,12 +350,16 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes slideUpFade {
+      0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
     .tf-header-container {
-      background: linear-gradient(180deg, #4a3426 0%, #8f6b53 100%);
+      background: linear-gradient(160deg, var(--tf-header-grad-1) 0%, var(--tf-header-grad-2) 100%);
       width: 100%;
-      padding-top: 3rem;
-      padding-bottom: 2.5rem;
+      padding-top: 60px;
+      padding-bottom: 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -337,46 +367,46 @@
       border-radius: var(--radius-xl);
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       overflow: hidden;
-      margin-bottom: 1rem;
-    }
-    body.dark .tf-header-container {
-      background: linear-gradient(180deg, #1c130d 0%, #3a2619 100%);
+      margin-bottom: 1.5rem;
     }
     
     .tf-header-container::before {
       content: ''; position: absolute;
       top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 60%);
+      background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.2) 0%, transparent 50%);
       pointer-events: none;
     }
 
     .tf-nav-bar {
       position: absolute;
       top: 0; left: 0; right: 0;
-      padding: 1rem 1.2rem;
+      padding: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
     }
     .tf-nav-btn {
-      background: none; border: none; cursor: pointer;
+      background: rgba(255,255,255,0.1); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      padding: 6px; border-radius: 50%; transition: background 0.2s;
+      width: 36px; height: 36px; border-radius: 50%; 
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      transition: all 0.2s;
     }
-    .tf-nav-btn:active { background: rgba(255,255,255,0.2); }
-    .tf-nav-btn svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 2.5; fill: none; }
+    .tf-nav-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.3); }
+    .tf-nav-btn svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2.5; fill: none; }
 
     .tf-app-icon-wrapper {
       width: 100px; height: 100px;
       border-radius: 24px;
       background: #fff;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.5);
       overflow: hidden;
       margin-top: 20px;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
       position: relative;
       z-index: 2;
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
     }
     .tf-app-icon-wrapper svg, .tf-app-icon-wrapper img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
@@ -385,94 +415,120 @@
       font-size: 1.5rem; font-weight: 700;
       text-align: center;
       line-height: 1.2;
-      margin-bottom: 1.25rem;
-      padding: 0 1rem;
+      margin-bottom: 24px;
+      padding: 0 20px;
       position: relative;
       z-index: 2;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .tf-btn-install {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: #fff;
-      font-size: 0.95rem; font-weight: 700;
+      background: var(--tf-btn-bg);
+      color: var(--tf-btn-text);
+      font-size: 16px; font-weight: 800;
       text-transform: uppercase;
-      width: calc(100% - 3rem);
-      max-width: 320px;
-      padding: 0.9rem;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.3);
+      width: calc(100% - 60px);
+      max-width: 350px;
+      padding: 16px;
+      border-radius: 24px;
+      border: none;
       cursor: pointer;
       letter-spacing: 0.5px;
       position: relative; z-index: 2;
       transition: all 0.2s;
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1);
       text-align: center;
       text-decoration: none;
       display: block;
     }
-    .tf-btn-install:active { transform: scale(0.96); background: rgba(255,255,255,0.3); }
+    .tf-btn-install:active { transform: scale(0.95); opacity: 0.9; }
 
     .tf-body {
-      padding: 0 0.5rem;
+      padding: 0;
+    }
+
+    .tf-glass-card {
+      background: var(--tf-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid var(--tf-border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      margin-bottom: 24px;
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s backwards;
     }
 
     .tf-top-stats {
-      background: var(--surface);
-      border-radius: var(--radius-md);
       display: flex;
-      padding: 1rem 0;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-light);
+      padding: 1.25rem 0;
     }
     .tf-stat-item {
       flex: 1;
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      padding: 0 8px; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0 4px; border-right: 1px solid var(--tf-separator);
+      min-width: 0;
     }
     .tf-stat-item:last-child { border-right: none; }
+    
     .tf-stat-label {
-      font-size: 0.65rem; font-weight: 600; color: var(--ink-muted);
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+      font-size: 11px; font-weight: 600; color: var(--tf-text-sub);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+      white-space: nowrap;
     }
-    .tf-stat-icon { width: 18px; height: 18px; color: var(--ink-muted); margin-bottom: 4px; }
-    .tf-stat-value-large { font-size: 1.2rem; font-weight: 700; color: var(--ink-sub); margin-bottom: 2px; }
-    .tf-stat-value-small { font-size: 0.75rem; font-weight: 500; color: var(--ink-sub); }
+    
+    .dev-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--tf-separator);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 6px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid var(--tf-border);
+    }
+    .dev-avatar svg {
+      width: 18px; height: 18px;
+      stroke: var(--tf-text-sub);
+      stroke-width: 2;
+    }
+
+    .tf-stat-value-large { 
+      font-size: 22px; font-weight: 800; color: var(--tf-text); 
+      margin-bottom: 2px; line-height: 1.2; white-space: nowrap;
+      letter-spacing: -0.5px;
+    }
+    .tf-stat-value-small { 
+      font-size: 12px; font-weight: 500; color: var(--tf-text-sub); 
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
 
     .tf-section-title {
-      font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; padding-left: 0.25rem; color: var(--ink);
+      font-size: 20px; font-weight: 700; margin-bottom: 12px; padding-left: 8px;
+      color: var(--tf-text);
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards;
     }
 
     .tf-content-box {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      padding: 1rem;
-      font-size: 0.95rem; line-height: 1.5;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-light);
-      color: var(--ink);
+      padding: 18px;
+      font-size: 16px; line-height: 1.6;
+      color: var(--tf-text);
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s backwards;
     }
 
-    .tf-info-list-box {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      padding: 0 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-light);
+    .tf-info-list {
+      padding: 0 18px;
+      animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.45s backwards;
     }
     .tf-list-row {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 0.85rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--tf-separator);
+      font-size: 16px;
     }
     .tf-list-row:last-child { border-bottom: none; }
-    .tf-list-row .tf-label { color: var(--ink); }
-    .tf-list-row .tf-value { color: var(--ink-sub); text-align: right; max-width: 65%; }
+    .tf-list-row .label { color: var(--tf-text); font-weight: 500; }
+    .tf-list-row .value { color: var(--tf-text-sub); text-align: right; max-width: 65%; }
 
     /* Bản quyền */
     .copyright {
@@ -542,6 +598,8 @@
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
 
+    .main-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
     @media (max-width: 520px) {
       body { padding: 4.5rem 0.8rem 2rem; }
       .bio-card { padding: 2rem 1.2rem 1.5rem; border-radius: var(--radius-lg); }
@@ -554,7 +612,7 @@
       .avatar-wrapper { width: 100px; height: 100px; }
       .app-icon { width: 2.6rem; height: 2.6rem; border-radius: 12px; }
       
-      .tf-header-container { border-radius: var(--radius-lg); padding-top: 2.5rem; }
+      .tf-header-container { border-radius: var(--radius-lg); padding-top: 50px; }
       .tf-app-icon-wrapper { width: 80px; height: 80px; border-radius: 20px; }
       .tf-app-title { font-size: 1.3rem; }
       .tf-top-stats { padding: 0.75rem 0; }
@@ -964,7 +1022,6 @@
       return isSvg ? `<svg><use href="${ic}"/></svg>` : `<img src="${ic}" alt="${app.name}">`;
     }
 
-    // Hàm chuyển đổi ISO string sang dạng "16 thg 11, 2026"
     function formatDate(isoString) {
       if (!isoString) return 'Đang cập nhật';
       const date = new Date(isoString);
@@ -1006,12 +1063,12 @@
       countEl.textContent = filtered.length + ' file';
     }
 
-    // ================== GIAO DIỆN CHI TIẾT (TESTFLIGHT) ==================
+    // ================== GIAO DIỆN TESTFLIGHT (CHI TIẾT) ==================
     function renderDetail(app) {
       detailPage.innerHTML = `
         <div class="tf-header-container">
           <div class="tf-nav-bar">
-            <button class="tf-nav-btn" id="backBtn" onclick="window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate'));"><svg><use href="#i-arrow-left"/></svg></button>
+            <button class="tf-nav-btn" id="backBtn"><svg><use href="#i-arrow-left"/></svg></button>
             <button class="tf-nav-btn" onclick="navigator.share ? navigator.share({title: '${app.name}', url: window.location.href}) : toast('Đã copy link!')"><svg><use href="#i-share"/></svg></button>
           </div>
           
@@ -1025,53 +1082,61 @@
         </div>
 
         <div class="tf-body">
-          <div class="tf-top-stats">
+          <div class="tf-glass-card tf-top-stats">
             <div class="tf-stat-item">
               <span class="tf-stat-label">Nhà P.Triển</span>
-              <svg class="tf-stat-icon"><use href="#i-person"/></svg>
+              <div class="dev-avatar">
+                <svg><use href="#i-person"/></svg>
+              </div>
               <span class="tf-stat-value-small">Lê Bảo Trung</span>
             </div>
+            
             <div class="tf-stat-item">
               <span class="tf-stat-label">Phiên bản</span>
               <span class="tf-stat-value-large">${app.version || '1.0'}</span>
               <span class="tf-stat-value-small">Bản dựng 1</span>
             </div>
+            
             <div class="tf-stat-item">
               <span class="tf-stat-label">Dung lượng</span>
-              <span class="tf-stat-value-large">${app.size ? app.size.replace(/[^0-9]/g, '') : '?'}</span>
-              <span class="tf-stat-value-small">${app.size ? app.size.replace(/[0-9]/g, '').trim() : 'MB'}</span>
+              <span class="tf-stat-value-large">
+                ${app.size ? app.size.replace(/[^0-9.,]/g, '') : '?'}
+              </span>
+              <span class="tf-stat-value-small">
+                ${app.size ? app.size.replace(/[0-9.,\s]/g, '') : 'MB'}
+              </span>
             </div>
           </div>
 
           ${(app.features && app.features.length) ? `
             <div class="tf-section-title">Nội dung kiểm tra</div>
-            <div class="tf-content-box">
+            <div class="tf-glass-card tf-content-box">
               ${app.features.map(f => `• ${f}`).join('<br>')}
             </div>
           ` : ''}
 
           <div class="tf-section-title">Mô tả ứng dụng</div>
-          <div class="tf-content-box">
+          <div class="tf-glass-card tf-content-box">
             ${app.desc || 'Chưa có mô tả cho ứng dụng này.'}
           </div>
 
           <div class="tf-section-title">Thông tin ứng dụng</div>
-          <div class="tf-info-list-box">
+          <div class="tf-glass-card tf-info-list">
             <div class="tf-list-row">
-              <span class="tf-label">Nhà phát triển</span>
-              <span class="tf-value">Lê Bảo Trung</span>
+              <span class="label">Nhà phát triển</span>
+              <span class="value">Lê Bảo Trung</span>
             </div>
             <div class="tf-list-row">
-              <span class="tf-label">Ngày phát hành</span>
-              <span class="tf-value">${formatDate(app.createdAt)}</span>
+              <span class="label">Ngày phát hành</span>
+              <span class="value">${formatDate(app.createdAt)}</span>
             </div>
             <div class="tf-list-row">
-              <span class="tf-label">Phiên bản</span>
-              <span class="tf-value">${app.version || '1.0'} (1)</span>
+              <span class="label">Phiên bản</span>
+              <span class="value">${app.version || '1.0'} (1)</span>
             </div>
             <div class="tf-list-row">
-              <span class="tf-label">Kích cỡ</span>
-              <span class="tf-value">${app.size || 'Đang cập nhật'}</span>
+              <span class="label">Kích cỡ</span>
+              <span class="value">${app.size || 'Đang cập nhật'}</span>
             </div>
           </div>
         </div>
