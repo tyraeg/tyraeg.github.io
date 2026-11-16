@@ -310,66 +310,182 @@
     .app-empty { text-align: center; padding: 1.5rem 1rem; font-size: 0.82rem; color: var(--ink-muted); font-weight: 500; }
     .app-note { margin-top: 0.7rem; font-size: 0.72rem; color: var(--ink-muted); text-align: center; line-height: 1.5; }
 
-    .detail-page { display: none; position: relative; z-index: 10; max-width: 620px; width: 100%; }
+    /* =========================================
+       GIAO DIỆN TESTFLIGHT (CHI TIẾT APP)
+       ========================================= */
+    .detail-page {
+      display: none; position: relative; z-index: 10;
+      max-width: 620px; width: 100%;
+      animation: slideUp 0.4s ease-out;
+    }
     .detail-page.active { display: block; }
 
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.85rem; font-weight: 600; color: var(--accent-text);
-      background: var(--accent-soft); border: none;
-      padding: 0.55rem 1rem; border-radius: 999px;
-      cursor: pointer; margin-bottom: 1.25rem; font-family: inherit;
-      transition: all 0.2s; border: 1px solid rgba(59, 130, 246, 0.1);
-    }
-    .back-btn:hover { transform: translateX(-3px); box-shadow: 0 4px 12px rgba(59,130,246,0.15); }
-
-    .detail-card {
-      background: var(--surface); border: 1px solid var(--border-light);
-      border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
-      padding: 2.5rem 2rem;
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .detail-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem; }
-    .detail-header .app-icon { 
-      width: 5rem; height: 5rem; border-radius: 20px; 
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid var(--border-light);
+    .tf-header-container {
+      background: linear-gradient(180deg, #4a3426 0%, #8f6b53 100%);
+      width: 100%;
+      padding-top: 3rem;
+      padding-bottom: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      overflow: hidden;
+      margin-bottom: 1rem;
     }
-    .detail-title h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.3rem; letter-spacing: -0.5px; color: var(--ink); }
-    .detail-title p { font-size: 0.85rem; color: var(--ink-sub); display: flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+    body.dark .tf-header-container {
+      background: linear-gradient(180deg, #1c130d 0%, #3a2619 100%);
+    }
+    
+    .tf-header-container::before {
+      content: ''; position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
 
-    .detail-desc {
-      font-size: 0.95rem; line-height: 1.7; color: var(--ink-sub);
-      margin-bottom: 2rem; padding: 1.2rem;
-      background: var(--bg); border-radius: var(--radius-md);
+    .tf-nav-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 1rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .tf-nav-btn {
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 6px; border-radius: 50%; transition: background 0.2s;
+    }
+    .tf-nav-btn:active { background: rgba(255,255,255,0.2); }
+    .tf-nav-btn svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 2.5; fill: none; }
+
+    .tf-app-icon-wrapper {
+      width: 100px; height: 100px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.2);
+      overflow: hidden;
+      margin-top: 20px;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .tf-app-icon-wrapper svg, .tf-app-icon-wrapper img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+    .tf-app-title {
+      color: #fff;
+      font-size: 1.5rem; font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .tf-btn-install {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 0.95rem; font-weight: 700;
+      text-transform: uppercase;
+      width: calc(100% - 3rem);
+      max-width: 320px;
+      padding: 0.9rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      position: relative; z-index: 2;
+      transition: all 0.2s;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
+    .tf-btn-install:active { transform: scale(0.96); background: rgba(255,255,255,0.3); }
+
+    .tf-body {
+      padding: 0 0.5rem;
+    }
+
+    .tf-top-stats {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      display: flex;
+      padding: 1rem 0;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-light);
     }
+    .tf-stat-item {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 0 8px; border-right: 1px solid var(--border);
+    }
+    .tf-stat-item:last-child { border-right: none; }
+    .tf-stat-label {
+      font-size: 0.65rem; font-weight: 600; color: var(--ink-muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+    }
+    .tf-stat-icon { width: 18px; height: 18px; color: var(--ink-muted); margin-bottom: 4px; }
+    .tf-stat-value-large { font-size: 1.2rem; font-weight: 700; color: var(--ink-sub); margin-bottom: 2px; }
+    .tf-stat-value-small { font-size: 0.75rem; font-weight: 500; color: var(--ink-sub); }
 
-    .detail-section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.3px; color: var(--ink); }
+    .tf-section-title {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; padding-left: 0.25rem; color: var(--ink);
+    }
 
-    .feature-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
-    .feature-item {
-      display: flex; align-items: flex-start; gap: 0.8rem;
-      font-size: 0.95rem; color: var(--ink); font-weight: 500;
-      padding: 0.9rem 1.1rem;
-      background: var(--surface); border: 1px solid var(--border-light);
+    .tf-content-box {
+      background: var(--surface);
       border-radius: var(--radius-md);
+      padding: 1rem;
+      font-size: 0.95rem; line-height: 1.5;
+      margin-bottom: 1.5rem;
       box-shadow: var(--shadow-sm);
-      transition: all 0.2s;
+      border: 1px solid var(--border-light);
+      color: var(--ink);
     }
-    .feature-item:hover { border-color: var(--success); transform: translateX(4px); }
-    .feature-item .icon { color: var(--success); margin-top: 2px; stroke-width: 3; width: 1.1rem; height: 1.1rem; }
 
-    .download-btn {
-      width: 100%; justify-content: center;
-      padding: 1.1rem; font-size: 1rem; border-radius: var(--radius-md);
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      color: #fff; text-decoration: none; display: flex; align-items: center; gap: 0.6rem;
-      font-weight: 800; border: none; cursor: pointer; transition: all 0.2s;
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    .tf-info-list-box {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 0 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
     }
-    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4); }
-    .download-btn .icon { width: 1.2rem; height: 1.2rem; }
+    .tf-list-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .tf-list-row:last-child { border-bottom: none; }
+    .tf-list-row .tf-label { color: var(--ink); }
+    .tf-list-row .tf-value { color: var(--ink-sub); text-align: right; max-width: 65%; }
 
+    /* Bản quyền */
+    .copyright {
+      position: relative; z-index: 10;
+      margin-top: 1.5rem; text-align: center;
+      font-size: 0.75rem; color: var(--ink-muted);
+      line-height: 1.7; padding: 1rem 0.5rem;
+    }
+    .copyright strong { color: var(--accent-text); font-weight: 700; }
+    .copyright .footer-heart { color: #f43f5e; display: inline-block; animation: heartBeat 1.4s ease-in-out infinite; }
+    @keyframes heartBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+    /* MODALS */
     .modal {
       position: fixed; inset: 0; background: rgba(20,20,40,0.4);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -426,20 +542,6 @@
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
 
-    .copyright {
-      position: relative; z-index: 10;
-      margin-top: 1.5rem; text-align: center;
-      font-size: 0.75rem; color: var(--ink-muted);
-      line-height: 1.7; padding: 1rem 0.5rem;
-    }
-    .copyright strong { color: var(--accent-text); font-weight: 700; }
-    .copyright a { color: var(--accent-text); text-decoration: none; font-weight: 600; }
-    .copyright a:hover { text-decoration: underline; }
-    .copyright .footer-heart { color: #f43f5e; display: inline-block; animation: heartBeat 1.4s ease-in-out infinite; }
-    @keyframes heartBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
-    .main-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
-
     @media (max-width: 520px) {
       body { padding: 4.5rem 0.8rem 2rem; }
       .bio-card { padding: 2rem 1.2rem 1.5rem; border-radius: var(--radius-lg); }
@@ -451,11 +553,12 @@
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
       .avatar-wrapper { width: 100px; height: 100px; }
       .app-icon { width: 2.6rem; height: 2.6rem; border-radius: 12px; }
-      .detail-card { padding: 2rem 1.2rem; border-radius: var(--radius-lg); }
-      .detail-page .app-icon { width: 4rem; height: 4rem; border-radius: 16px; }
-      .detail-title h2 { font-size: 1.4rem; }
-      .detail-desc { padding: 1rem; font-size: 0.9rem; }
-      .feature-item { padding: 0.8rem; font-size: 0.9rem; }
+      
+      .tf-header-container { border-radius: var(--radius-lg); padding-top: 2.5rem; }
+      .tf-app-icon-wrapper { width: 80px; height: 80px; border-radius: 20px; }
+      .tf-app-title { font-size: 1.3rem; }
+      .tf-top-stats { padding: 0.75rem 0; }
+      .tf-stat-value-large { font-size: 1rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -494,6 +597,9 @@
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
     <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
     <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    
     <symbol id="logo-facebook" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1877F2"/><path d="M32 24h-5v14h-6V24h-4v-5h4v-3c0-4.5 1.5-7 7-7h4v5h-3c-2 0-2 .5-2 2v3h6l-1 5z" fill="#fff"/></symbol>
     <symbol id="logo-tiktok" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><path d="M33.3 19.2a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V12h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#fff"/><path d="M34.5 20.4a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V13.2h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#FE2C55" opacity="0.85"/><path d="M32.1 18a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V10.8h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#25F4EE" opacity="0.85"/></symbol>
     <symbol id="logo-spotify" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1DB954"/><path d="M24 10C16.3 10 10 16.3 10 24s6.3 14 14 14 14-6.3 14-14S31.7 10 24 10zm6.4 20.2c-.2.4-.8.5-1.2.3-3.3-2-7.4-2.5-12.3-1.4-.4.1-.9-.2-1-.6-.1-.4.2-.9.6-1 5.4-1.2 10-.7 13.7 1.5.4.3.5.8.2 1.2zm1.7-3.8c-.3.5-1 .6-1.5.3-3.8-2.3-9.5-3-14-1.6-.6.2-1.2-.2-1.4-.8-.2-.6.2-1.2.8-1.4 5.2-1.6 11.6-.8 16 1.9.5.3.6 1.1.1 1.6zm.2-4c-4.5-2.7-12-3-16.4-1.7-.7.2-1.4-.2-1.6-.9-.2-.7.2-1.4.9-1.6 5-1.5 13.4-1.2 18.7 1.9.6.4.8 1.2.4 1.8-.4.6-1.2.8-1.8.4z" fill="#fff"/></symbol>
@@ -616,7 +722,7 @@
         <div class="app-list" id="appList">
           <div class="app-empty">Đang tải dữ liệu từ Firebase...</div>
         </div>
-        <p class="app-note">Tất Cả File Được Share Miễn Phí • Đem Bán Làm Chó🐶</p>
+        <p class="app-note">File được chia sẻ miễn phí • Cài đặt an toàn từ nguồn tin cậy</p>
       </div>
     </div>
 
@@ -626,6 +732,8 @@
     <!-- FOOTER BẢN QUYỀN -->
     <footer class="copyright">
       © 2025 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.<br>
+      Mọi hành vi sao chép đều bị nghiêm cấm.<br>
+      Made with <span class="footer-heart">❤</span> at Gia Lai, Việt Nam 🇻🇳
     </footer>
   </div>
 
@@ -665,7 +773,7 @@
     <span id="toastText">Đã copy!</span>
   </div>
 
-  <!-- FIREBASE SDK -->
+  <!-- FIREBASE SDK (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
@@ -856,9 +964,22 @@
       return isSvg ? `<svg><use href="${ic}"/></svg>` : `<img src="${ic}" alt="${app.name}">`;
     }
 
+    // Hàm chuyển đổi ISO string sang dạng "16 thg 11, 2026"
+    function formatDate(isoString) {
+      if (!isoString) return 'Đang cập nhật';
+      const date = new Date(isoString);
+      if (isNaN(date)) return 'Đang cập nhật';
+      
+      const day = date.getDate();
+      const month = date.getMonth() + 1; 
+      const year = date.getFullYear();
+      
+      return `${day} thg ${month}, ${year}`;
+    }
+
     function renderApps() {
       if (!APPS.length) {
-        listEl.innerHTML = '<div class="app-empty">Chưa có ứng dụng nào.</div>';
+        listEl.innerHTML = '<div class="app-empty">Chưa có ứng dụng nào. Admin sẽ thêm sớm 🚀</div>';
         countEl.textContent = '0 file';
         return;
       }
@@ -885,39 +1006,74 @@
       countEl.textContent = filtered.length + ' file';
     }
 
+    // ================== GIAO DIỆN CHI TIẾT (TESTFLIGHT) ==================
     function renderDetail(app) {
       detailPage.innerHTML = `
-        <button class="back-btn" id="backBtn">
-          <svg class="icon"><use href="#i-arrow-left"/></svg>
-          Quay lại
-        </button>
-        <div class="detail-card">
-          <div class="detail-header">
-            <div class="app-icon">${iconHtml(app)}</div>
-            <div class="detail-title">
-              <h2>${app.name}</h2>
-              <p>
-                <span class="app-type-badge ${app.type}">${app.type.toUpperCase()}</span>
-                ${app.version || ''} • ${app.size || ''}
-              </p>
+        <div class="tf-header-container">
+          <div class="tf-nav-bar">
+            <button class="tf-nav-btn" id="backBtn" onclick="window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate'));"><svg><use href="#i-arrow-left"/></svg></button>
+            <button class="tf-nav-btn" onclick="navigator.share ? navigator.share({title: '${app.name}', url: window.location.href}) : toast('Đã copy link!')"><svg><use href="#i-share"/></svg></button>
+          </div>
+          
+          <div class="tf-app-icon-wrapper">
+            ${iconHtml(app)}
+          </div>
+          
+          <div class="tf-app-title">${app.name}</div>
+          
+          <a href="${app.url}" target="_blank" rel="noopener" class="tf-btn-install">Tải xuống</a>
+        </div>
+
+        <div class="tf-body">
+          <div class="tf-top-stats">
+            <div class="tf-stat-item">
+              <span class="tf-stat-label">Nhà P.Triển</span>
+              <svg class="tf-stat-icon"><use href="#i-person"/></svg>
+              <span class="tf-stat-value-small">Lê Bảo Trung</span>
+            </div>
+            <div class="tf-stat-item">
+              <span class="tf-stat-label">Phiên bản</span>
+              <span class="tf-stat-value-large">${app.version || '1.0'}</span>
+              <span class="tf-stat-value-small">Bản dựng 1</span>
+            </div>
+            <div class="tf-stat-item">
+              <span class="tf-stat-label">Dung lượng</span>
+              <span class="tf-stat-value-large">${app.size ? app.size.replace(/[^0-9]/g, '') : '?'}</span>
+              <span class="tf-stat-value-small">${app.size ? app.size.replace(/[0-9]/g, '').trim() : 'MB'}</span>
             </div>
           </div>
-          <div class="detail-desc">${app.desc || ''}</div>
+
           ${(app.features && app.features.length) ? `
-            <h3 class="detail-section-title">Tính năng nổi bật</h3>
-            <div class="feature-list">
-              ${app.features.map(f => `
-                <div class="feature-item">
-                  <svg class="icon"><use href="#i-check"/></svg>
-                  <span>${f}</span>
-                </div>
-              `).join('')}
+            <div class="tf-section-title">Nội dung kiểm tra</div>
+            <div class="tf-content-box">
+              ${app.features.map(f => `• ${f}`).join('<br>')}
             </div>
           ` : ''}
-          <a href="${app.url}" target="_blank" rel="noopener" class="download-btn">
-            <svg class="icon"><use href="#i-download"/></svg>
-            Tải xuống ${app.type.toUpperCase()} (${app.size || ''})
-          </a>
+
+          <div class="tf-section-title">Mô tả ứng dụng</div>
+          <div class="tf-content-box">
+            ${app.desc || 'Chưa có mô tả cho ứng dụng này.'}
+          </div>
+
+          <div class="tf-section-title">Thông tin ứng dụng</div>
+          <div class="tf-info-list-box">
+            <div class="tf-list-row">
+              <span class="tf-label">Nhà phát triển</span>
+              <span class="tf-value">Lê Bảo Trung</span>
+            </div>
+            <div class="tf-list-row">
+              <span class="tf-label">Ngày phát hành</span>
+              <span class="tf-value">${formatDate(app.createdAt)}</span>
+            </div>
+            <div class="tf-list-row">
+              <span class="tf-label">Phiên bản</span>
+              <span class="tf-value">${app.version || '1.0'} (1)</span>
+            </div>
+            <div class="tf-list-row">
+              <span class="tf-label">Kích cỡ</span>
+              <span class="tf-value">${app.size || 'Đang cập nhật'}</span>
+            </div>
+          </div>
         </div>
       `;
     }
