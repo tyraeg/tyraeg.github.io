@@ -15,6 +15,7 @@
       fill: none; stroke: currentColor; stroke-width: 1.8;
       stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
+    /* ===== LOGIN ===== */
     .login-screen {
       position: fixed; inset: 0; z-index: 5000;
       background: linear-gradient(135deg, #fef9f3, #f0f4f8);
@@ -79,6 +80,7 @@
     }
     .login-copyright strong { color: #3b82f6; font-weight: 700; }
 
+    /* ===== ADMIN ===== */
     .wrap { max-width: 900px; margin: 0 auto; display: none; }
     .wrap.active { display: block; }
     header {
@@ -88,7 +90,7 @@
     header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; }
     header h1 .icon { color: #3b82f6; width: 1.4rem; height: 1.4rem; }
     header h1 span { color: #3b82f6; }
-    .header-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .header-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
     .btn {
       font-family: inherit; font-size: 0.85rem; font-weight: 600; padding: 0.6rem 1.1rem;
       border-radius: 12px; border: none; cursor: pointer; transition: all 0.2s;
@@ -105,6 +107,17 @@
     .btn-sm .icon { width: 0.85rem; height: 0.85rem; }
     .btn-logout { background: #fff; color: #6b7280; border: 1px solid #e8e6e1; }
     .btn-logout:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+    .sync-status {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; font-weight: 600; color: #10b981;
+      background: #ecfdf5; padding: 0.4rem 0.75rem; border-radius: 999px;
+      transition: all 0.3s;
+    }
+    .sync-status.syncing { color: #f59e0b; background: #fffbeb; }
+    .sync-status.error { color: #dc2626; background: #fef2f2; }
+    .sync-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
     .stat { background: #fff; border: 1px solid #f0eeea; border-radius: 16px; padding: 1rem; }
@@ -142,7 +155,10 @@
     .app-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
 
     .empty { text-align: center; padding: 3rem 1rem; color: #9ca3af; font-weight: 500; }
+    .empty .icon { width: 2.5rem; height: 2.5rem; margin-bottom: 0.5rem; color: #d0cec9; }
+    .empty p { margin-top: 0.3rem; font-size: 0.85rem; }
 
+    /* ===== MODAL ===== */
     .modal { position: fixed; inset: 0; background: rgba(20,20,40,0.4); backdrop-filter: blur(8px); display: flex; align-items: flex-start; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.25s; padding: 1rem; overflow-y: auto; }
     .modal.active { opacity: 1; visibility: visible; }
     .modal-box {
@@ -192,16 +208,6 @@
     .toast.error { background: #dc2626; }
     .toast .icon { width: 1rem; height: 1rem; }
 
-    .sync-status {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.72rem; font-weight: 600; color: #10b981;
-      background: #ecfdf5; padding: 0.3rem 0.7rem; border-radius: 999px;
-    }
-    .sync-status.syncing { color: #f59e0b; background: #fffbeb; }
-    .sync-status.error { color: #dc2626; background: #fef2f2; }
-    .sync-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-
     @media (max-width: 520px) {
       header h1 { font-size: 1.3rem; }
       .app-row { padding: 0.75rem; gap: 0.6rem; }
@@ -215,6 +221,7 @@
 </head>
 <body>
 
+  <!-- SVG SPRITE -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
@@ -223,15 +230,13 @@
     <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
     <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
-    <symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
-    <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
     <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
     <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
   </svg>
 
   <!-- LOGIN SCREEN -->
@@ -282,7 +287,7 @@
       <div class="header-actions">
         <span class="sync-status syncing" id="syncStatus">
           <span class="dot"></span>
-          <span id="syncText">Đang kết nối Firebase...</span>
+          <span id="syncText">Đang kết nối...</span>
         </span>
         <button class="btn btn-primary" id="addBtn">
           <svg class="icon"><use href="#i-plus"/></svg>
@@ -379,7 +384,7 @@
             <svg class="icon"><use href="#i-close"/></svg>
             Hủy
           </button>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" id="saveBtn">
             <svg class="icon"><use href="#i-save"/></svg>
             Lưu lên Firebase
           </button>
@@ -396,7 +401,7 @@
 
   <script>
     // ============================================
-    // TÀI KHOẢN ADMIN — SỬA Ở ĐÂY
+    // TÀI KHOẢN ADMIN
     // ============================================
     const ADMIN_USER = 'admin';
     const ADMIN_PASS = 'trung2011';
@@ -418,7 +423,6 @@
       $('#loginScreen').classList.add('hidden');
       $('#adminWrap').classList.add('active');
     }
-
     function showLogin() {
       $('#loginScreen').classList.remove('hidden');
       $('#adminWrap').classList.remove('active');
@@ -473,19 +477,25 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     const appsRef = db.ref('apps');
+    const metaRef = db.ref('meta');
+
+    db.ref('.info/connected').on('value', snap => {
+      console.log(snap.val() === true ? '✅ Firebase: connected' : '❌ Firebase: disconnected');
+    });
 
     // ============================================
     // QUẢN LÝ APP
     // ============================================
     let apps = [];
     let firebaseReady = false;
+    let isSaving = false;
 
     function toast(msg, isError) {
       const t = $('#toast');
       t.innerHTML = `<svg class="icon"><use href="${isError ? '#i-alert' : '#i-check'}"/></svg><span>${msg}</span>`;
       t.className = 'toast show' + (isError ? ' error' : '');
       clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2800);
     }
 
     function setSyncStatus(state, text) {
@@ -494,27 +504,49 @@
       $('#syncText').textContent = text;
     }
 
-    // Load realtime từ Firebase
-    appsRef.on('value', snap => {
+    // Lắng nghe realtime từ Firebase
+    appsRef.on('value', async snap => {
       const data = snap.val();
+
       if (!data) {
+        // /apps trống hoặc không tồn tại
         apps = [];
-        // Nếu Firebase trống -> seed default
+
         if (!firebaseReady) {
           firebaseReady = true;
-          setSyncStatus('ok', 'Đã kết nối • Firebase trống');
-          seedDefaults();
+
+          // Kiểm tra flag đã seed chưa
+          let hasSeeded = false;
+          try {
+            const seededSnap = await metaRef.child('seeded').get();
+            hasSeeded = seededSnap.exists() && seededSnap.val() === true;
+          } catch (e) {
+            console.warn('Không đọc được meta/seeded:', e);
+          }
+
+          if (!hasSeeded) {
+            console.log('🌱 Lần đầu → seed app mẫu');
+            setSyncStatus('ok', 'Lần đầu • Tạo app mẫu...');
+            await seedDefaults();
+            return; // seedDefaults sẽ trigger listener lại
+          } else {
+            console.log('📭 DB trống (đã seed trước đó, user tự xoá)');
+            setSyncStatus('ok', 'Đã kết nối • 0 app');
+          }
+        } else {
+          setSyncStatus('ok', 'Đã kết nối • 0 app');
         }
       } else {
         apps = normalizeApps(data);
         firebaseReady = true;
         setSyncStatus('ok', `Đã kết nối • ${apps.length} app`);
       }
+
       render();
     }, err => {
       console.error('Firebase error:', err);
-      setSyncStatus('error', 'Lỗi kết nối Firebase');
-      toast('Không kết nối được Firebase: ' + err.message, true);
+      setSyncStatus('error', 'Lỗi: ' + err.code);
+      toast('Lỗi Firebase: ' + err.message, true);
     });
 
     function normalizeApps(data) {
@@ -523,18 +555,43 @@
       return Object.keys(data).map(k => data[k]).filter(Boolean);
     }
 
-    // Ghi toàn bộ mảng lên Firebase
+    // Lưu app lên Firebase
     async function saveApps() {
+      if (isSaving) return;
+      isSaving = true;
+      const saveBtn = $('#saveBtn');
+      if (saveBtn) saveBtn.disabled = true;
+
       try {
         setSyncStatus('syncing', 'Đang lưu...');
-        // Chuyển array -> object key 0,1,2... để Firebase không bị mất thứ tự
-        await appsRef.set(apps);
+        console.log('📤 Saving to Firebase:', JSON.stringify(apps));
+
+        if (apps.length === 0) {
+          // Mảng rỗng → xoá hẳn node /apps
+          await appsRef.remove();
+          console.log('🗑️ Removed /apps (empty list)');
+        } else {
+          await appsRef.set(apps);
+          console.log('✅ Set /apps OK');
+        }
+
         setSyncStatus('ok', `Đã lưu • ${apps.length} app`);
         toast('Đã lưu lên Firebase');
       } catch (err) {
-        console.error(err);
-        setSyncStatus('error', 'Lỗi lưu Firebase');
-        toast('Lỗi lưu: ' + err.message, true);
+        console.error('❌ Save error:', err);
+        setSyncStatus('error', 'Lỗi lưu: ' + err.code);
+        toast('LỖI LƯU: ' + err.message, true);
+        alert(
+          'KHÔNG LƯU ĐƯỢC LÊN FIREBASE!\n\n' +
+          'Lỗi: ' + err.code + '\n' +
+          'Chi tiết: ' + err.message + '\n\n' +
+          '→ Vào Firebase Console → Realtime Database → Rules\n' +
+          '→ Đặt: { "rules": { ".read": true, ".write": true } }\n' +
+          '→ Bấm Publish'
+        );
+      } finally {
+        isSaving = false;
+        if (saveBtn) saveBtn.disabled = false;
       }
     }
 
@@ -545,8 +602,16 @@
     ];
 
     async function seedDefaults() {
-      apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
-      await saveApps();
+      try {
+        apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
+        await appsRef.set(apps);
+        // Đánh dấu đã seed → lần sau không seed nữa
+        await metaRef.child('seeded').set(true);
+        console.log('🌱 Seeded defaults + set meta/seeded=true');
+      } catch (err) {
+        console.error('Seed error:', err);
+        toast('Lỗi seed app mẫu: ' + err.message, true);
+      }
     }
 
     function iconHtml(icon) {
@@ -567,7 +632,12 @@
       `;
 
       if (!apps.length) {
-        $('#appList').innerHTML = '<div class="empty">Chưa có app nào. Bấm "+ Thêm app" để bắt đầu.</div>';
+        $('#appList').innerHTML = `
+          <div class="empty">
+            <svg class="icon"><use href="#i-inbox"/></svg>
+            <p>Chưa có app nào. Bấm "+ Thêm app" để bắt đầu.</p>
+          </div>
+        `;
         return;
       }
       $('#appList').innerHTML = apps.map((app, i) => `
@@ -597,14 +667,16 @@
       `).join('');
     }
 
-    $('#appList').addEventListener('click', e => {
+    $('#appList').addEventListener('click', async e => {
       const edit = e.target.closest('[data-edit]');
       const del = e.target.closest('[data-del]');
       if (edit) openEdit(+edit.dataset.edit);
       if (del) {
-        if (confirm('Xóa app này?')) {
-          apps.splice(+del.dataset.del, 1);
-          saveApps().then(render);
+        const idx = +del.dataset.del;
+        if (confirm(`Xóa app "${apps[idx].name}"?`)) {
+          apps.splice(idx, 1);
+          render();       // render ngay để UI phản hồi nhanh
+          await saveApps(); // rồi lưu lên Firebase
         }
       }
     });
@@ -618,6 +690,7 @@
       $('#f-index').value = index;
       $('#f-name').value = app.name || '';
       $('#f-slug').value = app.slug || '';
+      $('#f-slug').dataset.touched = isNew ? '' : '1';
       $('#f-version').value = app.version || '';
       $('#f-size').value = app.size || '';
       $('#f-type').value = app.type || 'ipa';
@@ -630,13 +703,10 @@
       $('#editModal').classList.add('active');
     }
 
-    function closeModal() {
-      $('#editModal').classList.remove('active');
-    }
+    function closeModal() { $('#editModal').classList.remove('active'); }
     $('#closeModal').addEventListener('click', closeModal);
     $('#cancelBtn').addEventListener('click', closeModal);
     $('#editModal').addEventListener('click', e => { if (e.target.id === 'editModal') closeModal(); });
-
     $('#addBtn').addEventListener('click', () => openEdit(-1));
 
     function updatePreview() {
@@ -650,10 +720,9 @@
       $(sel).addEventListener('change', updatePreview);
     });
 
-    // Auto slug từ tên
     $('#f-name').addEventListener('input', e => {
       const slugEl = $('#f-slug');
-      if (!slugEl.dataset.touched) {
+      if (slugEl.dataset.touched !== '1') {
         slugEl.value = e.target.value
           .toLowerCase()
           .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -662,9 +731,7 @@
           .replace(/^-+|-+$/g, '');
       }
     });
-    $('#f-slug').addEventListener('input', e => {
-      e.target.dataset.touched = '1';
-    });
+    $('#f-slug').addEventListener('input', e => { e.target.dataset.touched = '1'; });
 
     $('#appForm').addEventListener('submit', async e => {
       e.preventDefault();
@@ -687,7 +754,6 @@
         return;
       }
 
-      // Check slug trùng
       const dup = apps.findIndex((a, i) => a.slug === newApp.slug && i !== index);
       if (dup !== -1) {
         toast('Slug đã tồn tại, chọn slug khác', true);
@@ -698,18 +764,8 @@
       else apps[index] = newApp;
 
       await saveApps();
-      render();
       closeModal();
     });
-
-    // ============================================
-    // ĐĂNG XUẤT KHI MẤT SESSION
-    // ============================================
-    setInterval(() => {
-      if (!isLoggedIn() && !$('#loginScreen').classList.contains('hidden') === false) {
-        // session hết hạn
-      }
-    }, 60000);
   </script>
 </body>
 </html>
