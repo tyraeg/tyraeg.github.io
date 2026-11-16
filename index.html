@@ -28,21 +28,17 @@
       --ink-muted: #9ca3af;
       --border: #e8e6e1;
       --border-light: #f0eeea;
-
       --accent-1: #3b82f6;
       --accent-2: #60a5fa;
       --accent-3: #22d3ee;
       --accent-soft: #eff6ff;
       --accent-text: #2563eb;
-
       --success: #10b981;
       --success-soft: #d1fae5;
-
       --shadow-sm: 0 1px 2px rgba(20, 20, 40, 0.04);
       --shadow-md: 0 4px 16px rgba(20, 20, 40, 0.06), 0 2px 4px rgba(20, 20, 40, 0.04);
       --shadow-lg: 0 20px 50px rgba(20, 20, 40, 0.08), 0 8px 20px rgba(20, 20, 40, 0.04);
       --shadow-accent: 0 12px 30px rgba(59, 130, 246, 0.25);
-
       --radius-sm: 12px;
       --radius-md: 16px;
       --radius-lg: 24px;
@@ -102,18 +98,13 @@
     .icon-lg { font-size: 1.3em; }
     .icon-sm { font-size: 0.9em; }
 
-    /* TOP CONTROLS */
     .top-controls {
       position: fixed; top: 1.2rem; left: 1.2rem; right: 1.2rem;
       display: flex; justify-content: space-between; align-items: center;
       z-index: 1000;
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .top-controls.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    .top-controls.hide { opacity: 0; visibility: hidden; pointer-events: none; }
     .top-controls-right { display: flex; align-items: center; gap: 0.5rem; }
     .control-btn {
       width: 2.6rem; height: 2.6rem;
@@ -128,7 +119,6 @@
     }
     .control-btn:active { transform: translateY(0) scale(0.96); }
 
-    /* SPLASH */
     .splash {
       position: fixed; inset: 0;
       background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
@@ -155,7 +145,6 @@
     }
     @keyframes bounceHint { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 
-    /* BIO CARD */
     .bio-card {
       position: relative; z-index: 10;
       background: var(--surface);
@@ -265,7 +254,6 @@
       .visualizer { order: 0; width: 55px; flex-shrink: 0; }
     }
 
-    /* APP STORE */
     .app-store { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); }
     .app-store-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
     .app-store-title { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; }
@@ -322,9 +310,6 @@
     .app-empty { text-align: center; padding: 1.5rem 1rem; font-size: 0.82rem; color: var(--ink-muted); font-weight: 500; }
     .app-note { margin-top: 0.7rem; font-size: 0.72rem; color: var(--ink-muted); text-align: center; line-height: 1.5; }
 
-    /* =========================================
-       GIAO DIỆN TRANG TẢI ĐÃ NÂNG CẤP
-       ========================================= */
     .detail-page { display: none; position: relative; z-index: 10; max-width: 620px; width: 100%; }
     .detail-page.active { display: block; }
 
@@ -338,7 +323,6 @@
     }
     .back-btn:hover { transform: translateX(-3px); box-shadow: 0 4px 12px rgba(59,130,246,0.15); }
 
-    /* Thẻ Card trắng bao bọc toàn bộ nội dung */
     .detail-card {
       background: var(--surface); border: 1px solid var(--border-light);
       border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
@@ -386,7 +370,6 @@
     .download-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4); }
     .download-btn .icon { width: 1.2rem; height: 1.2rem; }
 
-    /* MODALS */
     .modal {
       position: fixed; inset: 0; background: rgba(20,20,40,0.4);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -443,6 +426,21 @@
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     .toast .icon { color: var(--success); }
 
+    /* FOOTER BẢN QUYỀN */
+    .copyright {
+      position: relative; z-index: 10;
+      margin-top: 1.5rem; text-align: center;
+      font-size: 0.75rem; color: var(--ink-muted);
+      line-height: 1.7; padding: 1rem 0.5rem;
+    }
+    .copyright strong { color: var(--accent-text); font-weight: 700; }
+    .copyright a { color: var(--accent-text); text-decoration: none; font-weight: 600; }
+    .copyright a:hover { text-decoration: underline; }
+    .copyright .footer-heart { color: #f43f5e; display: inline-block; animation: heartBeat 1.4s ease-in-out infinite; }
+    @keyframes heartBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+    .main-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
     @media (max-width: 520px) {
       body { padding: 4.5rem 0.8rem 2rem; }
       .bio-card { padding: 2rem 1.2rem 1.5rem; border-radius: var(--radius-lg); }
@@ -454,7 +452,6 @@
       .control-btn { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
       .avatar-wrapper { width: 100px; height: 100px; }
       .app-icon { width: 2.6rem; height: 2.6rem; border-radius: 12px; }
-      
       .detail-card { padding: 2rem 1.2rem; border-radius: var(--radius-lg); }
       .detail-page .app-icon { width: 4rem; height: 4rem; border-radius: 16px; }
       .detail-title h2 { font-size: 1.4rem; }
@@ -498,7 +495,6 @@
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
     <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
     <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
-
     <symbol id="logo-facebook" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1877F2"/><path d="M32 24h-5v14h-6V24h-4v-5h4v-3c0-4.5 1.5-7 7-7h4v5h-3c-2 0-2 .5-2 2v3h6l-1 5z" fill="#fff"/></symbol>
     <symbol id="logo-tiktok" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><path d="M33.3 19.2a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V12h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#fff"/><path d="M34.5 20.4a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V13.2h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#FE2C55" opacity="0.85"/><path d="M32.1 18a6.4 6.4 0 0 1-3.8-1.2v9.9a7.8 7.8 0 1 1-6.7-7.7v4.1a3.8 3.8 0 1 0 2.7 3.6V10.8h4.2a6.4 6.4 0 0 0 6.4 6.4v4.2a10.6 10.6 0 0 1-2.8-.4z" fill="#25F4EE" opacity="0.85"/></symbol>
     <symbol id="logo-spotify" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1DB954"/><path d="M24 10C16.3 10 10 16.3 10 24s6.3 14 14 14 14-6.3 14-14S31.7 10 24 10zm6.4 20.2c-.2.4-.8.5-1.2.3-3.3-2-7.4-2.5-12.3-1.4-.4.1-.9-.2-1-.6-.1-.4.2-.9.6-1 5.4-1.2 10-.7 13.7 1.5.4.3.5.8.2 1.2zm1.7-3.8c-.3.5-1 .6-1.5.3-3.8-2.3-9.5-3-14-1.6-.6.2-1.2-.2-1.4-.8-.2-.6.2-1.2.8-1.4 5.2-1.6 11.6-.8 16 1.9.5.3.6 1.1.1 1.6zm.2-4c-4.5-2.7-12-3-16.4-1.7-.7.2-1.4-.2-1.6-.9-.2-.7.2-1.4.9-1.6 5-1.5 13.4-1.2 18.7 1.9.6.4.8 1.2.4 1.8-.4.6-1.2.8-1.8.4z" fill="#fff"/></symbol>
@@ -528,102 +524,113 @@
     </div>
   </div>
 
-  <!-- BIO CARD -->
-  <div class="bio-card" id="bioCard">
-    <div class="avatar-section">
-      <div class="avatar-wrapper">
-        <div class="avatar"></div>
-        <div class="online-badge"></div>
-      </div>
-      <h1 class="bio-name">
-        Lê Trung
-        <span class="verified" title="Đã xác minh"><svg class="icon"><use href="#i-check"/></svg></span>
-      </h1>
-      <div class="bio-tagline">
-        <svg class="icon"><use href="#i-code"/></svg>
-        <span id="typewriterText"></span>
-      </div>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-label"><svg class="icon"><use href="#i-location"/></svg>Vị trí</div>
-        <div class="info-value">Gia Lai, VN</div>
-      </div>
-      <div class="info-card">
-        <div class="info-label"><svg class="icon"><use href="#i-clock"/></svg>Bây giờ</div>
-        <div class="info-value"><span id="liveClock">--:--:--</span></div>
-      </div>
-      <div class="info-card wide">
-        <div class="info-label"><svg class="icon"><use href="#i-mail"/></svg>Email</div>
-        <div class="info-value"><a href="mailto:lebaotrungtqt2011@gmail.com">lebaotrungtqt2011@gmail.com</a></div>
-      </div>
-      <div class="info-card wide quote-card">
-        Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt
-      </div>
-    </div>
-
-    <div class="socials">
-      <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook"><svg class="icon icon-lg"><use href="#i-facebook"/></svg></a>
-      <a href="https://instagram.com/@tyraeg_" target="_blank" rel="noopener" class="social-btn" title="Instagram"><svg class="icon icon-lg"><use href="#i-instagram"/></svg></a>
-      <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener" class="social-btn" title="TikTok"><svg class="icon icon-lg"><use href="#i-tiktok"/></svg></a>
-      <a href="https://locket.cam/tyraeg16" target="_blank" rel="noopener" class="social-btn" title="Locket"><svg class="icon icon-lg"><use href="#i-locket"/></svg></a>
-      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" rel="noopener" class="social-btn" title="Spotify"><svg class="icon icon-lg"><use href="#i-spotify"/></svg></a>
-      <a href="https://discord.com/@paw162" target="_blank" rel="noopener" class="social-btn" title="Discord"><svg class="icon icon-lg"><use href="#i-discord"/></svg></a>
-      <button class="social-btn" id="bankBtn" title="Chuyển khoản"><svg class="icon icon-lg"><use href="#i-wallet"/></svg></button>
-    </div>
-
-    <audio id="bgAudio" loop preload="auto" style="display:none;">
-      <source src="https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="music-player">
-      <div class="music-info" id="musicInfo">
-        <svg class="icon"><use href="#i-disc"/></svg>
-        <span id="trackName">Để Dành Cho Em</span>
-      </div>
-      <div class="music-controls">
-        <button class="music-btn" id="playPauseBtn" aria-label="Play/Pause">
-          <svg class="icon" id="playIcon"><use href="#i-play"/></svg>
-        </button>
-        <button class="music-btn" id="muteBtn" aria-label="Mute">
-          <svg class="icon" id="volumeIcon"><use href="#i-volume"/></svg>
-        </button>
-      </div>
-      <div class="progress-wrapper">
-        <span class="time-display" id="currentTime">0:00</span>
-        <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
-        <span class="time-display" id="duration">0:00</span>
-      </div>
-      <div class="visualizer" id="visualizer"></div>
-    </div>
-
-    <div class="app-store">
-      <div class="app-store-header">
-        <div class="app-store-title">
-          <svg class="icon icon-lg"><use href="#i-apps"/></svg>
-          <span>Kho ứng dụng</span>
+  <div class="main-wrap">
+    <!-- BIO CARD -->
+    <div class="bio-card" id="bioCard">
+      <div class="avatar-section">
+        <div class="avatar-wrapper">
+          <div class="avatar"></div>
+          <div class="online-badge"></div>
         </div>
-        <span class="app-store-count" id="appCount">0 file</span>
+        <h1 class="bio-name">
+          Lê Trung
+          <span class="verified" title="Đã xác minh"><svg class="icon"><use href="#i-check"/></svg></span>
+        </h1>
+        <div class="bio-tagline">
+          <svg class="icon"><use href="#i-code"/></svg>
+          <span id="typewriterText"></span>
+        </div>
       </div>
-      <div class="app-tabs" id="appTabs">
-        <button class="app-tab active" data-filter="all">Tất cả</button>
-        <button class="app-tab" data-filter="ipa">IPA</button>
-        <button class="app-tab" data-filter="tipa">TIPA</button>
-        <button class="app-tab" data-filter="apk">APK</button>
-        <button class="app-tab" data-filter="deb">DEB</button>
-      </div>
-      <div class="app-search">
-        <svg class="icon"><use href="#i-search"/></svg>
-        <input type="text" id="appSearch" placeholder="Tìm ứng dụng...">
-      </div>
-      <div class="app-list" id="appList"></div>
-      <p class="app-note">File được chia sẻ miễn phí • Cài đặt an toàn từ nguồn tin cậy</p>
-    </div>
-  </div>
 
-  <!-- DETAIL PAGE -->
-  <div class="detail-page" id="detailPage"></div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-label"><svg class="icon"><use href="#i-location"/></svg>Vị trí</div>
+          <div class="info-value">Gia Lai, VN</div>
+        </div>
+        <div class="info-card">
+          <div class="info-label"><svg class="icon"><use href="#i-clock"/></svg>Bây giờ</div>
+          <div class="info-value"><span id="liveClock">--:--:--</span></div>
+        </div>
+        <div class="info-card wide">
+          <div class="info-label"><svg class="icon"><use href="#i-mail"/></svg>Email</div>
+          <div class="info-value"><a href="mailto:lebaotrungtqt2011@gmail.com">lebaotrungtqt2011@gmail.com</a></div>
+        </div>
+        <div class="info-card wide quote-card">
+          Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt
+        </div>
+      </div>
+
+      <div class="socials">
+        <a href="https://www.facebook.com/share/14vDd2fvqQP/?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn" title="Facebook"><svg class="icon icon-lg"><use href="#i-facebook"/></svg></a>
+        <a href="https://instagram.com/@tyraeg_" target="_blank" rel="noopener" class="social-btn" title="Instagram"><svg class="icon icon-lg"><use href="#i-instagram"/></svg></a>
+        <a href="https://www.tiktok.com/@tyraeg_?_r=1&_t=ZS-9Ay5f1VKugM" target="_blank" rel="noopener" class="social-btn" title="TikTok"><svg class="icon icon-lg"><use href="#i-tiktok"/></svg></a>
+        <a href="https://locket.cam/tyraeg16" target="_blank" rel="noopener" class="social-btn" title="Locket"><svg class="icon icon-lg"><use href="#i-locket"/></svg></a>
+        <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" rel="noopener" class="social-btn" title="Spotify"><svg class="icon icon-lg"><use href="#i-spotify"/></svg></a>
+        <a href="https://discord.com/@paw162" target="_blank" rel="noopener" class="social-btn" title="Discord"><svg class="icon icon-lg"><use href="#i-discord"/></svg></a>
+        <button class="social-btn" id="bankBtn" title="Chuyển khoản"><svg class="icon icon-lg"><use href="#i-wallet"/></svg></button>
+      </div>
+
+      <audio id="bgAudio" loop preload="auto" style="display:none;">
+        <source src="https://www.image2url.com/r2/default/audio/1793731385581-9451085c-99bd-440c-88e1-96e28166076a.mp3" type="audio/mpeg">
+      </audio>
+
+      <div class="music-player">
+        <div class="music-info" id="musicInfo">
+          <svg class="icon"><use href="#i-disc"/></svg>
+          <span id="trackName">Để Dành Cho Em</span>
+        </div>
+        <div class="music-controls">
+          <button class="music-btn" id="playPauseBtn" aria-label="Play/Pause">
+            <svg class="icon" id="playIcon"><use href="#i-play"/></svg>
+          </button>
+          <button class="music-btn" id="muteBtn" aria-label="Mute">
+            <svg class="icon" id="volumeIcon"><use href="#i-volume"/></svg>
+          </button>
+        </div>
+        <div class="progress-wrapper">
+          <span class="time-display" id="currentTime">0:00</span>
+          <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+          <span class="time-display" id="duration">0:00</span>
+        </div>
+        <div class="visualizer" id="visualizer"></div>
+      </div>
+
+      <div class="app-store">
+        <div class="app-store-header">
+          <div class="app-store-title">
+            <svg class="icon icon-lg"><use href="#i-apps"/></svg>
+            <span>Kho ứng dụng</span>
+          </div>
+          <span class="app-store-count" id="appCount">Đang tải...</span>
+        </div>
+        <div class="app-tabs" id="appTabs">
+          <button class="app-tab active" data-filter="all">Tất cả</button>
+          <button class="app-tab" data-filter="ipa">IPA</button>
+          <button class="app-tab" data-filter="tipa">TIPA</button>
+          <button class="app-tab" data-filter="apk">APK</button>
+          <button class="app-tab" data-filter="deb">DEB</button>
+        </div>
+        <div class="app-search">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <input type="text" id="appSearch" placeholder="Tìm ứng dụng...">
+        </div>
+        <div class="app-list" id="appList">
+          <div class="app-empty">Đang tải dữ liệu từ Firebase...</div>
+        </div>
+        <p class="app-note">File được chia sẻ miễn phí • Cài đặt an toàn từ nguồn tin cậy</p>
+      </div>
+    </div>
+
+    <!-- DETAIL PAGE -->
+    <div class="detail-page" id="detailPage"></div>
+
+    <!-- FOOTER BẢN QUYỀN -->
+    <footer class="copyright">
+      © 2025 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.<br>
+      Mọi hành vi sao chép đều bị nghiêm cấm.<br>
+      Made with <span class="footer-heart">❤</span> at Gia Lai, Việt Nam 🇻🇳
+    </footer>
+  </div>
 
   <!-- MODALS -->
   <div class="modal" id="qrModal">
@@ -661,6 +668,10 @@
     <span id="toastText">Đã copy!</span>
   </div>
 
+  <!-- FIREBASE SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
   <script>
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
@@ -673,7 +684,15 @@
       t._timer = setTimeout(() => t.classList.remove('show'), 2000);
     }
 
-    // AUDIO
+    // ================== FIREBASE INIT ==================
+    const firebaseConfig = {
+      databaseURL: "https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const appsRef = db.ref('apps');
+
+    // ================== AUDIO ==================
     const bgAudio = $('#bgAudio');
     const playIcon = $('#playIcon');
     const musicInfo = $('#musicInfo');
@@ -810,36 +829,11 @@
       });
     })();
 
-    // =========================================
-    // APPS DATA + ROUTING
-    // =========================================
-    const DEFAULT_APPS = [
-      { name: 'Facebook', version: 'v400.0', size: '250 MB', type: 'ipa', url: 'https://example.com/files/facebook.ipa', isNew: true, icon: '#logo-facebook', slug: 'facebook', desc: 'Mạng xã hội phổ biến nhất thế giới, kết nối bạn bè và chia sẻ khoảnh khắc.', features: ['Xem bảng tin & story', 'Nhắn tin Messenger tích hợp', 'Live stream chất lượng cao', 'Marketplace mua bán', 'Bảo mật 2 lớp'] },
-      { name: 'TikTok', version: 'v30.5', size: '180 MB', type: 'tipa', url: 'https://example.com/files/tiktok.tipa', icon: '#logo-tiktok', slug: 'tiktok', desc: 'Nền tảng video ngắn hàng đầu với hàng triệu nội dung sáng tạo.', features: ['Video ngắn 15s-3p', 'Hiệu ứng & filter độc đáo', 'Âm nhạc bản quyền', 'Live stream', 'Tùy chỉnh chất lượng tải'] },
-      { name: 'Spotify Premium', version: 'v8.9', size: '80 MB', type: 'apk', url: 'https://example.com/files/spotify.apk', isNew: true, icon: '#logo-spotify', slug: 'spotify', desc: 'Nghe nhạc không quảng cáo, tải offline chất lượng cao.', features: ['Không quảng cáo', 'Tải nhạc offline', 'Chất lượng âm thanh cao', 'Bỏ qua bài hát không giới hạn', 'Chế độ ngủ'] },
-      { name: 'Instagram', version: 'v320.0', size: '150 MB', type: 'ipa', url: 'https://example.com/files/instagram.ipa', icon: '#logo-instagram', slug: 'instagram', desc: 'Chia sẻ ảnh, reel và story với bạn bè toàn cầu.', features: ['Đăng ảnh & reel', 'Story 24h', 'Nhắn tin trực tiếp', 'Khám phá xu hướng', 'Chỉnh sửa ảnh chuyên nghiệp'] },
-      { name: 'YouTube ReVanced', version: 'v19.0', size: '120 MB', type: 'apk', url: 'https://example.com/files/youtube-revanced.apk', icon: '#logo-youtube', slug: 'youtube-revanced', desc: 'YouTube không quảng cáo, phát nền, tải video.', features: ['Chặn quảng cáo', 'Phát nền', 'Tải video', 'PiP', 'Tùy chỉnh giao diện'] },
-      { name: 'Locket Widget', version: 'v1.50', size: '45 MB', type: 'ipa', url: 'https://example.com/files/locket.ipa', isNew: true, icon: 'https://play-lh.googleusercontent.com/2ZgO8wO2J-_12o9m0T4z8K1s5R4e6Y1U4h1G9d0s9d8f7g6h5j4k3l2m1n', slug: 'locket', desc: 'Widget ảnh trên màn hình chính, chia sẻ khoảnh khắc với bạn bè.', features: ['Widget ảnh', 'Chia sẻ tức thì', 'Tùy chỉnh khung', 'Thông báo realtime', 'Đồng bộ iCloud'] },
-      { name: 'Messenger', version: 'v430.0', size: '90 MB', type: 'ipa', url: 'https://example.com/files/messenger.ipa', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Facebook_Messenger_logo_2020.svg/240px-Facebook_Messenger_logo_2020.svg.png', slug: 'messenger', desc: 'Nhắn tin miễn phí, gọi video chất lượng cao.', features: ['Nhắn tin miễn phí', 'Gọi video HD', 'Gửi file lớn', 'Story', 'Mã hóa đầu cuối'] },
-      { name: 'Shopee', version: 'v3.20', size: '105 MB', type: 'apk', url: 'https://example.com/files/shopee.apk', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee_logo.svg/240px-Shopee_logo.svg.png', slug: 'shopee', desc: 'Mua sắm online giá rẻ, giao hàng nhanh.', features: ['Flash sale', 'Miễn phí ship', 'Voucher độc quyền', 'Theo dõi đơn hàng', 'Thanh toán an toàn'] },
-      { name: 'Zalo', version: 'v23.5', size: '95 MB', type: 'apk', url: 'https://example.com/files/zalo.apk', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/240px-Icon_of_Zalo.svg.png', slug: 'zalo', desc: 'Ứng dụng nhắn tin phổ biến tại Việt Nam.', features: ['Nhắn tin miễn phí', 'Gọi video', 'Zalo Pay', 'Nhật ký', 'Bảo mật cao'] },
-      { name: 'CapCut Pro', version: 'v12.0', size: '200 MB', type: 'tipa', url: 'https://example.com/files/capcut-pro.tipa', isNew: true, icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/CapCut_logo.svg/240px-CapCut_logo.svg.png', slug: 'capcut-pro', desc: 'Chỉnh sửa video chuyên nghiệp miễn phí.', features: ['Cắt ghép video', 'Hiệu ứng chuyển cảnh', 'Âm thanh bản quyền', 'Xuất 4K', 'Không watermark'] },
-      { name: 'Filza Escaped', version: 'v3.8', size: '15 MB', type: 'deb', url: 'https://example.com/files/filza.deb', isNew: true, icon: 'https://play-lh.googleusercontent.com/1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q1r2s3t4u5v6w7x8y9z0a', slug: 'filza-escaped', desc: 'Trình quản lý file mạnh mẽ cho iOS.', features: ['Duyệt file hệ thống', 'Chỉnh sửa file', 'Cài đặt deb', 'Backup dữ liệu', 'Hỗ trợ root'] },
-      { name: 'Cydia', version: 'v1.1.36', size: '10 MB', type: 'deb', url: 'https://example.com/files/cydia.deb', icon: '#logo-youtube', slug: 'cydia', desc: 'Kho ứng dụng jailbreak kinh điển.', features: ['Kho tweak lớn', 'Quản lý package', 'Cài đặt dễ dàng', 'Cộng đồng lớn', 'Miễn phí'] }
-    ];
+    // ================== APP STORE ==================
+    let APPS = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
 
-    function loadApps() {
-      try {
-        const stored = localStorage.getItem('bio_apps');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length) return parsed;
-        }
-      } catch (e) { console.warn('loadApps error:', e); }
-      return DEFAULT_APPS;
-    }
-
-    const APPS = loadApps();
     const listEl = $('#appList');
     const countEl = $('#appCount');
     const searchEl = $('#appSearch');
@@ -849,30 +843,34 @@
     const splash = $('#splash');
     const topControls = $('#topControls');
 
-    let currentFilter = 'all';
-    let currentSearch = '';
-
     function getFilteredApps() {
       return APPS.filter(app => {
         const matchFilter = currentFilter === 'all' || app.type === currentFilter;
-        const matchSearch = !currentSearch || app.name.toLowerCase().includes(currentSearch) || (app.version || '').toLowerCase().includes(currentSearch);
+        const q = currentSearch;
+        const matchSearch = !q || app.name.toLowerCase().includes(q) || (app.version || '').toLowerCase().includes(q);
         return matchFilter && matchSearch;
       });
     }
 
     function iconHtml(app) {
-      const isSvg = app.icon.startsWith('#');
-      return isSvg ? `<svg><use href="${app.icon}"/></svg>` : `<img src="${app.icon}" alt="${app.name}">`;
+      const ic = app.icon || '';
+      if (!ic) return '<svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>';
+      const isSvg = ic.startsWith('#');
+      return isSvg ? `<svg><use href="${ic}"/></svg>` : `<img src="${ic}" alt="${app.name}">`;
     }
 
     function renderApps() {
+      if (!APPS.length) {
+        listEl.innerHTML = '<div class="app-empty">Chưa có ứng dụng nào. Admin sẽ thêm sớm 🚀</div>';
+        countEl.textContent = '0 file';
+        return;
+      }
       const filtered = getFilteredApps();
       if (!filtered.length) {
         listEl.innerHTML = '<div class="app-empty">Không tìm thấy ứng dụng nào 😢</div>';
         countEl.textContent = '0 file';
         return;
       }
-      
       listEl.innerHTML = filtered.map(app => `
         <a class="app-item" href="/${app.slug}" data-slug="${app.slug}">
           <div class="app-icon">${iconHtml(app)}</div>
@@ -887,18 +885,15 @@
           <div class="app-download" aria-hidden="true"><svg class="icon"><use href="#i-download"/></svg></div>
         </a>
       `).join('');
-      
       countEl.textContent = filtered.length + ' file';
     }
 
-    // GIAO DIỆN TRANG TẢI ĐÃ NÂNG CẤP
     function renderDetail(app) {
       detailPage.innerHTML = `
         <button class="back-btn" id="backBtn">
           <svg class="icon"><use href="#i-arrow-left"/></svg>
           Quay lại
         </button>
-        
         <div class="detail-card">
           <div class="detail-header">
             <div class="app-icon">${iconHtml(app)}</div>
@@ -906,13 +901,11 @@
               <h2>${app.name}</h2>
               <p>
                 <span class="app-type-badge ${app.type}">${app.type.toUpperCase()}</span>
-                ${app.version} • ${app.size}
+                ${app.version || ''} • ${app.size || ''}
               </p>
             </div>
           </div>
-          
           <div class="detail-desc">${app.desc || ''}</div>
-          
           ${(app.features && app.features.length) ? `
             <h3 class="detail-section-title">Tính năng nổi bật</h3>
             <div class="feature-list">
@@ -924,10 +917,9 @@
               `).join('')}
             </div>
           ` : ''}
-          
           <a href="${app.url}" target="_blank" rel="noopener" class="download-btn">
             <svg class="icon"><use href="#i-download"/></svg>
-            Tải xuống ${app.type.toUpperCase()} (${app.size})
+            Tải xuống ${app.type.toUpperCase()} (${app.size || ''})
           </a>
         </div>
       `;
@@ -940,13 +932,13 @@
         renderDetail(app);
         bioCard.classList.add('hidden');
         detailPage.classList.add('active');
-        topControls.classList.add('hide'); // Ẩn 2 nút QR và Sáng/Tối
+        topControls.classList.add('hide');
         if (splash && !splash.classList.contains('hidden')) splash.classList.add('hidden');
         if (push) history.pushState({ slug }, '', '/' + slug);
       } else {
         bioCard.classList.remove('hidden');
         detailPage.classList.remove('active');
-        topControls.classList.remove('hide'); // Hiện lại 2 nút khi về trang chủ
+        topControls.classList.remove('hide');
         if (push) history.pushState({}, '', '/');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -968,15 +960,6 @@
 
     window.addEventListener('popstate', () => navigate(location.pathname, false));
 
-    (function handleInitialRoute() {
-      const path = location.pathname;
-      if (path && path !== '/' && path !== '/index.html') {
-        splash.classList.add('hidden');
-        bioCard.classList.add('show');
-        setTimeout(() => navigate(path, false), 50);
-      }
-    })();
-
     tabsEl.addEventListener('click', e => {
       const tab = e.target.closest('.app-tab');
       if (!tab) return;
@@ -991,7 +974,46 @@
       renderApps();
     });
 
-    renderApps();
+    // ================== FIREBASE REALTIME LISTENER ==================
+    // Cấu trúc dữ liệu trên Firebase: /apps là 1 object { key: appObject }
+    function normalizeApps(data) {
+      if (!data) return [];
+      if (Array.isArray(data)) return data.filter(Boolean);
+      // object -> array, sắp xếp theo order nếu có
+      return Object.keys(data).map(k => {
+        const v = data[k];
+        if (!v || typeof v !== 'object') return null;
+        return v;
+      }).filter(Boolean);
+    }
+
+    appsRef.on('value', (snap) => {
+      const data = snap.val();
+      APPS = normalizeApps(data);
+      console.log('Firebase load apps:', APPS.length);
+      renderApps();
+      // Nếu đang ở detail page, re-render lại nếu slug đổi data
+      const path = location.pathname;
+      if (path && path !== '/' && path !== '/index.html') {
+        const slug = path.replace(/^\//, '').split('/')[0];
+        const app = APPS.find(a => a.slug === slug);
+        if (app) renderDetail(app);
+      }
+    }, (err) => {
+      console.error('Firebase error:', err);
+      listEl.innerHTML = '<div class="app-empty">Không kết nối được Firebase 😢</div>';
+      countEl.textContent = 'lỗi';
+    });
+
+    // ================== INITIAL ROUTE ==================
+    (function handleInitialRoute() {
+      const path = location.pathname;
+      if (path && path !== '/' && path !== '/index.html') {
+        splash.classList.add('hidden');
+        bioCard.classList.add('show');
+        // Sẽ render detail sau khi Firebase load xong
+      }
+    })();
   </script>
 </body>
 </html>
