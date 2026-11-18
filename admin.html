@@ -1,888 +1,890 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin • Quản lý Kho App</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-  body{background:#f7f5f2;color:#1a1d23;min-height:100vh;padding:2rem 1rem;transition:.3s}
-  body.dark{background:#0f1117;color:#f5f7fa}
-  .icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin • Quản lý Kho App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+      body{background:#f7f5f2;color:#1a1d23;min-height:100vh;padding:2rem 1rem;transition:.3s}
+      body.dark{background:#0f1117;color:#f5f7fa}
+      .icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-  /* ===== LOGIN ===== */
-  .login-screen{position:fixed;inset:0;z-index:5000;background:linear-gradient(135deg,#fef9f3,#f0f4f8);display:flex;align-items:center;justify-content:center;padding:1rem;transition:.35s}
-  body.dark .login-screen{background:linear-gradient(135deg,#1a1d28,#0d0f15)}
-  .login-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
-  .login-box{background:#fff;border-radius:24px;padding:2.5rem 2rem;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(20,20,40,.08);text-align:center}
-  body.dark .login-box{background:#1a1d26}
-  .login-logo{width:64px;height:64px;border-radius:50%;margin:0 auto 1rem;background:linear-gradient(135deg,#3b82f6,#60a5fa);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 12px 30px rgba(59,130,246,.25)}
-  .login-logo .icon{width:1.8rem;height:1.8rem;stroke-width:2}
-  .login-box h2{font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
-  .login-box p{font-size:.85rem;color:#6b7280;margin-bottom:1.5rem}
-  .login-field{position:relative;margin-bottom:.75rem;text-align:left}
-  .login-field label{display:block;font-size:.72rem;font-weight:600;color:#6b7280;margin-bottom:.35rem;text-transform:uppercase}
-  .login-field input{width:100%;font-size:.9rem;padding:.75rem .95rem;border:1px solid #e8e6e1;border-radius:12px;background:#fafafa;color:#1a1d23;outline:none;transition:.2s}
-  body.dark .login-field input{background:#232730;border-color:#2a2e38;color:#f5f7fa}
-  .login-field input:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
-  .login-field .toggle-pass{position:absolute;right:.6rem;bottom:.55rem;background:0;border:0;cursor:pointer;color:#6b7280;padding:.25rem .5rem;border-radius:8px}
-  .login-btn{width:100%;font-size:.95rem;font-weight:700;padding:.85rem;border-radius:12px;border:0;cursor:pointer;background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3);transition:.2s;margin-top:.5rem;display:inline-flex;align-items:center;justify-content:center;gap:.4rem}
-  .login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,.45)}
-  .login-btn:active{transform:scale(.98)}
-  .login-btn.green{background:linear-gradient(135deg,#10b981,#34d399);box-shadow:0 4px 12px rgba(16,185,129,.3)}
-  .login-btn.green:hover{box-shadow:0 6px 16px rgba(16,185,129,.45)}
-  .login-error{background:#fef2f2;color:#dc2626;font-size:.8rem;font-weight:600;padding:.6rem .8rem;border-radius:10px;margin-bottom:.75rem;display:none;align-items:center;gap:.4rem}
-  .login-error.show{display:flex}
-  .login-copyright{margin-top:1.25rem;font-size:.72rem;color:#9ca3af;padding-top:1rem;border-top:1px solid #f0eeea;line-height:1.5}
+      /* ===== LOGIN ===== */
+      .login-screen{position:fixed;inset:0;z-index:5000;background:linear-gradient(135deg,#fef9f3,#f0f4f8);display:flex;align-items:center;justify-content:center;padding:1rem;transition:.35s}
+      body.dark .login-screen{background:linear-gradient(135deg,#1a1d28,#0d0f15)}
+      .login-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+      .login-box{background:#fff;border-radius:24px;padding:2.5rem 2rem;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(20,20,40,.08);text-align:center}
+      body.dark .login-box{background:#1a1d26}
+      .login-logo{width:64px;height:64px;border-radius:50%;margin:0 auto 1rem;background:linear-gradient(135deg,#3b82f6,#60a5fa);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 12px 30px rgba(59,130,246,.25)}
+      .login-logo .icon{width:1.8rem;height:1.8rem;stroke-width:2}
+      .login-box h2{font-size:1.3rem;font-weight:800;margin-bottom:.4rem}
+      .login-box p{font-size:.85rem;color:#6b7280;margin-bottom:1.5rem}
+      .login-field{position:relative;margin-bottom:.75rem;text-align:left}
+      .login-field label{display:block;font-size:.72rem;font-weight:600;color:#6b7280;margin-bottom:.35rem;text-transform:uppercase}
+      .login-field input{width:100%;font-size:.9rem;padding:.75rem .95rem;border:1px solid #e8e6e1;border-radius:12px;background:#fafafa;color:#1a1d23;outline:none;transition:.2s}
+      body.dark .login-field input{background:#232730;border-color:#2a2e38;color:#f5f7fa}
+      .login-field input:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+      .login-field .toggle-pass{position:absolute;right:.6rem;bottom:.55rem;background:0;border:0;cursor:pointer;color:#6b7280;padding:.25rem .5rem;border-radius:8px}
+      .login-btn{width:100%;font-size:.95rem;font-weight:700;padding:.85rem;border-radius:12px;border:0;cursor:pointer;background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3);transition:.2s;margin-top:.5rem;display:inline-flex;align-items:center;justify-content:center;gap:.4rem}
+      .login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,.45)}
+      .login-btn:active{transform:scale(.98)}
+      .login-btn.green{background:linear-gradient(135deg,#10b981,#34d399);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+      .login-btn.green:hover{box-shadow:0 6px 16px rgba(16,185,129,.45)}
+      .login-error{background:#fef2f2;color:#dc2626;font-size:.8rem;font-weight:600;padding:.6rem .8rem;border-radius:10px;margin-bottom:.75rem;display:none;align-items:center;gap:.4rem}
+      .login-error.show{display:flex}
+      .login-copyright{margin-top:1.25rem;font-size:.72rem;color:#9ca3af;padding-top:1rem;border-top:1px solid #f0eeea;line-height:1.5}
 
-  /* ===== ADMIN ===== */
-  .wrap{max-width:1000px;margin:0 auto;display:none}
-  .wrap.active{display:block}
-  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
-  header h1{font-size:1.6rem;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-  header h1 .icon{color:#3b82f6;width:1.4rem;height:1.4rem}
-  header h1 span{color:#3b82f6}
-  .header-actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
-  .btn{font-size:.85rem;font-weight:600;padding:.6rem 1.1rem;border-radius:12px;border:0;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:.4rem}
-  .btn .icon{width:1rem;height:1rem}
-  .btn-primary{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,.45)}
-  .btn-ghost{background:#fff;color:#1a1d23;border:1px solid #e8e6e1}
-  body.dark .btn-ghost{background:#1a1d26;color:#f5f7fa;border-color:#2a2e38}
-  .btn-ghost:hover{background:#fafafa}
-  .btn-logout{background:#fff;color:#6b7280;border:1px solid #e8e6e1}
-  body.dark .btn-logout{background:#1a1d26;color:#9ca3af;border-color:#2a2e38}
-  .btn-logout:hover{background:#fef2f2;color:#dc2626;border-color:#fecaca}
-  .btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
-  .btn-danger:hover{background:#fee2e2}
-  .btn-sm{padding:.4rem .8rem;font-size:.75rem;border-radius:8px}
-  .btn-sm .icon{width:.85rem;height:.85rem}
+      /* ===== ADMIN ===== */
+      .wrap{max-width:1000px;margin:0 auto;display:none}
+      .wrap.active{display:block}
+      header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+      header h1{font-size:1.6rem;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+      header h1 .icon{color:#3b82f6;width:1.4rem;height:1.4rem}
+      header h1 span{color:#3b82f6}
+      .header-actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+      .btn{font-size:.85rem;font-weight:600;padding:.6rem 1.1rem;border-radius:12px;border:0;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:.4rem}
+      .btn .icon{width:1rem;height:1rem}
+      .btn-primary{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}
+      .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,.45)}
+      .btn-ghost{background:#fff;color:#1a1d23;border:1px solid #e8e6e1}
+      body.dark .btn-ghost{background:#1a1d26;color:#f5f7fa;border-color:#2a2e38}
+      .btn-ghost:hover{background:#fafafa}
+      .btn-logout{background:#fff;color:#6b7280;border:1px solid #e8e6e1}
+      body.dark .btn-logout{background:#1a1d26;color:#9ca3af;border-color:#2a2e38}
+      .btn-logout:hover{background:#fef2f2;color:#dc2626;border-color:#fecaca}
+      .btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+      .btn-danger:hover{background:#fee2e2}
+      .btn-sm{padding:.4rem .8rem;font-size:.75rem;border-radius:8px}
+      .btn-sm .icon{width:.85rem;height:.85rem}
 
-  .sync-status{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;color:#10b981;background:#ecfdf5;padding:.4rem .75rem;border-radius:999px;transition:.3s}
-  body.dark .sync-status{background:#1a2e28}
-  .sync-status.syncing{color:#f59e0b;background:#fffbeb}
-  .sync-status.error{color:#dc2626;background:#fef2f2}
-  .sync-status .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 1.2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+      .sync-status{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;color:#10b981;background:#ecfdf5;padding:.4rem .75rem;border-radius:999px;transition:.3s}
+      body.dark .sync-status{background:#1a2e28}
+      .sync-status.syncing{color:#f59e0b;background:#fffbeb}
+      .sync-status.error{color:#dc2626;background:#fef2f2}
+      .sync-status .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 1.2s infinite}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-bottom:1.5rem}
-  .stat{background:#fff;border:1px solid #f0eeea;border-radius:16px;padding:1rem}
-  body.dark .stat{background:#1a1d26;border-color:#232730}
-  .stat-label{font-size:.7rem;font-weight:600;text-transform:uppercase;color:#9ca3af;margin-bottom:.3rem}
-  .stat-value{font-size:1.4rem;font-weight:800}
-  .stat-value.blue{color:#3b82f6}
-  .stat-value.green{color:#10b981}
-  .stat-value.orange{color:#f59e0b}
-  .stat-value.red{color:#ef4444}
+      .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-bottom:1.5rem}
+      .stat{background:#fff;border:1px solid #f0eeea;border-radius:16px;padding:1rem}
+      body.dark .stat{background:#1a1d26;border-color:#232730}
+      .stat-label{font-size:.7rem;font-weight:600;text-transform:uppercase;color:#9ca3af;margin-bottom:.3rem}
+      .stat-value{font-size:1.4rem;font-weight:800}
+      .stat-value.blue{color:#3b82f6}
+      .stat-value.green{color:#10b981}
+      .stat-value.orange{color:#f59e0b}
+      .stat-value.red{color:#ef4444}
 
-  .app-list{display:flex;flex-direction:column;gap:.6rem}
-  .app-row{background:#fff;border:1px solid #f0eeea;border-radius:16px;padding:.85rem 1rem;display:flex;align-items:center;gap:.85rem;transition:.2s}
-  body.dark .app-row{background:#1a1d26;border-color:#232730}
-  .app-row:hover{box-shadow:0 4px 16px rgba(20,20,40,.06);transform:translateY(-1px)}
-  .app-icon{width:2.8rem;height:2.8rem;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f7f5f2;border:1px solid #f0eeea}
-  body.dark .app-icon{background:#232730;border-color:#2a2e38}
-  .app-icon svg,.app-icon img{width:100%;height:100%;object-fit:cover}
-  .app-info{flex:1;min-width:0}
-  .app-name{font-size:.9rem;font-weight:700;margin-bottom:.2rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
-  .app-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.72rem;color:#6b7280}
-  .badge{font-size:.6rem;font-weight:800;padding:.12rem .4rem;border-radius:5px;text-transform:uppercase}
-  .badge.ipa{background:#eff6ff;color:#2563eb}
-  .badge.tipa{background:#fffbeb;color:#d97706}
-  .badge.apk{background:#ecfdf5;color:#059669}
-  .badge.deb{background:#fef2f2;color:#dc2626}
-  .app-actions{display:flex;gap:.35rem;flex-shrink:0}
-  .empty{text-align:center;padding:3rem 1rem;color:#9ca3af;font-weight:500}
+      .app-list{display:flex;flex-direction:column;gap:.6rem}
+      .app-row{background:#fff;border:1px solid #f0eeea;border-radius:16px;padding:.85rem 1rem;display:flex;align-items:center;gap:.85rem;transition:.2s}
+      body.dark .app-row{background:#1a1d26;border-color:#232730}
+      .app-row:hover{box-shadow:0 4px 16px rgba(20,20,40,.06);transform:translateY(-1px)}
+      .app-icon{width:2.8rem;height:2.8rem;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f7f5f2;border:1px solid #f0eeea}
+      body.dark .app-icon{background:#232730;border-color:#2a2e38}
+      .app-icon svg,.app-icon img{width:100%;height:100%;object-fit:cover}
+      .app-info{flex:1;min-width:0}
+      .app-name{font-size:.9rem;font-weight:700;margin-bottom:.2rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+      .app-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.72rem;color:#6b7280}
+      .badge{font-size:.6rem;font-weight:800;padding:.12rem .4rem;border-radius:5px;text-transform:uppercase}
+      .badge.ipa{background:#eff6ff;color:#2563eb}
+      .badge.tipa{background:#fffbeb;color:#d97706}
+      .badge.apk{background:#ecfdf5;color:#059669}
+      .badge.deb{background:#fef2f2;color:#dc2626}
+      .app-actions{display:flex;gap:.35rem;flex-shrink:0}
+      .empty{text-align:center;padding:3rem 1rem;color:#9ca3af;font-weight:500}
 
-  /* ===== MODAL ===== */
-  .modal{position:fixed;inset:0;background:rgba(20,20,40,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:7000;opacity:0;visibility:hidden;transition:.25s;padding:1rem;overflow-y:auto}
-  .modal.active{opacity:1;visibility:visible}
-  .modal-box{background:#fff;border-radius:24px;padding:2rem 1.75rem 1.5rem;max-width:680px;width:100%;margin:auto;position:relative;transform:scale(.95);transition:.3s}
-  body.dark .modal-box{background:#1a1d26}
-  .modal.active .modal-box{transform:scale(1)}
-  .modal-box h2{font-size:1.25rem;font-weight:800;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem}
-  .modal-subtitle{font-size:.78rem;color:#6b7280;margin-bottom:1.25rem}
-  .close-x{position:absolute;top:.9rem;right:.9rem;width:2rem;height:2rem;background:#f7f5f2;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;transition:.2s}
-  body.dark .close-x{background:#232730;color:#9ca3af}
-  .close-x:hover{background:#e8e6e1;color:#1a1d23;transform:rotate(90deg)}
+      /* ===== MODAL ===== */
+      .modal{position:fixed;inset:0;background:rgba(20,20,40,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:7000;opacity:0;visibility:hidden;transition:.25s;padding:1rem;overflow-y:auto}
+      .modal.active{opacity:1;visibility:visible}
+      .modal-box{background:#fff;border-radius:24px;padding:2rem 1.75rem 1.5rem;max-width:680px;width:100%;margin:auto;position:relative;transform:scale(.95);transition:.3s}
+      body.dark .modal-box{background:#1a1d26}
+      .modal.active .modal-box{transform:scale(1)}
+      .modal-box h2{font-size:1.25rem;font-weight:800;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem}
+      .modal-subtitle{font-size:.78rem;color:#6b7280;margin-bottom:1.25rem}
+      .close-x{position:absolute;top:.9rem;right:.9rem;width:2rem;height:2rem;background:#f7f5f2;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;transition:.2s}
+      body.dark .close-x{background:#232730;color:#9ca3af}
+      .close-x:hover{background:#e8e6e1;color:#1a1d23;transform:rotate(90deg)}
 
-  .modal-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid #f0eeea}
-  body.dark .modal-tabs{border-color:#232730}
-  .modal-tab{font-size:.75rem;font-weight:600;padding:.45rem .85rem;background:#fafafa;border:1px solid #e8e6e1;border-radius:999px;color:#6b7280;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:.35rem}
-  body.dark .modal-tab{background:#232730;border-color:#2a2e38;color:#9ca3af}
-  .modal-tab.active{background:#3b82f6;border-color:#3b82f6;color:#fff}
-  .modal-tab .icon{width:.85rem;height:.85rem}
-  .tab-content{display:none}
-  .tab-content.active{display:block;animation:fadeIn .25s}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+      .modal-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid #f0eeea}
+      body.dark .modal-tabs{border-color:#232730}
+      .modal-tab{font-size:.75rem;font-weight:600;padding:.45rem .85rem;background:#fafafa;border:1px solid #e8e6e1;border-radius:999px;color:#6b7280;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:.35rem}
+      body.dark .modal-tab{background:#232730;border-color:#2a2e38;color:#9ca3af}
+      .modal-tab.active{background:#3b82f6;border-color:#3b82f6;color:#fff}
+      .modal-tab .icon{width:.85rem;height:.85rem}
+      .tab-content{display:none}
+      .tab-content.active{display:block;animation:fadeIn .25s}
+      @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-  .form-section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#3b82f6;margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
-  .form-section-title .icon{width:.9rem;height:.9rem}
-  .form-group{margin-bottom:.85rem}
-  .form-group label{display:block;font-size:.72rem;font-weight:600;color:#6b7280;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.3px}
-  .form-group input,.form-group select,.form-group textarea{width:100%;font-size:.88rem;padding:.65rem .85rem;border:1px solid #e8e6e1;border-radius:10px;background:#fafafa;color:#1a1d23;outline:none;transition:.2s;font-family:inherit}
-  body.dark .form-group input,body.dark .form-group select,body.dark .form-group textarea{background:#232730;border-color:#2a2e38;color:#f5f7fa}
-  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
-  body.dark .form-group input:focus,body.dark .form-group textarea:focus{background:#1a1d26}
-  .form-group textarea{resize:vertical;min-height:60px}
-  .form-group small{display:block;font-size:.68rem;color:#9ca3af;margin-top:.25rem;line-height:1.4}
-  .form-group small code{background:#f0eeea;padding:.1rem .35rem;border-radius:4px;font-size:.92em}
-  body.dark .form-group small code{background:#232730}
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-  .form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
-  .checkbox-row{display:flex;align-items:center;gap:.5rem;font-size:.85rem;padding:.4rem 0}
-  .checkbox-row input{width:auto}
+      .form-section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#3b82f6;margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
+      .form-section-title .icon{width:.9rem;height:.9rem}
+      .form-group{margin-bottom:.85rem}
+      .form-group label{display:block;font-size:.72rem;font-weight:600;color:#6b7280;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.3px}
+      .form-group input,.form-group select,.form-group textarea{width:100%;font-size:.88rem;padding:.65rem .85rem;border:1px solid #e8e6e1;border-radius:10px;background:#fafafa;color:#1a1d23;outline:none;transition:.2s;font-family:inherit}
+      body.dark .form-group input,body.dark .form-group select,body.dark .form-group textarea{background:#232730;border-color:#2a2e38;color:#f5f7fa}
+      .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+      body.dark .form-group input:focus,body.dark .form-group textarea:focus{background:#1a1d26}
+      .form-group textarea{resize:vertical;min-height:60px}
+      .form-group small{display:block;font-size:.68rem;color:#9ca3af;margin-top:.25rem;line-height:1.4}
+      .form-group small code{background:#f0eeea;padding:.1rem .35rem;border-radius:4px;font-size:.92em}
+      body.dark .form-group small code{background:#232730}
+      .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+      .form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+      .checkbox-row{display:flex;align-items:center;gap:.5rem;font-size:.85rem;padding:.4rem 0}
+      .checkbox-row input{width:auto}
 
-  .preview-card{display:flex;align-items:center;gap:.85rem;padding:.85rem;background:linear-gradient(135deg,#f0f9ff,#f5f5ff);border-radius:14px;border:1px solid #dbeafe;margin-bottom:1.25rem}
-  body.dark .preview-card{background:linear-gradient(135deg,#1e293b,#232730);border-color:#3b82f6}
-  .preview-card .app-icon{background:#fff}
-  body.dark .preview-card .app-icon{background:#1a1d26;border-color:#2a2e38}
+      .preview-card{display:flex;align-items:center;gap:.85rem;padding:.85rem;background:linear-gradient(135deg,#f0f9ff,#f5f5ff);border-radius:14px;border:1px solid #dbeafe;margin-bottom:1.25rem}
+      body.dark .preview-card{background:linear-gradient(135deg,#1e293b,#232730);border-color:#3b82f6}
+      .preview-card .app-icon{background:#fff}
+      body.dark .preview-card .app-icon{background:#1a1d26;border-color:#2a2e38}
 
-  .modal-actions{display:flex;gap:.5rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid #f0eeea}
-  body.dark .modal-actions{border-color:#232730}
-  .modal-actions .btn{flex:1;justify-content:center}
+      .modal-actions{display:flex;gap:.5rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid #f0eeea}
+      body.dark .modal-actions{border-color:#232730}
+      .modal-actions .btn{flex:1;justify-content:center}
 
-  .toast{position:fixed;bottom:1.5rem;left:50%;transform:translate(-50%,150%);background:#1a1d23;color:#fff;padding:.75rem 1.2rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 20px 50px rgba(0,0,0,.2);opacity:0;transition:.35s;pointer-events:none;z-index:8000;display:flex;align-items:center;gap:.4rem;max-width:90vw}
-  .toast.show{transform:translate(-50%,0);opacity:1}
-  .toast.error{background:#dc2626}
-  .toast .icon{width:1rem;height:1rem}
+      .toast{position:fixed;bottom:1.5rem;left:50%;transform:translate(-50%,150%);background:#1a1d23;color:#fff;padding:.75rem 1.2rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 20px 50px rgba(0,0,0,.2);opacity:0;transition:.35s;pointer-events:none;z-index:8000;display:flex;align-items:center;gap:.4rem;max-width:90vw}
+      .toast.show{transform:translate(-50%,0);opacity:1}
+      .toast.error{background:#dc2626}
+      .toast .icon{width:1rem;height:1rem}
 
-  .tiktok-btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#000,#1a1a1a);padding:.75rem 1.4rem;border-radius:12px;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.3);margin-bottom:.75rem;transition:.2s}
-  .tiktok-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.4)}
+      .tiktok-btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#000,#1a1a1a);padding:.75rem 1.4rem;border-radius:12px;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.3);margin-bottom:.75rem;transition:.2s}
+      .tiktok-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.4)}
 
-  @media(max-width:520px){
-    header h1{font-size:1.3rem}
-    .form-row,.form-row-3{grid-template-columns:1fr}
-    .modal-box{padding:1.75rem 1.25rem 1.25rem}
-    .header-actions{width:100%}
-    .header-actions .btn{flex:1;justify-content:center}
-  }
-</style>
-</head>
-<body>
+      @media(max-width:520px){
+        header h1{font-size:1.3rem}
+        .form-row,.form-row-3{grid-template-columns:1fr}
+        .modal-box{padding:1.75rem 1.25rem 1.25rem}
+        .header-actions{width:100%}
+        .header-actions .btn{flex:1;justify-content:center}
+      }
 
-<!-- ===== SVG ICONS ===== -->
-<svg style="display:none">
-  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
-  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
-  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
-  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
-  <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-  <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
-  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
-  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
-  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
-  <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
-  <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-  <symbol id="i-package" viewBox="0 0 24 24"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
-  <symbol id="i-text" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
-  <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
-  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
-  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
-  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l2.4 5 5.6.6-4 4 1 5.4-5-2.8-5 2.8 1-5.4-4-4 5.6-.6z"/></symbol>
-</svg>
+    </style>
+  </head>
+  <body>
 
-<!-- ===== LOGIN SCREEN ===== -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo"><svg class="icon"><use href="#i-lock"/></svg></div>
-    <h2>Đăng nhập Admin</h2>
-    <p>Nhập tài khoản để quản lý kho app</p>
-    <div class="login-error" id="loginError"><svg class="icon"><use href="#i-alert"/></svg><span>Sai tài khoản hoặc mật khẩu</span></div>
-    <div class="login-field"><label>Tài khoản</label><input type="text" id="loginUser" placeholder="admin" autocomplete="username"></div>
-    <div class="login-field">
-      <label>Mật khẩu</label>
-      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
-      <button class="toggle-pass" id="togglePass"><svg class="icon" id="togglePassIcon"><use href="#i-eye"/></svg></button>
-    </div>
-    <button class="login-btn" id="loginBtn"><svg class="icon"><use href="#i-shield"/></svg>Đăng nhập</button>
-    <div style="display:flex;gap:.5rem;margin-top:.6rem">
-      <button class="login-btn green" id="registerBtn"><svg class="icon"><use href="#i-plus"/></svg>Đăng ký Staff</button>
-    </div>
-    <div style="margin-top:.75rem;font-size:.75rem;color:#6b7280;line-height:1.5">
-      Staff chỉ có quyền <strong>thêm app</strong>. Founder quản lý toàn bộ.
-    </div>
-    <div class="login-copyright">© 2026 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.</div>
-  </div>
-</div>
+    <!-- ===== SVG ICONS ===== -->
+    <svg style="display:none">
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+      <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      <symbol id="i-package" viewBox="0 0 24 24"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
+      <symbol id="i-text" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
+      <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l2.4 5 5.6.6-4 4 1 5.4-5-2.8-5 2.8 1-5.4-4-4 5.6-.6z"/></symbol>
+    </svg>
 
-<!-- ===== ADMIN WRAP ===== -->
-<div class="wrap" id="adminWrap">
-  <header>
-    <h1><svg class="icon"><use href="#i-settings"/></svg>Admin <span>Kho App</span></h1>
-    <div class="header-actions">
-      <span class="sync-status syncing" id="syncStatus"><span class="dot"></span><span id="syncText">Đang kết nối...</span></span>
-      <button class="btn btn-primary" id="addBtn"><svg class="icon"><use href="#i-plus"/></svg>Thêm app</button>
-      <button class="btn btn-logout" id="darkBtn"><svg class="icon" id="darkIcon"><use href="#i-moon"/></svg></button>
-      <button class="btn btn-logout" id="logoutBtn"><svg class="icon"><use href="#i-logout"/></svg>Đăng xuất</button>
-    </div>
-  </header>
-
-  <div class="stats" id="stats"></div>
-  <div class="app-list" id="appList"></div>
-
-  <!-- ===== ACCOUNT LIST (chỉ Founder thấy) ===== -->
-  <div id="staffSection" style="display:none;margin-top:2rem">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem">
-      <h2 style="font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:.4rem">
-        <svg class="icon" style="color:#3b82f6"><use href="#i-shield"/></svg>Danh sách tài khoản
-      </h2>
-      <div style="display:flex;gap:.5rem;align-items:center">
-        <span class="sync-status" id="staffCount" style="background:#eff6ff;color:#2563eb">0 tài khoản</span>
-        <button class="btn btn-primary btn-sm" id="createStaffBtn"><svg class="icon"><use href="#i-plus"/></svg>Tạo tài khoản</button>
-      </div>
-    </div>
-    <div class="app-list" id="staffList"></div>
-  </div>
-</div>
-
-<!-- ===== CONTACT MODAL ===== -->
-<div class="modal" id="contactModal">
-  <div class="modal-box" style="max-width:420px;text-align:center">
-    <button class="close-x" id="closeContact"><svg class="icon"><use href="#i-close"/></svg></button>
-    <div style="width:72px;height:72px;margin:0 auto 1rem;border-radius:50%;background:linear-gradient(135deg,#000,#25F4EE,#FE2C55);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(254,44,85,.3)">
-      <svg viewBox="0 0 24 24" style="width:2.2rem;height:2.2rem;fill:#fff">
-        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-      </svg>
-    </div>
-    <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.5rem;justify-content:center">Tạo tài khoản Staff</h2>
-    <p style="font-size:.85rem;color:#6b7280;line-height:1.6;margin-bottom:1.25rem">
-      Để được cấp tài khoản Staff và quyền <strong>up app lên website</strong>, vui lòng liên hệ:
-    </p>
-    <a href="https://www.tiktok.com/@tyraeg_" target="_blank" rel="noopener" class="tiktok-btn">
-      <svg viewBox="0 0 24 24" style="width:1.1rem;height:1.1rem;fill:#fff">
-        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-      </svg>
-      @tyraeg_
-    </a>
-    <p style="font-size:.72rem;color:#9ca3af;margin-top:.5rem">Nhấn để mở TikTok</p>
-  </div>
-</div>
-
-<!-- ===== CREATE STAFF MODAL ===== -->
-<div class="modal" id="createStaffModal">
-  <div class="modal-box" style="max-width:440px">
-    <button class="close-x" id="closeCreateStaff"><svg class="icon"><use href="#i-close"/></svg></button>
-    <h2><svg class="icon"><use href="#i-plus"/></svg><span>Tạo tài khoản Staff</span></h2>
-    <p class="modal-subtitle">Tài khoản staff chỉ được thêm app, không xóa được.</p>
-
-    <div class="login-error" id="createStaffError"><svg class="icon"><use href="#i-alert"/></svg><span></span></div>
-
-    <div class="form-group">
-      <label>Tên đăng nhập *</label>
-      <input type="text" id="csUser" placeholder="vd: staff01" autocomplete="off">
-      <small>Chỉ chữ, số, gạch dưới. Tối thiểu 3 ký tự.</small>
-    </div>
-    <div class="form-group">
-      <label>Mật khẩu *</label>
-      <input type="password" id="csPass" placeholder="Tối thiểu 4 ký tự">
-    </div>
-    <div class="form-group">
-      <label>Nhập lại mật khẩu *</label>
-      <input type="password" id="csPass2" placeholder="Nhập lại mật khẩu">
-    </div>
-    <div class="form-group">
-      <label>Vai trò</label>
-      <select id="csRole">
-        <option value="staff">Staff — chỉ thêm app</option>
-        <option value="admin">Founder — toàn quyền</option>
-      </select>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-ghost" id="cancelCreateStaff">Hủy</button>
-      <button class="btn btn-primary" id="confirmCreateStaff"><svg class="icon"><use href="#i-check"/></svg>Tạo tài khoản</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== EDIT APP MODAL ===== -->
-<div class="modal" id="editModal">
-  <div class="modal-box">
-    <button class="close-x" id="closeModal"><svg class="icon"><use href="#i-close"/></svg></button>
-    <h2 id="modalTitle"><svg class="icon"><use href="#i-plus"/></svg><span>Thêm app mới</span></h2>
-    <p class="modal-subtitle">Mọi field bỏ trống sẽ dùng giá trị mặc định thông minh</p>
-
-    <div class="preview-card">
-      <div class="app-icon" id="previewIcon"></div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:.9rem;font-weight:700" id="previewName">Tên app</div>
-        <div style="font-size:.72rem;color:#6b7280" id="previewMeta">v1.0 • IPA</div>
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div class="login-screen" id="loginScreen">
+      <div class="login-box">
+        <div class="login-logo"><svg class="icon"><use href="#i-lock"/></svg></div>
+        <h2>Đăng nhập Tài Khoản</h2>
+        <p>Nhập tài khoản để quản lý kho app</p>
+        <div class="login-error" id="loginError"><svg class="icon"><use href="#i-alert"/></svg><span>Sai tài khoản hoặc mật khẩu</span></div>
+        <div class="login-field"><label>Tài khoản</label><input type="text" id="loginUser" placeholder="admin" autocomplete="username"></div>
+        <div class="login-field">
+          <label>Mật khẩu</label>
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+          <button class="toggle-pass" id="togglePass"><svg class="icon" id="togglePassIcon"><use href="#i-eye"/></svg></button>
+        </div>
+        <button class="login-btn" id="loginBtn"><svg class="icon"><use href="#i-shield"/></svg>Đăng nhập</button>
+        <div style="display:flex;gap:.5rem;margin-top:.6rem">
+          <button class="login-btn green" id="registerBtn"><svg class="icon"><use href="#i-plus"/></svg>Đăng ký Tài Khoản</button>
+        </div>
+        <div style="margin-top:.75rem;font-size:.75rem;color:#6b7280;line-height:1.5">
+          Staff chỉ có quyền <strong>thêm app</strong>. Founder quản lý toàn bộ.
+        </div>
+        <div class="login-copyright">© 2026 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.</div>
       </div>
     </div>
 
-    <div class="modal-tabs">
-      <button class="modal-tab active" data-tab="basic"><svg class="icon"><use href="#i-package"/></svg>Cơ bản</button>
-      <button class="modal-tab" data-tab="content"><svg class="icon"><use href="#i-text"/></svg>Nội dung</button>
-      <button class="modal-tab" data-tab="advanced"><svg class="icon"><use href="#i-sliders"/></svg>Nâng cao</button>
+    <!-- ===== ADMIN WRAP ===== -->
+    <div class="wrap" id="adminWrap">
+      <header>
+        <h1><svg class="icon"><use href="#i-settings"/></svg>Admin <span>Kho App</span></h1>
+        <div class="header-actions">
+          <span class="sync-status syncing" id="syncStatus"><span class="dot"></span><span id="syncText">Đang kết nối...</span></span>
+          <button class="btn btn-primary" id="addBtn"><svg class="icon"><use href="#i-plus"/></svg>Thêm app</button>
+          <button class="btn btn-logout" id="darkBtn"><svg class="icon" id="darkIcon"><use href="#i-moon"/></svg></button>
+          <button class="btn btn-logout" id="logoutBtn"><svg class="icon"><use href="#i-logout"/></svg>Đăng xuất</button>
+        </div>
+      </header>
+
+      <div class="stats" id="stats"></div>
+      <div class="app-list" id="appList"></div>
+
+      <!-- ===== ACCOUNT LIST (chỉ Founder thấy) ===== -->
+      <div id="staffSection" style="display:none;margin-top:2rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem">
+          <h2 style="font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:.4rem">
+            <svg class="icon" style="color:#3b82f6"><use href="#i-shield"/></svg>Danh sách tài khoản
+          </h2>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <span class="sync-status" id="staffCount" style="background:#eff6ff;color:#2563eb">0 tài khoản</span>
+            <button class="btn btn-primary btn-sm" id="createStaffBtn"><svg class="icon"><use href="#i-plus"/></svg>Tạo tài khoản</button>
+          </div>
+        </div>
+        <div class="app-list" id="staffList"></div>
+      </div>
     </div>
 
-    <div class="tab-content active" data-tab="basic">
-      <div class="form-row">
+    <!-- ===== CONTACT MODAL ===== -->
+    <div class="modal" id="contactModal">
+      <div class="modal-box" style="max-width:420px;text-align:center">
+        <button class="close-x" id="closeContact"><svg class="icon"><use href="#i-close"/></svg></button>
+        <div style="width:72px;height:72px;margin:0 auto 1rem;border-radius:50%;background:linear-gradient(135deg,#000,#25F4EE,#FE2C55);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(254,44,85,.3)">
+          <svg viewBox="0 0 24 24" style="width:2.2rem;height:2.2rem;fill:#fff">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
+        </div>
+        <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.5rem;justify-content:center">Tạo tài khoản</h2>
+        <p style="font-size:.85rem;color:#6b7280;line-height:1.6;margin-bottom:1.25rem">
+          Để được cấp tài khoản Staff và quyền <strong>up app lên website</strong>, vui lòng liên hệ:
+        </p>
+        <a href="https://www.tiktok.com/@tyraeg_" target="_blank" rel="noopener" class="tiktok-btn">
+          <svg viewBox="0 0 24 24" style="width:1.1rem;height:1.1rem;fill:#fff">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
+          @tyraeg_
+        </a>
+        <p style="font-size:.72rem;color:#9ca3af;margin-top:.5rem">Nhấn để mở TikTok</p>
+      </div>
+    </div>
+
+    <!-- ===== CREATE STAFF MODAL ===== -->
+    <div class="modal" id="createStaffModal">
+      <div class="modal-box" style="max-width:440px">
+        <button class="close-x" id="closeCreateStaff"><svg class="icon"><use href="#i-close"/></svg></button>
+        <h2><svg class="icon"><use href="#i-plus"/></svg><span>Tạo tài khoản</span></h2>
+        <p class="modal-subtitle">Tài khoản staff chỉ được thêm app, không xóa được.</p>
+
+        <div class="login-error" id="createStaffError"><svg class="icon"><use href="#i-alert"/></svg><span></span></div>
+
         <div class="form-group">
-          <label>Tên app *</label>
-          <input type="text" id="fName" placeholder="vd: TikTok">
+          <label>Tên đăng nhập *</label>
+          <input type="text" id="csUser" placeholder="vd: staff01" autocomplete="off">
+          <small>Chỉ chữ, số, gạch dưới. Tối thiểu 3 ký tự.</small>
         </div>
         <div class="form-group">
-          <label>Slug (URL) *</label>
-          <input type="text" id="fSlug" placeholder="vd: tiktok">
-          <small>Chỉ chữ thường, số, gạch ngang</small>
+          <label>Mật khẩu *</label>
+          <input type="password" id="csPass" placeholder="Tối thiểu 4 ký tự">
         </div>
-      </div>
-      <div class="form-row">
         <div class="form-group">
-          <label>Loại *</label>
-          <select id="fType">
-            <option value="ipa">IPA (iOS)</option>
-            <option value="tipa">TIPA (TrollStore)</option>
-            <option value="apk">APK (Android)</option>
-            <option value="deb">DEB (Jailbreak)</option>
+          <label>Nhập lại mật khẩu *</label>
+          <input type="password" id="csPass2" placeholder="Nhập lại mật khẩu">
+        </div>
+        <div class="form-group">
+          <label>Vai trò</label>
+          <select id="csRole">
+            <option value="staff">Staff — chỉ thêm app</option>
+            <option value="admin">Founder — toàn quyền</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Phiên bản</label>
-          <input type="text" id="fVersion" placeholder="vd: 1.0.0">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Dung lượng</label>
-          <input type="text" id="fSize" placeholder="vd: 45 MB">
-        </div>
-        <div class="form-group">
-          <label>Icon URL</label>
-          <input type="text" id="fIcon" placeholder="https://... hoặc #i-star">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Link tải *</label>
-        <input type="text" id="fUrl" placeholder="https://...">
-      </div>
-      <div class="form-group">
-        <label>Bundle ID (IPA/TIPA/DEB)</label>
-        <input type="text" id="fBundleId" placeholder="com.example.app">
-      </div>
-      <div class="form-group">
-        <label>Tương thích</label>
-        <input type="text" id="fCompat" placeholder="vd: iOS 16.0+ / Android 13+">
-      </div>
-      <div class="checkbox-row">
-        <input type="checkbox" id="fIsNew">
-        <label for="fIsNew" style="text-transform:none;font-size:.85rem;font-weight:500;color:inherit;margin:0">Đánh dấu "Mới"</label>
-      </div>
-    </div>
 
-    <div class="tab-content" data-tab="content">
-      <div class="form-group">
-        <label>Mô tả</label>
-        <textarea id="fDesc" placeholder="Mô tả app..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Tính năng (mỗi dòng 1 cái)</label>
-        <textarea id="fFeatures" placeholder="Không quảng cáo&#10;Tải nhanh" style="min-height:100px"></textarea>
-      </div>
-      <div class="form-group">
-        <label>Yêu cầu (mỗi dòng 1 cái)</label>
-        <textarea id="fReqs" placeholder="iOS 16+&#10;Đã jailbreak" style="min-height:80px"></textarea>
-      </div>
-      <div class="form-group">
-        <label>Cảnh báo</label>
-        <textarea id="fWarning" placeholder="Cảnh báo cho người dùng..." style="min-height:60px"></textarea>
-      </div>
-    </div>
-
-    <div class="tab-content" data-tab="advanced">
-      <div class="form-group">
-        <label>Nhãn nút CTA</label>
-        <input type="text" id="fCtaLabel" placeholder="vd: Tải xuống / Cài đặt">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nhà phát triển</label>
-          <input type="text" id="fDevName" placeholder="vd: Lê Bảo Trung">
-        </div>
-        <div class="form-group">
-          <label>Chức danh dev</label>
-          <input type="text" id="fDevTitle" placeholder="vd: Nhà P.Triển">
-        </div>
-      </div>
-      <div class="form-row-3">
-        <div class="form-group">
-          <label>Build number</label>
-          <input type="text" id="fBuild" placeholder="1">
-        </div>
-        <div class="form-group">
-          <label>Rating</label>
-          <input type="text" id="fRating" placeholder="4.8">
-        </div>
-        <div class="form-group">
-          <label>Lượt tải</label>
-          <input type="text" id="fDownloads" placeholder="10N+">
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="cancelCreateStaff">Hủy</button>
+          <button class="btn btn-primary" id="confirmCreateStaff"><svg class="icon"><use href="#i-check"/></svg>Tạo tài khoản</button>
         </div>
       </div>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn btn-ghost" id="cancelModal">Hủy</button>
-      <button class="btn btn-primary" id="saveApp"><svg class="icon"><use href="#i-save"/></svg>Lưu app</button>
-    </div>
-  </div>
-</div>
+    <!-- ===== EDIT APP MODAL ===== -->
+    <div class="modal" id="editModal">
+      <div class="modal-box">
+        <button class="close-x" id="closeModal"><svg class="icon"><use href="#i-close"/></svg></button>
+        <h2 id="modalTitle"><svg class="icon"><use href="#i-plus"/></svg><span>Thêm app mới</span></h2>
+        <p class="modal-subtitle">Mọi field bỏ trống sẽ dùng giá trị mặc định thông minh</p>
 
-<!-- ===== TOAST ===== -->
-<div class="toast" id="toast"></div>
-
-<!-- ===== FIREBASE ===== -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script>
-const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
-
-// ===== TOAST =====
-function toast(msg, isError){
-  const t = $('#toast');
-  t.innerHTML = `<svg class="icon"><use href="#${isError?'i-alert':'i-check'}"/></svg><span>${msg}</span>`;
-  t.classList.toggle('error', !!isError);
-  t.classList.add('show');
-  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), 2400);
-}
-
-// ===== FIREBASE =====
-firebase.initializeApp({databaseURL:"https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"});
-const db = firebase.database();
-const appsRef = db.ref('apps');
-const usersRef = db.ref('users');
-
-// ===== ROLE =====
-const ROLE_LABEL = { admin: 'Founder', staff: 'Staff' };
-const ROLE_STYLE = {
-  admin: 'background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff',
-  staff: 'background:#ecfdf5;color:#059669'
-};
-
-// ===== SESSION =====
-let CURRENT_USER = null;
-const SESSION_KEY = 'admin_session_v5';
-const saveSession = u => localStorage.setItem(SESSION_KEY, JSON.stringify(u));
-const clearSession = () => localStorage.removeItem(SESSION_KEY);
-const loadSession = () => { try { return JSON.parse(localStorage.getItem(SESSION_KEY)||'null'); } catch { return null; } };
-
-function applyRoleUI(){
-  const isAdmin = CURRENT_USER?.role === 'admin';
-  $('#staffSection').style.display = isAdmin ? 'block' : 'none';
-  $$('.role-badge-title').forEach(e=>e.remove());
-  const badge = document.createElement('span');
-  badge.className = 'role-badge-title';
-  badge.style.cssText = 'font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:6px;text-transform:uppercase;letter-spacing:.3px;margin-left:.4rem;' + (ROLE_STYLE[CURRENT_USER?.role]||'');
-  badge.textContent = ROLE_LABEL[CURRENT_USER?.role] || '';
-  $('header h1').appendChild(badge);
-  document.title = `Admin • ${ROLE_LABEL[CURRENT_USER?.role]||''} ${CURRENT_USER?.username||''}`;
-}
-
-function showLogin(){ $('#loginScreen').classList.remove('hidden'); $('#adminWrap').classList.remove('active'); }
-function showAdmin(){ $('#loginScreen').classList.add('hidden'); $('#adminWrap').classList.add('active'); applyRoleUI(); }
-
-// ===== CONTACT MODAL =====
-(function initContactModal(){
-  const btn = document.getElementById('registerBtn');
-  const modal = document.getElementById('contactModal');
-  const closeBtn = document.getElementById('closeContact');
-  if(!btn || !modal) return;
-  btn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); modal.classList.add('active'); });
-  if(closeBtn){ closeBtn.addEventListener('click', function(e){ e.preventDefault(); modal.classList.remove('active'); }); }
-  modal.addEventListener('click', function(e){ if(e.target === modal) modal.classList.remove('active'); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') modal.classList.remove('active'); });
-})();
-
-// ===== LOGIN =====
-async function doLogin(){
-  const u = $('#loginUser').value.trim();
-  const p = $('#loginPass').value;
-  const err = $('#loginError');
-  err.classList.remove('show');
-  if(!u || !p){ err.querySelector('span').textContent='Vui lòng nhập đủ tài khoản và mật khẩu'; err.classList.add('show'); return; }
-  try {
-    const usersSnap = await usersRef.once('value');
-    if(!usersSnap.exists()){
-      await usersRef.child('admin').set({ password:'admin123', role:'admin', createdAt: Date.now() });
-    }
-    const all = (await usersRef.once('value')).val() || {};
-    const found = Object.entries(all).find(([k,v]) => k === u && v.password === p);
-    if(!found){ err.querySelector('span').textContent='Sai tài khoản hoặc mật khẩu'; err.classList.add('show'); return; }
-    CURRENT_USER = { username: found[0], role: found[1].role || 'staff' };
-    saveSession(CURRENT_USER);
-    showAdmin();
-    renderStaff();
-    toast(`Xin chào ${CURRENT_USER.username} • ${ROLE_LABEL[CURRENT_USER.role]}`);
-  } catch(e){
-    err.querySelector('span').textContent = 'Lỗi kết nối Firebase';
-    err.classList.add('show'); console.error(e);
-  }
-}
-$('#loginBtn').addEventListener('click', doLogin);
-$('#loginPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-$('#loginUser').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#loginPass').focus(); });
-
-$('#logoutBtn').addEventListener('click', ()=>{
-  if(!confirm('Đăng xuất?')) return;
-  clearSession(); CURRENT_USER = null;
-  $('#loginUser').value=''; $('#loginPass').value='';
-  showLogin();
-});
-
-$('#togglePass').addEventListener('click', ()=>{
-  const inp = $('#loginPass'), icon = $('#togglePassIcon use');
-  const showing = inp.type === 'text';
-  inp.type = showing ? 'password' : 'text';
-  icon.setAttribute('href', showing ? '#i-eye' : '#i-eye-off');
-});
-
-// ===== RENDER STAFF =====
-let staffUnsub = null;
-function renderStaff(){
-  if(staffUnsub){ staffUnsub(); staffUnsub = null; }
-  if(CURRENT_USER?.role !== 'admin') return;
-  const handler = usersRef.on('value', snap=>{
-    const data = snap.val() || {};
-    const entries = Object.entries(data).sort((a,b)=>{
-      if((a[1].role==='admin') !== (b[1].role==='admin')) return a[1].role==='admin' ? -1 : 1;
-      return (a[1].createdAt||0) - (b[1].createdAt||0);
-    });
-    $('#staffCount').textContent = entries.length + ' tài khoản';
-    $('#staffList').innerHTML = entries.map(([name, info])=>{
-      const role = info.role || 'staff';
-      const isMe = name === CURRENT_USER.username;
-      const isFounder = role === 'admin';
-      return `
-        <div class="app-row">
-          <div class="app-icon" style="${isFounder
-              ? 'background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:0'
-              : 'background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;border:0'}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.3rem;height:1.3rem">
-              ${isFounder
-                ? '<path d="M12 2l2.4 5 5.6.6-4 4 1 5.4-5-2.8-5 2.8 1-5.4-4-4 5.6-.6z"/>'
-                : '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'}
-            </svg>
+        <div class="preview-card">
+          <div class="app-icon" id="previewIcon"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.9rem;font-weight:700" id="previewName">Tên app</div>
+            <div style="font-size:.72rem;color:#6b7280" id="previewMeta">v1.0 • IPA</div>
           </div>
-          <div class="app-info">
-            <div class="app-name">
-              ${escapeHtml(name)}
-              <span style="font-size:.6rem;font-weight:800;padding:.15rem .5rem;border-radius:5px;text-transform:uppercase;letter-spacing:.3px;${ROLE_STYLE[role]}">${ROLE_LABEL[role]||role}</span>
-              ${isMe ? '<span style="font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:5px;background:#f0eeea;color:#6b7280">BẠN</span>' : ''}
+        </div>
+
+        <div class="modal-tabs">
+          <button class="modal-tab active" data-tab="basic"><svg class="icon"><use href="#i-package"/></svg>Cơ bản</button>
+          <button class="modal-tab" data-tab="content"><svg class="icon"><use href="#i-text"/></svg>Nội dung</button>
+          <button class="modal-tab" data-tab="advanced"><svg class="icon"><use href="#i-sliders"/></svg>Nâng cao</button>
+        </div>
+
+        <div class="tab-content active" data-tab="basic">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tên app *</label>
+              <input type="text" id="fName" placeholder="vd: TikTok">
             </div>
-            <div class="app-meta">
-              <span>Ngày tạo: ${info.createdAt ? new Date(info.createdAt).toLocaleDateString('vi-VN') : '?'}</span>
-              <span>•</span>
-              <span>Quyền: ${isFounder ? 'Toàn quyền' : 'Thêm app'}</span>
-              ${info.createdBy ? `<span>•</span><span>Tạo bởi: ${escapeHtml(info.createdBy)}</span>` : ''}
+            <div class="form-group">
+              <label>Slug (URL) *</label>
+              <input type="text" id="fSlug" placeholder="vd: tiktok">
+              <small>Chỉ chữ thường, số, gạch ngang</small>
             </div>
           </div>
-          <div class="app-actions">
-            ${!isMe ? `<button class="btn btn-danger btn-sm" onclick="deleteStaff('${escapeHtml(name)}')"><svg class="icon"><use href="#i-trash"/></svg>Xóa</button>` : ''}
+          <div class="form-row">
+            <div class="form-group">
+              <label>Loại *</label>
+              <select id="fType">
+                <option value="ipa">IPA (iOS)</option>
+                <option value="tipa">TIPA (TrollStore)</option>
+                <option value="apk">APK (Android)</option>
+                <option value="deb">DEB (Jailbreak)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Phiên bản</label>
+              <input type="text" id="fVersion" placeholder="vd: 1.0.0">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Dung lượng</label>
+              <input type="text" id="fSize" placeholder="vd: 45 MB">
+            </div>
+            <div class="form-group">
+              <label>Icon URL</label>
+              <input type="text" id="fIcon" placeholder="https://... hoặc #i-star">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Link tải *</label>
+            <input type="text" id="fUrl" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label>Bundle ID (IPA/TIPA/DEB)</label>
+            <input type="text" id="fBundleId" placeholder="com.example.app">
+          </div>
+          <div class="form-group">
+            <label>Tương thích</label>
+            <input type="text" id="fCompat" placeholder="vd: iOS 16.0+ / Android 13+">
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="fIsNew">
+            <label for="fIsNew" style="text-transform:none;font-size:.85rem;font-weight:500;color:inherit;margin:0">Đánh dấu "Mới"</label>
           </div>
         </div>
-      `;
-    }).join('') || '<div class="empty">Chưa có tài khoản nào</div>';
-  });
-  staffUnsub = () => usersRef.off('value', handler);
-}
 
-window.deleteStaff = async function(name){
-  if(!CURRENT_USER || CURRENT_USER.role !== 'admin') return toast('Chỉ Founder mới có quyền xóa', true);
-  if(name === CURRENT_USER.username) return toast('Không thể xóa chính mình', true);
-  if(!confirm(`Xóa tài khoản "${name}"?`)) return;
-  try { await usersRef.child(name).remove(); toast('Đã xóa ' + name); }
-  catch(e){ toast('Lỗi: '+e.message, true); }
-};
+        <div class="tab-content" data-tab="content">
+          <div class="form-group">
+            <label>Mô tả</label>
+            <textarea id="fDesc" placeholder="Mô tả app..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Tính năng (mỗi dòng 1 cái)</label>
+            <textarea id="fFeatures" placeholder="Không quảng cáo&#10;Tải nhanh" style="min-height:100px"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Yêu cầu (mỗi dòng 1 cái)</label>
+            <textarea id="fReqs" placeholder="iOS 16+&#10;Đã jailbreak" style="min-height:80px"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Cảnh báo</label>
+            <textarea id="fWarning" placeholder="Cảnh báo cho người dùng..." style="min-height:60px"></textarea>
+          </div>
+        </div>
 
-// ===== CREATE STAFF (chỉ Founder) =====
-(function initCreateStaff(){
-  const openBtn = document.getElementById('createStaffBtn');
-  const modal = document.getElementById('createStaffModal');
-  const closeBtn = document.getElementById('closeCreateStaff');
-  const cancelBtn = document.getElementById('cancelCreateStaff');
-  const confirmBtn = document.getElementById('confirmCreateStaff');
-  if(!openBtn || !modal) return;
+        <div class="tab-content" data-tab="advanced">
+          <div class="form-group">
+            <label>Nhãn nút CTA</label>
+            <input type="text" id="fCtaLabel" placeholder="vd: Tải xuống / Cài đặt">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nhà phát triển</label>
+              <input type="text" id="fDevName" placeholder="vd: Lê Bảo Trung">
+            </div>
+            <div class="form-group">
+              <label>Chức danh dev</label>
+              <input type="text" id="fDevTitle" placeholder="vd: Nhà P.Triển">
+            </div>
+          </div>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Build number</label>
+              <input type="text" id="fBuild" placeholder="1">
+            </div>
+            <div class="form-group">
+              <label>Rating</label>
+              <input type="text" id="fRating" placeholder="4.8">
+            </div>
+            <div class="form-group">
+              <label>Lượt tải</label>
+              <input type="text" id="fDownloads" placeholder="10N+">
+            </div>
+          </div>
+        </div>
 
-  function open(){
-    if(CURRENT_USER?.role !== 'admin') return toast('Chỉ Founder mới có quyền tạo tài khoản', true);
-    document.getElementById('csUser').value = '';
-    document.getElementById('csPass').value = '';
-    document.getElementById('csPass2').value = '';
-    document.getElementById('csRole').value = 'staff';
-    const err = document.getElementById('createStaffError');
-    err.classList.remove('show');
-    modal.classList.add('active');
-    setTimeout(()=>document.getElementById('csUser').focus(), 200);
-  }
-  function close(){ modal.classList.remove('active'); }
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="cancelModal">Hủy</button>
+          <button class="btn btn-primary" id="saveApp"><svg class="icon"><use href="#i-save"/></svg>Lưu app</button>
+        </div>
+      </div>
+    </div>
 
-  openBtn.addEventListener('click', open);
-  closeBtn.addEventListener('click', close);
-  cancelBtn.addEventListener('click', close);
-  modal.addEventListener('click', e=>{ if(e.target === modal) close(); });
-  document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && modal.classList.contains('active')) close(); });
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
 
-  confirmBtn.addEventListener('click', async ()=>{
-    const u = document.getElementById('csUser').value.trim();
-    const p = document.getElementById('csPass').value;
-    const p2 = document.getElementById('csPass2').value;
-    const role = document.getElementById('csRole').value;
-    const err = document.getElementById('createStaffError');
-    const showErr = msg => { err.querySelector('span').textContent = msg; err.classList.add('show'); };
-    err.classList.remove('show');
+    <!-- ===== FIREBASE ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script>
+      const $ = s => document.querySelector(s);
+      const $$ = s => document.querySelectorAll(s);
 
-    if(!u || u.length < 3) return showErr('Tên đăng nhập tối thiểu 3 ký tự');
-    if(!/^[a-zA-Z0-9_]+$/.test(u)) return showErr('Tên chỉ gồm chữ, số, gạch dưới');
-    if(!p || p.length < 4) return showErr('Mật khẩu tối thiểu 4 ký tự');
-    if(p !== p2) return showErr('Mật khẩu nhập lại không khớp');
+      // ===== TOAST =====
+      function toast(msg, isError) {
+        const t = $('#toast');
+        t.innerHTML = `<svg class="icon"><use href="#${isError?'i-alert':'i-check'}"/></svg><span>${msg}</span>`;
+        t.classList.toggle('error', !!isError);
+        t.classList.add('show');
+        clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), 2400);
+      }
 
-    try {
-      const snap = await usersRef.child(u).once('value');
-      if(snap.exists()) return showErr('Tên đăng nhập đã tồn tại');
-      await usersRef.child(u).set({
-        password: p,
-        role: role,
-        createdAt: Date.now(),
-        createdBy: CURRENT_USER.username
+      // ===== FIREBASE =====
+      firebase.initializeApp({databaseURL:"https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"});
+      const db = firebase.database();
+      const appsRef = db.ref('apps');
+      const usersRef = db.ref('users');
+
+      // ===== ROLE =====
+      const ROLE_LABEL = { admin: 'Founder', staff: 'Staff' };
+      const ROLE_STYLE = {
+        admin: 'background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff',
+        staff: 'background:#ecfdf5;color:#059669'
+      };
+
+      // ===== SESSION =====
+      let CURRENT_USER = null;
+      const SESSION_KEY = 'admin_session_v5';
+      const saveSession = u => localStorage.setItem(SESSION_KEY, JSON.stringify(u));
+      const clearSession = () => localStorage.removeItem(SESSION_KEY);
+      const loadSession = () => { try { return JSON.parse(localStorage.getItem(SESSION_KEY)||'null'); } catch { return null; } };
+
+      function applyRoleUI() {
+        const isAdmin = CURRENT_USER?.role === 'admin';
+        $('#staffSection').style.display = isAdmin ? 'block' : 'none';
+        $$('.role-badge-title').forEach(e=>e.remove());
+        const badge = document.createElement('span');
+        badge.className = 'role-badge-title';
+        badge.style.cssText = 'font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:6px;text-transform:uppercase;letter-spacing:.3px;margin-left:.4rem;' + (ROLE_STYLE[CURRENT_USER?.role]||'');
+        badge.textContent = ROLE_LABEL[CURRENT_USER?.role] || '';
+        $('header h1').appendChild(badge);
+        document.title = `Admin • ${ROLE_LABEL[CURRENT_USER?.role]||''} ${CURRENT_USER?.username||''}`;
+      }
+
+      function showLogin(){ $('#loginScreen').classList.remove('hidden'); $('#adminWrap').classList.remove('active'); }
+      function showAdmin(){ $('#loginScreen').classList.add('hidden'); $('#adminWrap').classList.add('active'); applyRoleUI(); }
+
+      // ===== CONTACT MODAL =====
+      (function initContactModal() {
+          const btn = document.getElementById('registerBtn');
+          const modal = document.getElementById('contactModal');
+          const closeBtn = document.getElementById('closeContact');
+          if (!btn || !modal) return;
+          btn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); modal.classList.add('active'); });
+          if (closeBtn){ closeBtn.addEventListener('click', function(e){ e.preventDefault(); modal.classList.remove('active'); }); }
+          modal.addEventListener('click', function(e){ if(e.target === modal) modal.classList.remove('active'); });
+          document.addEventListener('keydown', function(e){ if(e.key === 'Escape') modal.classList.remove('active'); });
+      })();
+
+      // ===== LOGIN =====
+      async function doLogin() {
+        const u = $('#loginUser').value.trim();
+        const p = $('#loginPass').value;
+        const err = $('#loginError');
+        err.classList.remove('show');
+        if (!u || !p){ err.querySelector('span').textContent='Vui lòng nhập đủ tài khoản và mật khẩu'; err.classList.add('show'); return; }
+        try {
+          const usersSnap = await usersRef.once('value');
+          if (!usersSnap.exists()) {
+            await usersRef.child('admin').set({ password:'admin123', role:'admin', createdAt: Date.now() });
+          }
+          const all = (await usersRef.once('value')).val() || {};
+          const found = Object.entries(all).find(([k,v]) => k === u && v.password === p);
+          if (!found){ err.querySelector('span').textContent='Sai tài khoản hoặc mật khẩu'; err.classList.add('show'); return; }
+          CURRENT_USER = { username: found[0], role: found[1].role || 'staff' };
+          saveSession(CURRENT_USER);
+          showAdmin();
+          renderStaff();
+          toast(`Xin chào ${CURRENT_USER.username} • ${ROLE_LABEL[CURRENT_USER.role]}`);
+        } catch(e) {
+          err.querySelector('span').textContent = 'Lỗi kết nối Firebase';
+          err.classList.add('show'); console.error(e);
+        }
+      }
+      $('#loginBtn').addEventListener('click', doLogin);
+      $('#loginPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+      $('#loginUser').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#loginPass').focus(); });
+
+      $('#logoutBtn').addEventListener('click', ()=>{
+          if (!confirm('Đăng xuất?')) return;
+          clearSession(); CURRENT_USER = null;
+          $('#loginUser').value=''; $('#loginPass').value='';
+          showLogin();
       });
-      toast(`Đã tạo tài khoản ${u} (${ROLE_LABEL[role]})`);
-      close();
-    } catch(e){
-      showErr('Lỗi: ' + e.message);
-    }
-  });
-})();
 
-// ===== APP STORE =====
-let APPS = [];
-function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+      $('#togglePass').addEventListener('click', ()=>{
+          const inp = $('#loginPass'), icon = $('#togglePassIcon use');
+          const showing = inp.type === 'text';
+          inp.type = showing ? 'password' : 'text';
+          icon.setAttribute('href', showing ? '#i-eye' : '#i-eye-off');
+      });
 
-function renderStats(){
-  const counts = { ipa:0, tipa:0, apk:0, deb:0 };
-  APPS.forEach(a=>{ if(counts[a.type]!==undefined) counts[a.type]++; });
-  $('#stats').innerHTML = `
-    <div class="stat"><div class="stat-label">Tổng app</div><div class="stat-value blue">${APPS.length}</div></div>
-    <div class="stat"><div class="stat-label">IPA</div><div class="stat-value blue">${counts.ipa}</div></div>
-    <div class="stat"><div class="stat-label">TIPA</div><div class="stat-value orange">${counts.tipa}</div></div>
-    <div class="stat"><div class="stat-label">APK</div><div class="stat-value green">${counts.apk}</div></div>
-    <div class="stat"><div class="stat-label">DEB</div><div class="stat-value red">${counts.deb}</div></div>
-  `;
-}
+      // ===== RENDER STAFF =====
+      let staffUnsub = null;
+      function renderStaff() {
+        if (staffUnsub){ staffUnsub(); staffUnsub = null; }
+        if (CURRENT_USER?.role !== 'admin') return;
+        const handler = usersRef.on('value', snap=>{
+            const data = snap.val() || {};
+            const entries = Object.entries(data).sort((a,b)=>{
+                if ((a[1].role==='admin') !== (b[1].role==='admin')) return a[1].role==='admin' ? -1 : 1;
+                return (a[1].createdAt||0) - (b[1].createdAt||0);
+            });
+            $('#staffCount').textContent = entries.length + ' tài khoản';
+            $('#staffList').innerHTML = entries.map(([name, info])=>{
+                const role = info.role || 'staff';
+                const isMe = name === CURRENT_USER.username;
+                const isFounder = role === 'admin';
+                return `
+              <div class="app-row">
+                <div class="app-icon" style="${isFounder
+                    ? 'background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:0'
+                    : 'background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;border:0'}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.3rem;height:1.3rem">
+                    ${isFounder
+                      ? '<path d="M12 2l2.4 5 5.6.6-4 4 1 5.4-5-2.8-5 2.8 1-5.4-4-4 5.6-.6z"/>'
+                      : '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'}
+                  </svg>
+                </div>
+                <div class="app-info">
+                  <div class="app-name">
+                    ${escapeHtml(name)}
+                    <span style="font-size:.6rem;font-weight:800;padding:.15rem .5rem;border-radius:5px;text-transform:uppercase;letter-spacing:.3px;${ROLE_STYLE[role]}">${ROLE_LABEL[role]||role}</span>
+                    ${isMe ? '<span style="font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:5px;background:#f0eeea;color:#6b7280">BẠN</span>' : ''}
+                  </div>
+                  <div class="app-meta">
+                    <span>Ngày tạo: ${info.createdAt ? new Date(info.createdAt).toLocaleDateString('vi-VN') : '?'}</span>
+                    <span>•</span>
+                    <span>Quyền: ${isFounder ? 'Toàn quyền' : 'Thêm app'}</span>
+                    ${info.createdBy ? `<span>•</span><span>Tạo bởi: ${escapeHtml(info.createdBy)}</span>` : ''}
+                  </div>
+                </div>
+                <div class="app-actions">
+                  ${!isMe ? `<button class="btn btn-danger btn-sm" onclick="deleteStaff('${escapeHtml(name)}')"><svg class="icon"><use href="#i-trash"/></svg>Xóa</button>` : ''}
+                </div>
+              </div>
+            `;
+            }).join('') || '<div class="empty">Chưa có tài khoản nào</div>';
+        });
+        staffUnsub = () => usersRef.off('value', handler);
+      }
 
-function renderApps(){
-  if(!APPS.length){ $('#appList').innerHTML = '<div class="empty">Chưa có app nào. Nhấn "Thêm app" để bắt đầu.</div>'; return; }
-  const canDelete = CURRENT_USER?.role === 'admin';
-  $('#appList').innerHTML = APPS.map(a=>`
-    <div class="app-row">
-      <div class="app-icon">${a.icon ? (a.icon.startsWith('#') ? `<svg><use href="${escapeHtml(a.icon)}"/></svg>` : `<img src="${escapeHtml(a.icon)}" alt="">`) : ''}</div>
-      <div class="app-info">
-        <div class="app-name">${escapeHtml(a.name)} <span class="badge ${a.type||'ipa'}">${(a.type||'ipa').toUpperCase()}</span></div>
-        <div class="app-meta">
-          <span>${escapeHtml(a.version||'1.0')}</span><span>•</span>
-          <span>${escapeHtml(a.size||'?')}</span><span>•</span>
-          <span>slug: ${escapeHtml(a.slug)}</span>
-          ${a.addedBy ? `<span>•</span><span>by ${escapeHtml(a.addedBy)}</span>` : ''}
-        </div>
-      </div>
-      <div class="app-actions">
-        <button class="btn btn-ghost btn-sm" onclick="editApp('${escapeHtml(a.slug)}')"><svg class="icon"><use href="#i-edit"/></svg></button>
-        ${canDelete ? `<button class="btn btn-danger btn-sm" onclick="delApp('${escapeHtml(a.slug)}')"><svg class="icon"><use href="#i-trash"/></svg></button>` : ''}
-      </div>
-    </div>
-  `).join('');
-}
+      window.deleteStaff = async function(name) {
+        if (!CURRENT_USER || CURRENT_USER.role !== 'admin') return toast('Chỉ Founder mới có quyền xóa', true);
+        if (name === CURRENT_USER.username) return toast('Không thể xóa chính mình', true);
+        if (!confirm(`Xóa tài khoản "${name}"?`)) return;
+        try { await usersRef.child(name).remove(); toast('Đã xóa ' + name); }
+        catch (e){ toast('Lỗi: '+e.message, true); }
+      };
 
-window.delApp = async function(slug){
-  if(CURRENT_USER?.role !== 'admin') return toast('Staff không có quyền xóa', true);
-  if(!confirm(`Xóa app "${slug}"?`)) return;
-  try { await appsRef.child(slug).remove(); toast('Đã xóa'); }
-  catch(e){ toast('Lỗi: '+e.message, true); }
-};
+      // ===== CREATE STAFF (chỉ Founder) =====
+      (function initCreateStaff() {
+          const openBtn = document.getElementById('createStaffBtn');
+          const modal = document.getElementById('createStaffModal');
+          const closeBtn = document.getElementById('closeCreateStaff');
+          const cancelBtn = document.getElementById('cancelCreateStaff');
+          const confirmBtn = document.getElementById('confirmCreateStaff');
+          if (!openBtn || !modal) return;
 
-// ===== EDIT APP MODAL =====
-let editingSlug = null;
+          function open() {
+            if (CURRENT_USER?.role !== 'admin') return toast('Chỉ Founder mới có quyền tạo tài khoản', true);
+            document.getElementById('csUser').value = '';
+            document.getElementById('csPass').value = '';
+            document.getElementById('csPass2').value = '';
+            document.getElementById('csRole').value = 'staff';
+            const err = document.getElementById('createStaffError');
+            err.classList.remove('show');
+            modal.classList.add('active');
+            setTimeout(()=>document.getElementById('csUser').focus(), 200);
+          }
+          function close(){ modal.classList.remove('active'); }
 
-function slugify(s){
-  return String(s||'').toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .replace(/đ/g,'d')
-    .replace(/[^a-z0-9]+/g,'-')
-    .replace(/^-+|-+$/g,'');
-}
+          openBtn.addEventListener('click', open);
+          closeBtn.addEventListener('click', close);
+          cancelBtn.addEventListener('click', close);
+          modal.addEventListener('click', e=>{ if(e.target === modal) close(); });
+          document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && modal.classList.contains('active')) close(); });
 
-function updatePreview(){
-  const name = $('#fName').value.trim() || 'Tên app';
-  const type = ($('#fType').value || 'ipa').toUpperCase();
-  const version = $('#fVersion').value.trim() || '1.0';
-  const icon = $('#fIcon').value.trim();
-  $('#previewName').textContent = name;
-  $('#previewMeta').textContent = `v${version} • ${type}`;
-  if(icon && icon.startsWith('#')){
-    $('#previewIcon').innerHTML = `<svg><use href="${escapeHtml(icon)}"/></svg>`;
-  } else if(icon){
-    $('#previewIcon').innerHTML = `<img src="${escapeHtml(icon)}" alt="">`;
-  } else {
-    $('#previewIcon').innerHTML = '';
-  }
-}
+          confirmBtn.addEventListener('click', async ()=>{
+              const u = document.getElementById('csUser').value.trim();
+              const p = document.getElementById('csPass').value;
+              const p2 = document.getElementById('csPass2').value;
+              const role = document.getElementById('csRole').value;
+              const err = document.getElementById('createStaffError');
+              const showErr = msg => { err.querySelector('span').textContent = msg; err.classList.add('show'); };
+              err.classList.remove('show');
 
-function openModal(app){
-  editingSlug = app ? app.slug : null;
-  $('#modalTitle span').textContent = app ? 'Sửa app' : 'Thêm app mới';
-  $('#fName').value = app?.name || '';
-  $('#fSlug').value = app?.slug || '';
-  $('#fType').value = app?.type || 'ipa';
-  $('#fVersion').value = app?.version || '';
-  $('#fSize').value = app?.size || '';
-  $('#fIcon').value = app?.icon || '';
-  $('#fUrl').value = app?.url || '';
-  $('#fBundleId').value = app?.bundleId || '';
-  $('#fCompat').value = app?.compat || '';
-  $('#fIsNew').checked = !!app?.isNew;
-  $('#fDesc').value = app?.desc || '';
-  $('#fFeatures').value = (app?.features||[]).join('\n');
-  $('#fReqs').value = (app?.requirements||[]).join('\n');
-  $('#fWarning').value = app?.warning || '';
-  $('#fCtaLabel').value = app?.ctaLabel || '';
-  $('#fDevName').value = app?.devName || '';
-  $('#fDevTitle').value = app?.devTitle || '';
-  $('#fBuild').value = app?.buildNumber || '';
-  $('#fRating').value = app?.rating || '';
-  $('#fDownloads').value = app?.downloads || '';
-  $$('.modal-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab==='basic'));
-  $$('.tab-content').forEach(c=>c.classList.toggle('active', c.dataset.tab==='basic'));
-  updatePreview();
-  $('#editModal').classList.add('active');
-}
+              if (!u || u.length < 3) return showErr('Tên đăng nhập tối thiểu 3 ký tự');
+              if (!/^[a-zA-Z0-9_]+$/.test(u)) return showErr('Tên chỉ gồm chữ, số, gạch dưới');
+              if (!p || p.length < 4) return showErr('Mật khẩu tối thiểu 4 ký tự');
+              if (p !== p2) return showErr('Mật khẩu nhập lại không khớp');
 
-window.editApp = function(slug){
-  const app = APPS.find(a=>a.slug === slug);
-  if(!app) return;
-  openModal(app);
-};
+              try {
+                const snap = await usersRef.child(u).once('value');
+                if (snap.exists()) return showErr('Tên đăng nhập đã tồn tại');
+                await usersRef.child(u).set({
+                    password: p,
+                    role: role,
+                    createdAt: Date.now(),
+                    createdBy: CURRENT_USER.username
+                });
+                toast(`Đã tạo tài khoản ${u} (${ROLE_LABEL[role]})`);
+                close();
+              } catch(e) {
+                showErr('Lỗi: ' + e.message);
+              }
+          });
+      })();
 
-$('#addBtn').addEventListener('click', ()=> openModal(null));
+      // ===== APP STORE =====
+      let APPS = [];
+      function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
-$$('.modal-tab').forEach(tab=>{
-  tab.addEventListener('click', ()=>{
-    $$('.modal-tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    $$('.tab-content').forEach(c=>c.classList.toggle('active', c.dataset.tab === tab.dataset.tab));
-  });
-});
+            function renderStats() {
+              const counts = { ipa:0, tipa:0, apk:0, deb:0 };
+              APPS.forEach(a=>{ if(counts[a.type]!==undefined) counts[a.type]++; });
+              $('#stats').innerHTML = `
+          <div class="stat"><div class="stat-label">Tổng app</div><div class="stat-value blue">${APPS.length}</div></div>
+          <div class="stat"><div class="stat-label">IPA</div><div class="stat-value blue">${counts.ipa}</div></div>
+          <div class="stat"><div class="stat-label">TIPA</div><div class="stat-value orange">${counts.tipa}</div></div>
+          <div class="stat"><div class="stat-label">APK</div><div class="stat-value green">${counts.apk}</div></div>
+          <div class="stat"><div class="stat-label">DEB</div><div class="stat-value red">${counts.deb}</div></div>
+        `;
+            }
 
-['fName','fVersion','fType','fIcon'].forEach(id=>{
-  $('#'+id).addEventListener('input', updatePreview);
-  $('#'+id).addEventListener('change', updatePreview);
-});
+            function renderApps() {
+              if (!APPS.length){ $('#appList').innerHTML = '<div class="empty">Chưa có app nào. Nhấn "Thêm app" để bắt đầu.</div>'; return; }
+              const canDelete = CURRENT_USER?.role === 'admin';
+              $('#appList').innerHTML = APPS.map(a=>`
+          <div class="app-row">
+            <div class="app-icon">${a.icon ? (a.icon.startsWith('#') ? `<svg><use href="${escapeHtml(a.icon)}"/></svg>` : `<img src="${escapeHtml(a.icon)}" alt="">`) : ''}</div>
+            <div class="app-info">
+              <div class="app-name">${escapeHtml(a.name)} <span class="badge ${a.type||'ipa'}">${(a.type||'ipa').toUpperCase()}</span></div>
+              <div class="app-meta">
+                <span>${escapeHtml(a.version||'1.0')}</span><span>•</span>
+                <span>${escapeHtml(a.size||'?')}</span><span>•</span>
+                <span>slug: ${escapeHtml(a.slug)}</span>
+                ${a.addedBy ? `<span>•</span><span>by ${escapeHtml(a.addedBy)}</span>` : ''}
+              </div>
+            </div>
+            <div class="app-actions">
+              <button class="btn btn-ghost btn-sm" onclick="editApp('${escapeHtml(a.slug)}')"><svg class="icon"><use href="#i-edit"/></svg></button>
+              ${canDelete ? `<button class="btn btn-danger btn-sm" onclick="delApp('${escapeHtml(a.slug)}')"><svg class="icon"><use href="#i-trash"/></svg></button>` : ''}
+            </div>
+          </div>
+        `).join('');
+            }
 
-let slugTouched = false;
-$('#fSlug').addEventListener('input', ()=>{ slugTouched = true; });
-$('#fName').addEventListener('input', ()=>{
-  if(!slugTouched || editingSlug) return;
-  $('#fSlug').value = slugify($('#fName').value);
-});
+            window.delApp = async function(slug) {
+              if (CURRENT_USER?.role !== 'admin') return toast('Staff không có quyền xóa', true);
+              if (!confirm(`Xóa app "${slug}"?`)) return;
+              try { await appsRef.child(slug).remove(); toast('Đã xóa'); }
+              catch (e){ toast('Lỗi: '+e.message, true); }
+            };
 
-$('#closeModal').addEventListener('click', ()=> $('#editModal').classList.remove('active'));
-$('#cancelModal').addEventListener('click', ()=> $('#editModal').classList.remove('active'));
-$('#editModal').addEventListener('click', e=>{ if(e.target.id==='editModal') e.currentTarget.classList.remove('active'); });
+            // ===== EDIT APP MODAL =====
+            let editingSlug = null;
 
-$('#saveApp').addEventListener('click', async ()=>{
-  const name = $('#fName').value.trim();
-  let slug = $('#fSlug').value.trim().toLowerCase();
-  const type = $('#fType').value;
-  const url = $('#fUrl').value.trim();
+            function slugify(s) {
+              return String(s||'').toLowerCase()
+              .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+              .replace(/đ/g,'d')
+              .replace(/[^a-z0-9]+/g,'-')
+              .replace(/^-+|-+$/g,'');
+            }
 
-  if(!name){ toast('Vui lòng nhập tên app', true); return; }
-  if(!slug) slug = slugify(name);
-  if(!slug){ toast('Slug không hợp lệ', true); return; }
-  if(!/^[a-z0-9-]+$/.test(slug)){ toast('Slug chỉ gồm a-z, 0-9, dấu gạch ngang', true); return; }
-  if(!url){ toast('Vui lòng nhập link tải', true); return; }
-  if(!editingSlug && APPS.some(a=>a.slug === slug)){ toast('Slug đã tồn tại, chọn slug khác', true); return; }
+            function updatePreview() {
+              const name = $('#fName').value.trim() || 'Tên app';
+              const type = ($('#fType').value || 'ipa').toUpperCase();
+              const version = $('#fVersion').value.trim() || '1.0';
+              const icon = $('#fIcon').value.trim();
+              $('#previewName').textContent = name;
+              $('#previewMeta').textContent = `v${version} • ${type}`;
+              if (icon && icon.startsWith('#')) {
+                $('#previewIcon').innerHTML = `<svg><use href="${escapeHtml(icon)}"/></svg>`;
+              } else if(icon) {
+                $('#previewIcon').innerHTML = `<img src="${escapeHtml(icon)}" alt="">`;
+              } else {
+                $('#previewIcon').innerHTML = '';
+              }
+            }
 
-  const oldApp = editingSlug ? APPS.find(a=>a.slug===editingSlug) : null;
-  const data = {
-    name, type,
-    version: $('#fVersion').value.trim() || '1.0',
-    size: $('#fSize').value.trim() || 'Đang cập nhật',
-    icon: $('#fIcon').value.trim(),
-    url,
-    bundleId: $('#fBundleId').value.trim(),
-    compat: $('#fCompat').value.trim(),
-    isNew: $('#fIsNew').checked,
-    desc: $('#fDesc').value.trim(),
-    features: $('#fFeatures').value.split('\n').map(s=>s.trim()).filter(Boolean),
-    requirements: $('#fReqs').value.split('\n').map(s=>s.trim()).filter(Boolean),
-    warning: $('#fWarning').value.trim(),
-    ctaLabel: $('#fCtaLabel').value.trim(),
-    devName: $('#fDevName').value.trim(),
-    devTitle: $('#fDevTitle').value.trim(),
-    buildNumber: $('#fBuild').value.trim(),
-    rating: $('#fRating').value.trim(),
-    downloads: $('#fDownloads').value.trim(),
-    addedBy: oldApp?.addedBy || CURRENT_USER.username,
-    updatedAt: Date.now(),
-    createdAt: oldApp?.createdAt || Date.now()
-  };
+            function openModal(app) {
+              editingSlug = app ? app.slug : null;
+              $('#modalTitle span').textContent = app ? 'Sửa app' : 'Thêm app mới';
+              $('#fName').value = app?.name || '';
+              $('#fSlug').value = app?.slug || '';
+              $('#fType').value = app?.type || 'ipa';
+              $('#fVersion').value = app?.version || '';
+              $('#fSize').value = app?.size || '';
+              $('#fIcon').value = app?.icon || '';
+              $('#fUrl').value = app?.url || '';
+              $('#fBundleId').value = app?.bundleId || '';
+              $('#fCompat').value = app?.compat || '';
+              $('#fIsNew').checked = !!app?.isNew;
+              $('#fDesc').value = app?.desc || '';
+              $('#fFeatures').value = (app?.features||[]).join('\n');
+              $('#fReqs').value = (app?.requirements||[]).join('\n');
+              $('#fWarning').value = app?.warning || '';
+              $('#fCtaLabel').value = app?.ctaLabel || '';
+              $('#fDevName').value = app?.devName || '';
+              $('#fDevTitle').value = app?.devTitle || '';
+              $('#fBuild').value = app?.buildNumber || '';
+              $('#fRating').value = app?.rating || '';
+              $('#fDownloads').value = app?.downloads || '';
+              $$('.modal-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab==='basic'));
+              $$('.tab-content').forEach(c=>c.classList.toggle('active', c.dataset.tab==='basic'));
+              updatePreview();
+              $('#editModal').classList.add('active');
+            }
 
-  Object.keys(data).forEach(k=>{
-    if(data[k] === '' || (Array.isArray(data[k]) && data[k].length === 0)) delete data[k];
-  });
+            window.editApp = function(slug) {
+              const app = APPS.find(a=>a.slug === slug);
+              if (!app) return;
+              openModal(app);
+            };
 
-  try {
-    if(editingSlug && editingSlug !== slug) await appsRef.child(editingSlug).remove();
-    await appsRef.child(slug).set(data);
-    toast(editingSlug ? 'Đã cập nhật app' : 'Đã thêm app: ' + name);
-    $('#editModal').classList.remove('active');
-  } catch(e){
-    toast('Lỗi lưu: ' + e.message, true);
-    console.error(e);
-  }
-});
+            $('#addBtn').addEventListener('click', ()=> openModal(null));
 
-// ===== DARK MODE =====
-(function(){
-  const btn = $('#darkBtn'), icon = $('#darkIcon');
-  const saved = localStorage.getItem('admin_dark');
-  if(saved === '1'){ document.body.classList.add('dark'); icon.setAttribute('href','#i-sun'); }
-  btn.addEventListener('click', ()=>{
-    document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
-    icon.setAttribute('href', isDark ? '#i-sun' : '#i-moon');
-    localStorage.setItem('admin_dark', isDark ? '1' : '0');
-  });
-})();
+            $$('.modal-tab').forEach(tab=>{
+                tab.addEventListener('click', ()=>{
+                    $$('.modal-tab').forEach(t=>t.classList.remove('active'));
+                    tab.classList.add('active');
+                    $$('.tab-content').forEach(c=>c.classList.toggle('active', c.dataset.tab === tab.dataset.tab));
+                });
+            });
 
-// ===== LISTEN APP =====
-appsRef.on('value', snap=>{
-  const data = snap.val() || {};
-  APPS = Object.entries(data).map(([k,v])=>({ slug:k, ...v }));
-  renderStats(); renderApps();
-  const st = $('#syncStatus');
-  if(st){ st.className = 'sync-status'; $('#syncText').textContent = 'Đã đồng bộ'; }
-}, err=>{
-  console.error(err);
-  const st = $('#syncStatus');
-  if(st){ st.className = 'sync-status error'; $('#syncText').textContent = 'Lỗi kết nối'; }
-});
+            ['fName','fVersion','fType','fIcon'].forEach(id=>{
+                $('#'+id).addEventListener('input', updatePreview);
+                $('#'+id).addEventListener('change', updatePreview);
+            });
 
-// ===== INIT =====
-(function init(){
-  const saved = loadSession();
-  if(saved?.username){
-    usersRef.child(saved.username).once('value').then(snap=>{
-      if(snap.exists()){
-        CURRENT_USER = { username: saved.username, role: snap.val().role || 'staff' };
-        showAdmin(); renderStaff();
-      } else { clearSession(); showLogin(); }
-    }).catch(()=> showLogin());
-  } else showLogin();
-})();
-</script>
-</body>
+            let slugTouched = false;
+            $('#fSlug').addEventListener('input', ()=>{ slugTouched = true; });
+            $('#fName').addEventListener('input', ()=>{
+                if (!slugTouched || editingSlug) return;
+                $('#fSlug').value = slugify($('#fName').value);
+            });
+
+            $('#closeModal').addEventListener('click', ()=> $('#editModal').classList.remove('active'));
+            $('#cancelModal').addEventListener('click', ()=> $('#editModal').classList.remove('active'));
+            $('#editModal').addEventListener('click', e=>{ if(e.target.id==='editModal') e.currentTarget.classList.remove('active'); });
+
+            $('#saveApp').addEventListener('click', async ()=>{
+                const name = $('#fName').value.trim();
+                let slug = $('#fSlug').value.trim().toLowerCase();
+                const type = $('#fType').value;
+                const url = $('#fUrl').value.trim();
+
+                if (!name){ toast('Vui lòng nhập tên app', true); return; }
+                if (!slug) slug = slugify(name);
+                if (!slug){ toast('Slug không hợp lệ', true); return; }
+                if (!/^[a-z0-9-]+$/.test(slug)){ toast('Slug chỉ gồm a-z, 0-9, dấu gạch ngang', true); return; }
+                if (!url){ toast('Vui lòng nhập link tải', true); return; }
+                if (!editingSlug && APPS.some(a=>a.slug === slug)){ toast('Slug đã tồn tại, chọn slug khác', true); return; }
+
+                const oldApp = editingSlug ? APPS.find(a=>a.slug===editingSlug) : null;
+                const data = {
+                  name, type,
+                  version: $('#fVersion').value.trim() || '1.0',
+                  size: $('#fSize').value.trim() || 'Đang cập nhật',
+                  icon: $('#fIcon').value.trim(),
+                  url,
+                  bundleId: $('#fBundleId').value.trim(),
+                  compat: $('#fCompat').value.trim(),
+                  isNew: $('#fIsNew').checked,
+                  desc: $('#fDesc').value.trim(),
+                  features: $('#fFeatures').value.split('\n').map(s=>s.trim()).filter(Boolean),
+                  requirements: $('#fReqs').value.split('\n').map(s=>s.trim()).filter(Boolean),
+                  warning: $('#fWarning').value.trim(),
+                  ctaLabel: $('#fCtaLabel').value.trim(),
+                  devName: $('#fDevName').value.trim(),
+                  devTitle: $('#fDevTitle').value.trim(),
+                  buildNumber: $('#fBuild').value.trim(),
+                  rating: $('#fRating').value.trim(),
+                  downloads: $('#fDownloads').value.trim(),
+                  addedBy: oldApp?.addedBy || CURRENT_USER.username,
+                  updatedAt: Date.now(),
+                  createdAt: oldApp?.createdAt || Date.now()
+                };
+
+                Object.keys(data).forEach(k=>{
+                    if (data[k] === '' || (Array.isArray(data[k]) && data[k].length === 0)) delete data[k];
+                });
+
+                try {
+                  if (editingSlug && editingSlug !== slug) await appsRef.child(editingSlug).remove();
+                  await appsRef.child(slug).set(data);
+                  toast(editingSlug ? 'Đã cập nhật app' : 'Đã thêm app: ' + name);
+                  $('#editModal').classList.remove('active');
+                } catch(e) {
+                  toast('Lỗi lưu: ' + e.message, true);
+                  console.error(e);
+                }
+            });
+
+            // ===== DARK MODE =====
+            (function() {
+                const btn = $('#darkBtn'), icon = $('#darkIcon');
+                const saved = localStorage.getItem('admin_dark');
+                if (saved === '1'){ document.body.classList.add('dark'); icon.setAttribute('href','#i-sun'); }
+                btn.addEventListener('click', ()=>{
+                    document.body.classList.toggle('dark');
+                    const isDark = document.body.classList.contains('dark');
+                    icon.setAttribute('href', isDark ? '#i-sun' : '#i-moon');
+                    localStorage.setItem('admin_dark', isDark ? '1' : '0');
+                });
+            })();
+
+            // ===== LISTEN APP =====
+            appsRef.on('value', snap=>{
+                const data = snap.val() || {};
+                APPS = Object.entries(data).map(([k,v])=>({ slug:k, ...v }));
+                renderStats(); renderApps();
+                const st = $('#syncStatus');
+                if (st){ st.className = 'sync-status'; $('#syncText').textContent = 'Đã đồng bộ'; }
+              }, err=>{
+                console.error(err);
+                const st = $('#syncStatus');
+                if (st){ st.className = 'sync-status error'; $('#syncText').textContent = 'Lỗi kết nối'; }
+            });
+
+            // ===== INIT =====
+            (function init() {
+                const saved = loadSession();
+                if (saved?.username) {
+                  usersRef.child(saved.username).once('value').then(snap=>{
+                      if (snap.exists()) {
+                        CURRENT_USER = { username: saved.username, role: snap.val().role || 'staff' };
+                        showAdmin(); renderStaff();
+                      } else { clearSession(); showLogin(); }
+                  }).catch(()=> showLogin());
+                } else showLogin();
+            })();
+
+    </script>
+  </body>
 </html>
