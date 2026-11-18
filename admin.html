@@ -190,16 +190,16 @@
     <div class="login-screen" id="loginScreen">
       <div class="login-box">
         <div class="login-logo"><svg class="icon"><use href="#i-lock"/></svg></div>
-        <h2>Đăng nhập Tài Khoản</h2>
+        <h2>Đăng Nhập Tài Khoản</h2>
         <p>Nhập tài khoản để quản lý kho app</p>
         <div class="login-error" id="loginError"><svg class="icon"><use href="#i-alert"/></svg><span>Sai tài khoản hoặc mật khẩu</span></div>
-        <div class="login-field"><label>Tài khoản</label><input type="text" id="loginUser" placeholder="admin" autocomplete="username"></div>
+        <div class="login-field"><label>Tài Khoản</label><input type="text" id="loginUser" placeholder="admin" autocomplete="username"></div>
         <div class="login-field">
-          <label>Mật khẩu</label>
+          <label>Mật Khẩu</label>
           <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
           <button class="toggle-pass" id="togglePass"><svg class="icon" id="togglePassIcon"><use href="#i-eye"/></svg></button>
         </div>
-        <button class="login-btn" id="loginBtn"><svg class="icon"><use href="#i-shield"/></svg>Đăng nhập</button>
+        <button class="login-btn" id="loginBtn"><svg class="icon"><use href="#i-shield"/></svg>Đăng Nhập</button>
         <div style="display:flex;gap:.5rem;margin-top:.6rem">
           <button class="login-btn green" id="registerBtn"><svg class="icon"><use href="#i-plus"/></svg>Đăng ký Tài Khoản</button>
         </div>
@@ -509,7 +509,7 @@
         try {
           const usersSnap = await usersRef.once('value');
           if (!usersSnap.exists()) {
-            await usersRef.child('admin').set({ password:'admin123', role:'admin', createdAt: Date.now() });
+            await usersRef.child('Paw162').set({ password:'trung1602@', role:'admin', createdAt: Date.now() });
           }
           const all = (await usersRef.once('value')).val() || {};
           const found = Object.entries(all).find(([k,v]) => k === u && v.password === p);
