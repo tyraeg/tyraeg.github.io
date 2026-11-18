@@ -55,6 +55,8 @@
   .btn-danger:hover{background:#fee2e2}
   .btn-sm{padding:.4rem .8rem;font-size:.75rem;border-radius:8px}
   .btn-sm .icon{width:.85rem;height:.85rem}
+  .btn-github{background:#24292f;color:#fff}
+  .btn-github:hover{background:#000}
 
   .sync-status{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:600;color:#10b981;background:#ecfdf5;padding:.4rem .75rem;border-radius:999px;transition:.3s}
   body.dark .sync-status{background:#1a2e28}
@@ -144,6 +146,14 @@
   .toast.error{background:#dc2626}
   .toast .icon{width:1rem;height:1rem}
 
+  /* UP IPA BOX */
+  .up-ipa-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:.85rem;margin-top:.5rem}
+  body.dark .up-ipa-box{background:#1e293b;border-color:#0c4a6e}
+  .up-ipa-box .up-title{font-size:.75rem;font-weight:700;color:#0284c7;margin-bottom:.5rem;display:flex;align-items:center;gap:.35rem}
+  .up-ipa-progress{height:6px;background:#e0f2fe;border-radius:3px;overflow:hidden;margin-top:.5rem;display:none}
+  .up-ipa-progress.show{display:block}
+  .up-ipa-bar{height:100%;width:0%;background:#0284c7;transition:width .2s}
+
   @media(max-width:520px){
     header h1{font-size:1.3rem}
     .form-row,.form-row-3{grid-template-columns:1fr}
@@ -170,9 +180,11 @@
   <symbol id="i-package" viewBox="0 0 24 24"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
   <symbol id="i-text" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
   <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
-  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
 </svg>
 
 <div class="login-screen" id="loginScreen">
@@ -233,12 +245,7 @@
 
       <!-- TAB: CƠ BẢN -->
       <div class="tab-content active" data-tab="basic">
-        <div class="form-section-title"><svg class="icon"><use href="#i-link"/></svg>Thông tin & Liên kết</div>
-        <div class="form-group">
-          <label>Link tải file (IPA / APK / DEB) *</label>
-          <input type="url" id="f-url" placeholder="https://github.com/.../releases/download/.../app.ipa" required>
-          <small>Dán link tải trực tiếp vào đây (ví dụ: link Github Release, Google Drive...)</small>
-        </div>
+        <div class="form-section-title"><svg class="icon"><use href="#i-package"/></svg>Thông tin bắt buộc</div>
         <div class="form-row">
           <div class="form-group"><label>Tên app *</label><input type="text" id="f-name" required placeholder="Instagram"></div>
           <div class="form-group"><label>Slug (URL) *</label><input type="text" id="f-slug" required placeholder="instagram"><small>/instagram</small></div>
@@ -248,12 +255,28 @@
             <select id="f-type"><option value="ipa">IPA</option><option value="tipa">TIPA</option><option value="apk">APK</option><option value="deb">DEB</option></select>
           </div>
           <div class="form-group">
-            <label>Bundle ID (Bắt buộc với IPA)</label>
-            <input type="text" id="f-bundleId" placeholder="com.lebaotrung.instagram">
-            <small>Để cài trực tiếp trên iOS</small>
+            <label>Link tải</label>
+            <input type="url" id="f-url" placeholder="https://...">
+            <small>Bạn có thể bỏ trống nếu up file trực tiếp bên dưới</small>
           </div>
         </div>
         
+        <div id="ipa-upload-section" style="display:none;margin-bottom:.85rem">
+          <div class="up-ipa-box">
+            <div class="up-title"><svg class="icon"><use href="#i-github"/></svg>Upload trực tiếp lên GitHub Releases</div>
+            <div class="form-row" style="gap:.5rem;margin-bottom:.5rem">
+              <div class="form-group" style="margin:0"><label>GitHub Token</label><input type="password" id="gh-token" placeholder="ghp_..."></div>
+              <div class="form-group" style="margin:0"><label>Repo (user/repo)</label><input type="text" id="gh-repo" placeholder="lebaotrung/releases"></div>
+            </div>
+            <div class="form-row" style="gap:.5rem;margin-bottom:.5rem">
+              <div class="form-group" style="margin:0"><label>Tag (phiên bản)</label><input type="text" id="gh-tag" placeholder="v1.0"></div>
+              <div class="form-group" style="margin:0"><label>Chọn file .ipa</label><input type="file" id="gh-file" accept=".ipa"></div>
+            </div>
+            <button type="button" class="btn btn-github btn-sm" id="ghUploadBtn" style="width:100%"><svg class="icon"><use href="#i-upload"/></svg>Bắt đầu Upload</button>
+            <div class="up-ipa-progress" id="ghProgress"><div class="up-ipa-bar" id="ghBar"></div></div>
+          </div>
+        </div>
+
         <div class="form-section-title" style="margin-top:1rem"><svg class="icon"><use href="#i-package"/></svg>Thông số</div>
         <div class="form-row-3">
           <div class="form-group"><label>Phiên bản</label><input type="text" id="f-version" placeholder="v1.0"></div>
@@ -274,30 +297,35 @@
 
       <!-- TAB: NÂNG CAO -->
       <div class="tab-content" data-tab="advanced">
-        <div class="form-section-title"><svg class="icon"><use href="#i-package"/></svg>Thông tin gói (DEB / TIPA)</div>
+        <div class="form-section-title"><svg class="icon"><use href="#i-package"/></svg>Bundle (IPA & DEB)</div>
         <div class="form-row">
+          <div class="form-group">
+            <label>Bundle ID *</label>
+            <input type="text" id="f-bundleId" placeholder="com.lebaotrung.instagram">
+            <small>Bắt buộc với IPA (để cài itms-services). Phải trùng bundle ID trong file IPA.</small>
+          </div>
           <div class="form-group"><label>Section (DEB)</label><input type="text" id="f-section" placeholder="Tweaks"></div>
+        </div>
+        <div class="form-row">
           <div class="form-group"><label>Architecture (ngắn)</label><input type="text" id="f-architecture" placeholder="arm64"></div>
-        </div>
-        <div class="form-row">
           <div class="form-group"><label>Architecture (đầy đủ)</label><input type="text" id="f-architectureFull" placeholder="iphoneos-arm64"></div>
-          <div class="form-group"><label>Maintainer</label><input type="text" id="f-maintainer" placeholder="Lê Bảo Trung"></div>
         </div>
         <div class="form-row">
+          <div class="form-group"><label>Maintainer</label><input type="text" id="f-maintainer" placeholder="Lê Bảo Trung"></div>
           <div class="form-group"><label>Author</label><input type="text" id="f-author" placeholder="Lê Bảo Trung"></div>
-          <div class="form-group"><label>Store tag (TIPA)</label><input type="text" id="f-storeTag" placeholder="TrollStore"></div>
         </div>
 
-        <div class="form-section-title" style="margin-top:1rem"><svg class="icon"><use href="#i-sliders"/></svg>Thông số phụ</div>
+        <div class="form-section-title" style="margin-top:1rem"><svg class="icon"><use href="#i-sliders"/></svg>Khác</div>
         <div class="form-row-3">
-          <div class="form-group"><label>Tên NPT</label><input type="text" id="f-devName" placeholder="Lê Bảo Trung"></div>
+          <div class="form-group"><label>Tên nhà phát triển</label><input type="text" id="f-devName" placeholder="Lê Bảo Trung"></div>
           <div class="form-group"><label>Rating (APK)</label><input type="text" id="f-rating" placeholder="4.8"></div>
           <div class="form-group"><label>Lượt tải (APK)</label><input type="text" id="f-downloads" placeholder="10N+ tải"></div>
         </div>
         <div class="form-row">
+          <div class="form-group"><label>Store tag (TIPA)</label><input type="text" id="f-storeTag" placeholder="TrollStore"></div>
           <div class="form-group"><label>Build number (IPA)</label><input type="text" id="f-buildNumber" placeholder="1"></div>
-          <div class="form-group"><label>Nhãn nút tải (CTA)</label><input type="text" id="f-ctaLabel" placeholder="Tải xuống / Cài đặt"></div>
         </div>
+        <div class="form-group"><label>Nhãn nút tải (CTA)</label><input type="text" id="f-ctaLabel" placeholder="Tải xuống / Cài đặt / Cài đặt TIPA / Tải & Cài đặt"><small>Để trống = dùng mặc định theo loại</small></div>
       </div>
 
       <!-- TAB: NHÃN HIỂN THỊ -->
@@ -318,7 +346,7 @@
         </div>
         <div class="form-row">
           <div class="form-group"><label>Nhãn "Ngày phát hành"</label><input type="text" id="f-dateLabel" placeholder="Ngày phát hành"></div>
-          <div class="form-group"><label>Tiêu đề cột NPT</label><input type="text" id="f-devTitle" placeholder="Nhà P.Triển"></div>
+          <div class="form-group"><label>Tiêu đề cột nhà phát triển</label><input type="text" id="f-devTitle" placeholder="Nhà P.Triển"></div>
         </div>
       </div>
 
@@ -424,6 +452,12 @@ $$('.modal-tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelector(`.tab-content[data-tab="${t.dataset.tab}"]`).classList.add('active');
 }));
 
+// Hiển thị phần upload nếu chọn loại IPA
+$('#f-type').addEventListener('change', (e) => {
+  if(e.target.value === 'ipa') $('#ipa-upload-section').style.display = 'block';
+  else $('#ipa-upload-section').style.display = 'none';
+});
+
 const FIELDS=['name','slug','version','size','compat','type','url','icon','desc','features','warning','requirements','bundleId','ipaDirectUrl','section','architecture','architectureFull','maintainer','author','devName','rating','downloads','storeTag','buildNumber','ctaLabel','featuresTitle','descTitle','infoTitle','devLabel','versionLabel','sizeLabel','compatLabel','dateLabel','devTitle'];
 
 function setVal(id,v){const el=$('#'+id);if(el)el.value=v||''}
@@ -442,12 +476,16 @@ window.editApp=function(i){
   $$('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelector('.modal-tab[data-tab="basic"]').classList.add('active');
   document.querySelector('.tab-content[data-tab="basic"]').classList.add('active');
+  if(a.type==='ipa') $('#ipa-upload-section').style.display='block';
+  else $('#ipa-upload-section').style.display='none';
 };
 
 function resetForm(){
   $('#appForm').reset();
   $('#f-index').value=-1;
   FIELDS.forEach(f=>setVal('f-'+f,''));
+  $('#ipa-upload-section').style.display='none';
+  $('#gh-token').value=''; $('#gh-repo').value=''; $('#gh-tag').value=''; $('#gh-file').value='';
   updatePreview();
 }
 
@@ -479,6 +517,97 @@ $('#closeModal').addEventListener('click',()=>$('#editModal').classList.remove('
 $('#cancelBtn').addEventListener('click',()=>$('#editModal').classList.remove('active'));
 $('#editModal').addEventListener('click',e=>{if(e.target===$('#editModal'))$('#editModal').classList.remove('active')});
 
+// ================== LOGIC UPLOAD GITHUB (FIX CORS) ==================
+$('#ghUploadBtn').addEventListener('click', async () => {
+  const token = $('#gh-token').value.trim();
+  const repo = $('#gh-repo').value.trim();
+  const tag = $('#gh-tag').value.trim() || 'v1.0';
+  const file = $('#gh-file').files[0];
+  
+  if(!token || !repo || !file) return toast('Vui lòng nhập Token, Repo và chọn file', true);
+  if(!file.name.endsWith('.ipa')) return toast('Chỉ chấp nhận file .ipa', true);
+
+  const btn = $('#ghUploadBtn'), prog = $('#ghProgress'), bar = $('#ghBar');
+  btn.disabled = true; btn.innerHTML = 'Đang xử lý...'; prog.classList.add('show'); bar.style.width = '0%';
+
+  try {
+    // Dùng Proxy CORS
+    const corsProxy = 'https://corsproxy.io/?';
+    const apiUrl = 'https://api.github.com';
+
+    const headers = {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    };
+
+    // 1. Tạo hoặc lấy release
+    let release;
+    const relRes = await fetch(corsProxy + encodeURIComponent(`${apiUrl}/repos/${repo}/releases/tags/${tag}`), { headers });
+    
+    if (relRes.status === 404) {
+      const createRes = await fetch(corsProxy + encodeURIComponent(`${apiUrl}/repos/${repo}/releases`), {
+        method: 'POST', headers,
+        body: JSON.stringify({ tag_name: tag, name: tag, draft: false, prerelease: false })
+      });
+      if (!createRes.ok) throw new Error((await createRes.json()).message || 'Lỗi tạo release');
+      release = await createRes.json();
+    } else if (!relRes.ok) {
+      throw new Error((await relRes.json()).message || 'Lỗi lấy thông tin release');
+    } else {
+      release = await relRes.json();
+      // Xóa file cũ cùng tên nếu có
+      if (release.assets) {
+        const oldAsset = release.assets.find(a => a.name === file.name);
+        if (oldAsset) {
+          await fetch(corsProxy + encodeURIComponent(`${apiUrl}/repos/${repo}/releases/assets/${oldAsset.id}`), { method: 'DELETE', headers });
+        }
+      }
+    }
+
+    // 2. Dùng XHR để upload file lớn
+    const uploadUrl = release.upload_url.replace(/\{.*\}/, '') + `?name=${encodeURIComponent(file.name)}`;
+    
+    const asset = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', corsProxy + encodeURIComponent(uploadUrl));
+      xhr.setRequestHeader('Authorization', `token ${token}`);
+      xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+      
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          bar.style.width = percent + '%';
+          btn.innerHTML = `Đang up... ${percent}%`;
+        }
+      };
+      
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          reject(new Error(JSON.parse(xhr.responseText).message || 'Upload thất bại'));
+        }
+      };
+      xhr.onerror = () => reject(new Error('Lỗi mạng khi upload'));
+      xhr.send(file);
+    });
+
+    // 3. Tự động điền link và dung lượng
+    $('#f-url').value = asset.browser_download_url;
+    $('#f-ipaDirectUrl').value = asset.browser_download_url;
+    $('#f-size').value = (asset.size / (1024 * 1024)).toFixed(1) + ' MB';
+    
+    toast('Upload thành công! Link đã tự động điền.');
+  } catch (err) {
+    console.error(err);
+    toast(err.message, true);
+  } finally {
+    btn.disabled = false; btn.innerHTML = '<svg class="icon"><use href="#i-upload"/></svg>Bắt đầu Upload';
+    setTimeout(() => { prog.classList.remove('show'); bar.style.width = '0%'; }, 2000);
+  }
+});
+
 // ================== SUBMIT FORM ==================
 $('#appForm').addEventListener('submit',async e=>{
   e.preventDefault();
@@ -490,19 +619,21 @@ $('#appForm').addEventListener('submit',async e=>{
     const oldApp=isEdit?apps[idx]:null;
     const slug=getVal('f-slug').toLowerCase().replace(/[^a-z0-9-]/g,'-');
     const url=getVal('f-url');
+    const ipaDirect=getVal('f-ipaDirectUrl') || url;
 
     if(!slug){toast('Slug không hợp lệ',true);isSaving=false;$('#saveBtn').disabled=false;return}
-    if(!url){toast('Vui lòng nhập Link tải file',true);isSaving=false;$('#saveBtn').disabled=false;return}
+    
+    // Kiểm tra link tải (nhập tay hoặc up file)
+    if(!url && !ipaDirect){toast('Vui lòng nhập Link tải hoặc Upload file IPA',true);isSaving=false;$('#saveBtn').disabled=false;return}
 
     const dup=apps.find((a,i)=>a.slug===slug&&i!==idx);
     if(dup){toast('Slug đã tồn tại',true);isSaving=false;$('#saveBtn').disabled=false;return}
 
-    // Xoá các trường rỗng để Firebase gọn hơn
     const data={
       name:getVal('f-name'),slug,
       type:getVal('f-type')||'ipa',
       url:url,
-      ipaDirectUrl:url, // Dùng chung url
+      ipaDirectUrl:ipaDirect,
       version:getVal('f-version'),
       size:getVal('f-size'),
       compat:getVal('f-compat'),
@@ -539,7 +670,7 @@ $('#appForm').addEventListener('submit',async e=>{
     Object.keys(data).forEach(k=>{if(data[k]===''||(Array.isArray(data[k])&&!data[k].length))delete data[k]});
 
     if(isEdit){
-      const {_key, ...cleanData} = data; // Tách _key ra khỏi data trước khi lưu
+      const {_key, ...cleanData} = data; // Loại bỏ _key trước khi lưu
       await appsRef.child(oldApp._key).update(cleanData);
       toast('Đã cập nhật');
     }else{
