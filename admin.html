@@ -509,7 +509,7 @@
         try {
           const usersSnap = await usersRef.once('value');
           if (!usersSnap.exists()) {
-            await usersRef.child('Paw162').set({ password:'trung1602@', role:'admin', createdAt: Date.now() });
+            await usersRef.child('admin').set({ password:'trung1602@', role:'admin', createdAt: Date.now() });
           }
           const all = (await usersRef.once('value')).val() || {};
           const found = Object.entries(all).find(([k,v]) => k === u && v.password === p);
