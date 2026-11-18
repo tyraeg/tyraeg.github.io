@@ -11,6 +11,7 @@
   body.dark{background:#0f1117;color:#f5f7fa}
   .icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
+  /* LOGIN */
   .login-screen{position:fixed;inset:0;z-index:5000;background:linear-gradient(135deg,#fef9f3,#f0f4f8);display:flex;align-items:center;justify-content:center;padding:1rem;transition:.35s}
   body.dark .login-screen{background:linear-gradient(135deg,#1a1d28,#0d0f15)}
   .login-screen.hidden{opacity:0;visibility:hidden}
@@ -32,9 +33,9 @@
   .login-error.show{display:flex}
   .login-copyright{margin-top:1.25rem;font-size:.72rem;color:#9ca3af;padding-top:1rem;border-top:1px solid #f0eeea;line-height:1.5}
 
+  /* ADMIN */
   .wrap{max-width:1000px;margin:0 auto;display:none}
   .wrap.active{display:block}
-
   header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
   header h1{font-size:1.6rem;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;gap:.5rem}
   header h1 .icon{color:#3b82f6;width:1.4rem;height:1.4rem}
@@ -90,7 +91,6 @@
   .badge.apk{background:#ecfdf5;color:#059669}
   .badge.deb{background:#fef2f2;color:#dc2626}
   .app-actions{display:flex;gap:.35rem;flex-shrink:0}
-
   .empty{text-align:center;padding:3rem 1rem;color:#9ca3af;font-weight:500}
 
   /* MODAL */
@@ -105,7 +105,6 @@
   body.dark .close-x{background:#232730;color:#9ca3af}
   .close-x:hover{background:#e8e6e1;color:#1a1d23;transform:rotate(90deg)}
 
-  /* TABS trong modal */
   .modal-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid #f0eeea}
   body.dark .modal-tabs{border-color:#232730}
   .modal-tab{font-size:.75rem;font-weight:600;padding:.45rem .85rem;background:#fafafa;border:1px solid #e8e6e1;border-radius:999px;color:#6b7280;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:.35rem}
@@ -254,7 +253,11 @@
           <div class="form-group"><label>Loại *</label>
             <select id="f-type"><option value="ipa">IPA</option><option value="tipa">TIPA</option><option value="apk">APK</option><option value="deb">DEB</option></select>
           </div>
-          <div class="form-group"><label>Link tải *</label><input type="url" id="f-url" required placeholder="https://..."></div>
+          <div class="form-group">
+            <label>Link tải</label>
+            <input type="url" id="f-url" placeholder="https://...">
+            <small>Bạn có thể bỏ trống nếu up file trực tiếp bên dưới</small>
+          </div>
         </div>
         
         <div id="ipa-upload-section" style="display:none;margin-bottom:.85rem">
@@ -508,7 +511,7 @@ $('#closeModal').addEventListener('click',()=>$('#editModal').classList.remove('
 $('#cancelBtn').addEventListener('click',()=>$('#editModal').classList.remove('active'));
 $('#editModal').addEventListener('click',e=>{if(e.target===$('#editModal'))$('#editModal').classList.remove('active')});
 
-// ================== LOGIC UPLOAD GITHUB ==================
+// ================== LOGIC UPLOAD GITHUB (HỖ TRỢ FILE LỚN) ==================
 $('#ghUploadBtn').addEventListener('click', async () => {
   const token = $('#gh-token').value.trim();
   const repo = $('#gh-repo').value.trim();
@@ -519,7 +522,7 @@ $('#ghUploadBtn').addEventListener('click', async () => {
   if(!file.name.endsWith('.ipa')) return toast('Chỉ chấp nhận file .ipa', true);
 
   const btn = $('#ghUploadBtn'), prog = $('#ghProgress'), bar = $('#ghBar');
-  btn.disabled = true; btn.innerHTML = 'Đang xử lý...'; prog.classList.add('show'); bar.style.width = '10%';
+  btn.disabled = true; btn.innerHTML = 'Đang xử lý...'; prog.classList.add('show'); bar.style.width = '0%';
 
   try {
     const headers = {
@@ -528,53 +531,57 @@ $('#ghUploadBtn').addEventListener('click', async () => {
       'Content-Type': 'application/json'
     };
 
-    // 1. Kiểm tra Release đã tồn tại chưa, nếu chưa thì tạo mới
-    let releaseUrl = `https://api.github.com/repos/${repo}/releases/tags/${tag}`;
-    let relRes = await fetch(releaseUrl, { headers });
+    // Tạo hoặc lấy release
+    let release;
+    const relRes = await fetch(`https://api.github.com/repos/${repo}/releases/tags/${tag}`, { headers });
     
     if (relRes.status === 404) {
-      // Tạo release mới
-      relRes = await fetch(`https://api.github.com/repos/${repo}/releases`, {
-        method: 'POST',
-        headers,
+      const createRes = await fetch(`https://api.github.com/repos/${repo}/releases`, {
+        method: 'POST', headers,
         body: JSON.stringify({ tag_name: tag, name: tag, draft: false, prerelease: false })
       });
+      if (!createRes.ok) throw new Error((await createRes.json()).message || 'Lỗi tạo release');
+      release = await createRes.json();
+    } else {
+      release = await relRes.json();
+      // Xóa file cũ cùng tên nếu có để up đè
+      const oldAsset = release.assets.find(a => a.name === file.name);
+      if (oldAsset) {
+        await fetch(`https://api.github.com/repos/${repo}/releases/assets/${oldAsset.id}`, { method: 'DELETE', headers });
+      }
     }
-    
-    if (!relRes.ok) {
-      const err = await relRes.json();
-      throw new Error(err.message || 'Không thể tạo release');
-    }
-    
-    const release = await relRes.json();
-    bar.style.width = '30%';
 
-    // 2. Upload file lên release
-    const uploadUrl = release.upload_url.replace(/\{.*\}/, '') + `?name=${file.name}`;
-    const uploadRes = await fetch(uploadUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `token ${token}`,
-        'Content-Type': 'application/octet-stream',
-        'Accept': 'application/vnd.github.v3+json'
-      },
-      body: file
+    // Dùng XHR để upload file lớn, có progress thật
+    const uploadUrl = release.upload_url.replace(/\{.*\}/, '') + `?name=${encodeURIComponent(file.name)}`;
+    
+    const asset = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', uploadUrl);
+      xhr.setRequestHeader('Authorization', `token ${token}`);
+      xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+      
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          bar.style.width = percent + '%';
+          btn.innerHTML = `Đang up... ${percent}%`;
+        }
+      };
+      
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          reject(new Error(JSON.parse(xhr.responseText).message || 'Upload thất bại'));
+        }
+      };
+      xhr.onerror = () => reject(new Error('Lỗi mạng khi upload'));
+      xhr.send(file);
     });
 
-    if (!uploadRes.ok) {
-      const err = await uploadRes.json();
-      throw new Error(err.message || 'Upload thất bại');
-    }
-
-    const asset = await uploadRes.json();
-    bar.style.width = '100%';
-    
-    // 3. Lấy link tải sạch (không chứa query)
-    const downloadUrl = asset.browser_download_url;
-    
-    // 4. Điền link vào form
-    $('#f-url').value = downloadUrl;
-    $('#f-ipaDirectUrl').value = downloadUrl;
+    // Điền link và dung lượng tự động
+    $('#f-url').value = asset.browser_download_url;
+    $('#f-ipaDirectUrl').value = asset.browser_download_url;
     $('#f-size').value = (asset.size / (1024 * 1024)).toFixed(1) + ' MB';
     
     toast('Upload thành công! Link đã tự động điền.');
@@ -597,16 +604,22 @@ $('#appForm').addEventListener('submit',async e=>{
     const isEdit=idx>=0 && idx<apps.length;
     const oldApp=isEdit?apps[idx]:null;
     const slug=getVal('f-slug').toLowerCase().replace(/[^a-z0-9-]/g,'-');
+    const url=getVal('f-url');
+    const ipaDirect=getVal('f-ipaDirectUrl') || url;
 
     if(!slug){toast('Slug không hợp lệ',true);isSaving=false;$('#saveBtn').disabled=false;return}
+    
+    // Kiểm tra xem có link tải chưa (nhập tay hoặc up file)
+    if(!url && !ipaDirect){toast('Vui lòng nhập Link tải hoặc Upload file IPA',true);isSaving=false;$('#saveBtn').disabled=false;return}
+
     const dup=apps.find((a,i)=>a.slug===slug&&i!==idx);
     if(dup){toast('Slug đã tồn tại',true);isSaving=false;$('#saveBtn').disabled=false;return}
 
     const data={
       name:getVal('f-name'),slug,
       type:getVal('f-type')||'ipa',
-      url:getVal('f-url'),
-      ipaDirectUrl:getVal('f-ipaDirectUrl') || getVal('f-url'), // Fallback nếu không up file
+      url:url,
+      ipaDirectUrl:ipaDirect,
       version:getVal('f-version'),
       size:getVal('f-size'),
       compat:getVal('f-compat'),
