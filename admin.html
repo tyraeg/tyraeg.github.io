@@ -255,7 +255,7 @@
             <select id="f-type"><option value="ipa">IPA</option><option value="tipa">TIPA</option><option value="apk">APK</option><option value="deb">DEB</option></select>
           </div>
           <div class="form-group">
-            <label>Link tải</label>
+            <label>Link tải (Dán link file .ipa/.apk)</label>
             <input type="url" id="f-url" placeholder="https://...">
             <small>Bạn có thể bỏ trống nếu up file trực tiếp bên dưới</small>
           </div>
@@ -403,7 +403,6 @@ appsRef.on('value',async snap=>{
   apps=normalize(data);firebaseReady=true;render();setSyncStatus('ok','Đã kết nối');
 },err=>{console.error(err);setSyncStatus('error','Lỗi kết nối')});
 
-// Giữ lại key Firebase để sửa/xoá chính xác
 function normalize(d){
   if(!d)return[];
   if(Array.isArray(d))return d.filter(Boolean);
@@ -444,7 +443,6 @@ function render(){
 
 function escape(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
-// Modal tabs
 $$('.modal-tab').forEach(t=>t.addEventListener('click',()=>{
   $$('.modal-tab').forEach(x=>x.classList.remove('active'));
   $$('.tab-content').forEach(x=>x.classList.remove('active'));
@@ -452,7 +450,6 @@ $$('.modal-tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelector(`.tab-content[data-tab="${t.dataset.tab}"]`).classList.add('active');
 }));
 
-// Hiển thị phần upload nếu chọn loại IPA
 $('#f-type').addEventListener('change', (e) => {
   if(e.target.value === 'ipa') $('#ipa-upload-section').style.display = 'block';
   else $('#ipa-upload-section').style.display = 'none';
@@ -517,7 +514,7 @@ $('#closeModal').addEventListener('click',()=>$('#editModal').classList.remove('
 $('#cancelBtn').addEventListener('click',()=>$('#editModal').classList.remove('active'));
 $('#editModal').addEventListener('click',e=>{if(e.target===$('#editModal'))$('#editModal').classList.remove('active')});
 
-// ================== LOGIC UPLOAD GITHUB (FIX CORS) ==================
+// ================== UPLOAD GITHUB ==================
 $('#ghUploadBtn').addEventListener('click', async () => {
   const token = $('#gh-token').value.trim();
   const repo = $('#gh-repo').value.trim();
@@ -531,17 +528,10 @@ $('#ghUploadBtn').addEventListener('click', async () => {
   btn.disabled = true; btn.innerHTML = 'Đang xử lý...'; prog.classList.add('show'); bar.style.width = '0%';
 
   try {
-    // Dùng Proxy CORS
     const corsProxy = 'https://corsproxy.io/?';
     const apiUrl = 'https://api.github.com';
+    const headers = { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
 
-    const headers = {
-      'Authorization': `token ${token}`,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    };
-
-    // 1. Tạo hoặc lấy release
     let release;
     const relRes = await fetch(corsProxy + encodeURIComponent(`${apiUrl}/repos/${repo}/releases/tags/${tag}`), { headers });
     
@@ -556,7 +546,6 @@ $('#ghUploadBtn').addEventListener('click', async () => {
       throw new Error((await relRes.json()).message || 'Lỗi lấy thông tin release');
     } else {
       release = await relRes.json();
-      // Xóa file cũ cùng tên nếu có
       if (release.assets) {
         const oldAsset = release.assets.find(a => a.name === file.name);
         if (oldAsset) {
@@ -565,39 +554,29 @@ $('#ghUploadBtn').addEventListener('click', async () => {
       }
     }
 
-    // 2. Dùng XHR để upload file lớn
     const uploadUrl = release.upload_url.replace(/\{.*\}/, '') + `?name=${encodeURIComponent(file.name)}`;
-    
     const asset = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('POST', corsProxy + encodeURIComponent(uploadUrl));
       xhr.setRequestHeader('Authorization', `token ${token}`);
       xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-      
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
           const percent = Math.round((e.loaded / e.total) * 100);
-          bar.style.width = percent + '%';
-          btn.innerHTML = `Đang up... ${percent}%`;
+          bar.style.width = percent + '%'; btn.innerHTML = `Đang up... ${percent}%`;
         }
       };
-      
       xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(JSON.parse(xhr.responseText));
-        } else {
-          reject(new Error(JSON.parse(xhr.responseText).message || 'Upload thất bại'));
-        }
+        if (xhr.status >= 200 && xhr.status < 300) resolve(JSON.parse(xhr.responseText));
+        else reject(new Error(JSON.parse(xhr.responseText).message || 'Upload thất bại'));
       };
       xhr.onerror = () => reject(new Error('Lỗi mạng khi upload'));
       xhr.send(file);
     });
 
-    // 3. Tự động điền link và dung lượng
     $('#f-url').value = asset.browser_download_url;
     $('#f-ipaDirectUrl').value = asset.browser_download_url;
     $('#f-size').value = (asset.size / (1024 * 1024)).toFixed(1) + ' MB';
-    
     toast('Upload thành công! Link đã tự động điền.');
   } catch (err) {
     console.error(err);
@@ -622,8 +601,6 @@ $('#appForm').addEventListener('submit',async e=>{
     const ipaDirect=getVal('f-ipaDirectUrl') || url;
 
     if(!slug){toast('Slug không hợp lệ',true);isSaving=false;$('#saveBtn').disabled=false;return}
-    
-    // Kiểm tra link tải (nhập tay hoặc up file)
     if(!url && !ipaDirect){toast('Vui lòng nhập Link tải hoặc Upload file IPA',true);isSaving=false;$('#saveBtn').disabled=false;return}
 
     const dup=apps.find((a,i)=>a.slug===slug&&i!==idx);
@@ -632,35 +609,17 @@ $('#appForm').addEventListener('submit',async e=>{
     const data={
       name:getVal('f-name'),slug,
       type:getVal('f-type')||'ipa',
-      url:url,
-      ipaDirectUrl:ipaDirect,
-      version:getVal('f-version'),
-      size:getVal('f-size'),
-      compat:getVal('f-compat'),
-      icon:getVal('f-icon'),
-      desc:getVal('f-desc'),
-      warning:getVal('f-warning'),
-      bundleId:getVal('f-bundleId'),
-      section:getVal('f-section'),
-      architecture:getVal('f-architecture'),
-      architectureFull:getVal('f-architectureFull'),
-      maintainer:getVal('f-maintainer'),
-      author:getVal('f-author'),
-      devName:getVal('f-devName'),
-      rating:getVal('f-rating'),
-      downloads:getVal('f-downloads'),
-      storeTag:getVal('f-storeTag'),
-      buildNumber:getVal('f-buildNumber'),
-      ctaLabel:getVal('f-ctaLabel'),
-      featuresTitle:getVal('f-featuresTitle'),
-      descTitle:getVal('f-descTitle'),
-      infoTitle:getVal('f-infoTitle'),
-      devLabel:getVal('f-devLabel'),
-      versionLabel:getVal('f-versionLabel'),
-      sizeLabel:getVal('f-sizeLabel'),
-      compatLabel:getVal('f-compatLabel'),
-      dateLabel:getVal('f-dateLabel'),
-      devTitle:getVal('f-devTitle'),
+      url:url, ipaDirectUrl:ipaDirect,
+      version:getVal('f-version'), size:getVal('f-size'), compat:getVal('f-compat'),
+      icon:getVal('f-icon'), desc:getVal('f-desc'), warning:getVal('f-warning'),
+      bundleId:getVal('f-bundleId'), section:getVal('f-section'),
+      architecture:getVal('f-architecture'), architectureFull:getVal('f-architectureFull'),
+      maintainer:getVal('f-maintainer'), author:getVal('f-author'), devName:getVal('f-devName'),
+      rating:getVal('f-rating'), downloads:getVal('f-downloads'), storeTag:getVal('f-storeTag'),
+      buildNumber:getVal('f-buildNumber'), ctaLabel:getVal('f-ctaLabel'),
+      featuresTitle:getVal('f-featuresTitle'), descTitle:getVal('f-descTitle'), infoTitle:getVal('f-infoTitle'),
+      devLabel:getVal('f-devLabel'), versionLabel:getVal('f-versionLabel'), sizeLabel:getVal('f-sizeLabel'),
+      compatLabel:getVal('f-compatLabel'), dateLabel:getVal('f-dateLabel'), devTitle:getVal('f-devTitle'),
       isNew:$('#f-isNew').checked,
       features:getVal('f-features').split('\n').map(s=>s.trim()).filter(Boolean),
       requirements:getVal('f-requirements').split('\n').map(s=>s.trim()).filter(Boolean),
@@ -670,7 +629,7 @@ $('#appForm').addEventListener('submit',async e=>{
     Object.keys(data).forEach(k=>{if(data[k]===''||(Array.isArray(data[k])&&!data[k].length))delete data[k]});
 
     if(isEdit){
-      const {_key, ...cleanData} = data; // Loại bỏ _key trước khi lưu
+      const {_key, ...cleanData} = data; 
       await appsRef.child(oldApp._key).update(cleanData);
       toast('Đã cập nhật');
     }else{
