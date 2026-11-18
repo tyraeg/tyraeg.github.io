@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin • Quản lý Kho App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+    body { background: #f7f5f2; color: #1a1d23; min-height: 100vh; padding: 2rem 1rem; }
+
+    .icon { display: inline-block; width: 1em; height: 1em; vertical-align: -0.125em;
+      fill: none; stroke: currentColor; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    /* ===== LOGIN ===== */
+    .login-screen {
+      position: fixed; inset: 0; z-index: 5000;
+      background: linear-gradient(135deg, #fef9f3, #f0f4f8);
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+      transition: opacity 0.35s, visibility 0.35s;
+    }
+    .login-screen.hidden { opacity: 0; visibility: hidden; }
+    .login-box {
+      background: #fff; border-radius: 24px; padding: 2.5rem 2rem;
+      max-width: 380px; width: 100%; box-shadow: 0 20px 50px rgba(20,20,40,0.08), 0 8px 20px rgba(20,20,40,0.04);
+      text-align: center;
+    }
+    .login-logo {
+      width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1rem;
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.6rem;
+      box-shadow: 0 12px 30px rgba(59,130,246,0.25);
+    }
+    .login-logo .icon { width: 1.8rem; height: 1.8rem; stroke-width: 2; }
+    .login-box h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .login-box p { font-size: 0.85rem; color: #6b7280; margin-bottom: 1.5rem; }
+    .login-field { position: relative; margin-bottom: 0.75rem; text-align: left; }
+    .login-field label { display: block; font-size: 0.72rem; font-weight: 600; color: #6b7280; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    .login-field input {
+      width: 100%; font-family: inherit; font-size: 0.9rem; padding: 0.75rem 0.95rem;
+      border: 1px solid #e8e6e1; border-radius: 12px; background: #fafafa;
+      color: #1a1d23; outline: none; transition: all 0.2s;
+    }
+    .login-field input:focus { border-color: #3b82f6; background: #fff; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+    .login-field .toggle-pass {
+      position: absolute; right: 0.6rem; bottom: 0.55rem;
+      background: transparent; border: none; cursor: pointer;
+      color: #6b7280; font-size: 1rem; padding: 0.25rem 0.5rem;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; transition: all 0.2s;
+    }
+    .login-field .toggle-pass:hover { background: #f0eeea; color: #1a1d23; }
+    .login-field .toggle-pass .icon { width: 1.1rem; height: 1.1rem; }
+    .login-btn {
+      width: 100%; font-family: inherit; font-size: 0.95rem; font-weight: 700;
+      padding: 0.85rem; border-radius: 12px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #3b82f6, #60a5fa); color: #fff;
+      box-shadow: 0 4px 12px rgba(59,130,246,0.3); transition: all 0.2s;
+      margin-top: 0.5rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59,130,246,0.45); }
+    .login-btn:active { transform: translateY(0) scale(0.98); }
+    .login-error {
+      background: #fef2f2; color: #dc2626; font-size: 0.8rem; font-weight: 600;
+      padding: 0.6rem 0.8rem; border-radius: 10px; margin-bottom: 0.75rem;
+      display: none; text-align: left;
+      align-items: center; gap: 0.4rem;
+    }
+    .login-error.show { display: flex; }
+    .login-error .icon { width: 1rem; height: 1rem; flex-shrink: 0; }
+    .login-copyright {
+      margin-top: 1.25rem; font-size: 0.72rem; color: #9ca3af;
+      padding-top: 1rem; border-top: 1px solid #f0eeea;
+      line-height: 1.5;
+    }
+    .login-copyright strong { color: #3b82f6; font-weight: 700; }
+
+    /* ===== ADMIN ===== */
+    .wrap { max-width: 900px; margin: 0 auto; display: none; }
+    .wrap.active { display: block; }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; }
+    header h1 .icon { color: #3b82f6; width: 1.4rem; height: 1.4rem; }
+    header h1 span { color: #3b82f6; }
+    .header-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .btn {
+      font-family: inherit; font-size: 0.85rem; font-weight: 600; padding: 0.6rem 1.1rem;
+      border-radius: 12px; border: none; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .btn .icon { width: 1rem; height: 1rem; }
+    .btn-primary { background: linear-gradient(135deg,#3b82f6,#60a5fa); color: #fff; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59,130,246,0.45); }
+    .btn-ghost { background: #fff; color: #1a1d23; border: 1px solid #e8e6e1; }
+    .btn-ghost:hover { background: #fafafa; border-color: #d0cec9; }
+    .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .btn-danger:hover { background: #fee2e2; }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: 8px; }
+    .btn-sm .icon { width: 0.85rem; height: 0.85rem; }
+    .btn-logout { background: #fff; color: #6b7280; border: 1px solid #e8e6e1; }
+    .btn-logout:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+    .sync-status {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; font-weight: 600; color: #10b981;
+      background: #ecfdf5; padding: 0.4rem 0.75rem; border-radius: 999px;
+      transition: all 0.3s;
+    }
+    .sync-status.syncing { color: #f59e0b; background: #fffbeb; }
+    .sync-status.error { color: #dc2626; background: #fef2f2; }
+    .sync-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stat { background: #fff; border: 1px solid #f0eeea; border-radius: 16px; padding: 1rem; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: #9ca3af; letter-spacing: 0.4px; margin-bottom: 0.3rem; }
+    .stat-value { font-size: 1.4rem; font-weight: 800; color: #1a1d23; }
+    .stat-value.blue { color: #3b82f6; }
+    .stat-value.orange { color: #f59e0b; }
+    .stat-value.green { color: #10b981; }
+    .stat-value.red { color: #ef4444; }
+
+    .app-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .app-row {
+      background: #fff; border: 1px solid #f0eeea; border-radius: 16px;
+      padding: 0.85rem 1rem; display: flex; align-items: center; gap: 0.85rem;
+      transition: all 0.2s;
+    }
+    .app-row:hover { box-shadow: 0 4px 16px rgba(20,20,40,0.06); transform: translateY(-1px); }
+    .app-icon {
+      width: 2.8rem; height: 2.8rem; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      background: #f7f5f2; border: 1px solid #f0eeea;
+    }
+    .app-icon svg, .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .app-info { flex: 1 1 auto; min-width: 0; }
+    .app-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+    .app-meta { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; font-size: 0.72rem; color: #6b7280; }
+    .badge {
+      font-size: 0.6rem; font-weight: 800; letter-spacing: 0.4px;
+      padding: 0.12rem 0.4rem; border-radius: 5px; text-transform: uppercase;
+    }
+    .badge.ipa { background: #eff6ff; color: #2563eb; }
+    .badge.tipa { background: #fffbeb; color: #d97706; }
+    .badge.apk { background: #ecfdf5; color: #059669; }
+    .badge.deb { background: #fef2f2; color: #dc2626; }
+    .app-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
+
+    .empty { text-align: center; padding: 3rem 1rem; color: #9ca3af; font-weight: 500; }
+    .empty .icon { width: 2.5rem; height: 2.5rem; margin-bottom: 0.5rem; color: #d0cec9; }
+    .empty p { margin-top: 0.3rem; font-size: 0.85rem; }
+
+    /* ===== MODAL ===== */
+    .modal { position: fixed; inset: 0; background: rgba(20,20,40,0.4); backdrop-filter: blur(8px); display: flex; align-items: flex-start; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.25s; padding: 1rem; overflow-y: auto; }
+    .modal.active { opacity: 1; visibility: visible; }
+    .modal-box {
+      background: #fff; border-radius: 24px; padding: 2rem 1.5rem 1.5rem;
+      max-width: 600px; width: 100%; margin: auto; position: relative;
+      transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.2,0.9,0.3,1);
+    }
+    .modal.active .modal-box { transform: scale(1); }
+    .modal-box h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+    .modal-box h2 .icon { color: #3b82f6; width: 1.2rem; height: 1.2rem; }
+    .close-x {
+      position: absolute; top: 0.9rem; right: 0.9rem; width: 2rem; height: 2rem;
+      background: #f7f5f2; border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: #6b7280;
+      transition: all 0.2s;
+    }
+    .close-x:hover { background: #e8e6e1; color: #1a1d23; transform: rotate(90deg); }
+    .close-x .icon { width: 1rem; height: 1rem; }
+    .form-group { margin-bottom: 0.85rem; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; font-family: inherit; font-size: 0.88rem; padding: 0.6rem 0.85rem;
+      border: 1px solid #e8e6e1; border-radius: 10px; background: #fafafa;
+      color: #1a1d23; outline: none; transition: all 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #3b82f6; background: #fff; box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 60px; }
+    .form-group small { display: block; font-size: 0.7rem; color: #9ca3af; margin-top: 0.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .checkbox-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; padding: 0.4rem 0; }
+    .checkbox-row input { width: auto; }
+    .preview { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: #fafafa; border-radius: 12px; border: 1px dashed #e8e6e1; margin-bottom: 0.85rem; }
+    .preview .app-icon { background: #fff; }
+    .modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+
+    .toast {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translate(-50%, 150%);
+      background: #1a1d23; color: #fff; padding: 0.75rem 1.2rem; border-radius: 12px;
+      font-size: 0.85rem; font-weight: 600; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      opacity: 0; transition: all 0.35s cubic-bezier(0.2,0.9,0.3,1.2); pointer-events: none; z-index: 2000;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    .toast.error { background: #dc2626; }
+    .toast .icon { width: 1rem; height: 1rem; }
+
+    @media (max-width: 520px) {
+      header h1 { font-size: 1.3rem; }
+      .app-row { padding: 0.75rem; gap: 0.6rem; }
+      .app-icon { width: 2.4rem; height: 2.4rem; }
+      .app-name { font-size: 0.85rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .app-actions .btn { padding: 0.35rem 0.6rem; }
+      .login-box { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SVG SPRITE -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  </svg>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="login-logo">
+        <svg class="icon"><use href="#i-lock"/></svg>
+      </div>
+      <h2>Đăng nhập Admin</h2>
+      <p>Nhập tài khoản để quản lý kho app</p>
+
+      <div class="login-error" id="loginError">
+        <svg class="icon"><use href="#i-alert"/></svg>
+        <span>Sai tài khoản hoặc mật khẩu</span>
+      </div>
+
+      <div class="login-field">
+        <label>Tài khoản</label>
+        <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label>Mật khẩu</label>
+        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+        <button class="toggle-pass" id="togglePass" type="button" aria-label="Hiện mật khẩu">
+          <svg class="icon" id="togglePassIcon"><use href="#i-eye"/></svg>
+        </button>
+      </div>
+
+      <button class="login-btn" id="loginBtn">
+        <svg class="icon"><use href="#i-shield"/></svg>
+        Đăng nhập
+      </button>
+
+      <div class="login-copyright">
+        © 2025 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.<br>
+        Mọi hành vi sao chép đều bị nghiêm cấm.
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN WRAP -->
+  <div class="wrap" id="adminWrap">
+    <header>
+      <h1>
+        <svg class="icon"><use href="#i-settings"/></svg>
+        Admin <span>Kho App</span>
+      </h1>
+      <div class="header-actions">
+        <span class="sync-status syncing" id="syncStatus">
+          <span class="dot"></span>
+          <span id="syncText">Đang kết nối...</span>
+        </span>
+        <button class="btn btn-primary" id="addBtn">
+          <svg class="icon"><use href="#i-plus"/></svg>
+          Thêm app
+        </button>
+        <button class="btn btn-logout" id="logoutBtn">
+          <svg class="icon"><use href="#i-logout"/></svg>
+          Đăng xuất
+        </button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats"></div>
+    <div class="app-list" id="appList"></div>
+  </div>
+
+  <!-- Modal edit -->
+  <div class="modal" id="editModal">
+    <div class="modal-box">
+      <button class="close-x" id="closeModal" aria-label="Đóng">
+        <svg class="icon"><use href="#i-close"/></svg>
+      </button>
+      <h2 id="modalTitle">
+        <svg class="icon"><use href="#i-plus"/></svg>
+        <span>Thêm app mới</span>
+      </h2>
+
+      <div class="preview">
+        <div class="app-icon" id="previewIcon"></div>
+        <div style="flex:1;">
+          <div style="font-size:0.9rem;font-weight:700;" id="previewName">Tên app</div>
+          <div style="font-size:0.75rem;color:#6b7280;" id="previewMeta">v1.0 • IPA</div>
+        </div>
+      </div>
+
+      <form id="appForm">
+        <input type="hidden" id="f-index" value="-1">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tên app *</label>
+            <input type="text" id="f-name" required placeholder="Facebook">
+          </div>
+          <div class="form-group">
+            <label>Slug (URL) *</label>
+            <input type="text" id="f-slug" required placeholder="facebook">
+            <small>/facebook</small>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phiên bản</label>
+            <input type="text" id="f-version" placeholder="v1.0">
+          </div>
+          <div class="form-group">
+            <label>Dung lượng</label>
+            <input type="text" id="f-size" placeholder="100 MB">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Loại *</label>
+            <select id="f-type">
+              <option value="ipa">IPA</option>
+              <option value="tipa">TIPA</option>
+              <option value="apk">APK</option>
+              <option value="deb">DEB</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Link tải *</label>
+            <input type="url" id="f-url" required placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Icon</label>
+          <input type="text" id="f-icon" placeholder="#logo-facebook hoặc https://...">
+          <small>Dùng #logo-facebook, #logo-tiktok, #logo-spotify, #logo-instagram, #logo-youtube hoặc URL ảnh</small>
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea id="f-desc" placeholder="Mô tả ngắn về app..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Tính năng (mỗi dòng 1 tính năng)</label>
+          <textarea id="f-features" placeholder="Tính năng 1&#10;Tính năng 2&#10;Tính năng 3"></textarea>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="f-isNew">
+          <label for="f-isNew" style="margin:0;text-transform:none;letter-spacing:0;font-size:0.85rem;color:#1a1d23;">Đánh dấu "Mới"</label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelBtn">
+            <svg class="icon"><use href="#i-close"/></svg>
+            Hủy
+          </button>
+          <button type="submit" class="btn btn-primary" id="saveBtn">
+            <svg class="icon"><use href="#i-save"/></svg>
+            Lưu lên Firebase
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- FIREBASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script>
+    // ============================================
+    // TÀI KHOẢN ADMIN
+    // ============================================
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'trung2011';
+    const SESSION_KEY = 'bio_admin_session';
+    const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000;
+
+    const $ = s => document.querySelector(s);
+
+    function isLoggedIn() {
+      try {
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (!raw) return false;
+        const s = JSON.parse(raw);
+        return s.expires && Date.now() < s.expires;
+      } catch { return false; }
+    }
+
+    function showAdmin() {
+      $('#loginScreen').classList.add('hidden');
+      $('#adminWrap').classList.add('active');
+    }
+    function showLogin() {
+      $('#loginScreen').classList.remove('hidden');
+      $('#adminWrap').classList.remove('active');
+      setTimeout(() => $('#loginUser').focus(), 100);
+    }
+
+    function doLogin() {
+      const u = $('#loginUser').value.trim();
+      const p = $('#loginPass').value;
+      if (u === ADMIN_USER && p === ADMIN_PASS) {
+        localStorage.setItem(SESSION_KEY, JSON.stringify({
+          user: u, expires: Date.now() + SESSION_DURATION
+        }));
+        $('#loginError').classList.remove('show');
+        showAdmin();
+        toast('Đăng nhập thành công');
+      } else {
+        $('#loginError').classList.add('show');
+        $('#loginPass').value = '';
+        $('#loginPass').focus();
+      }
+    }
+
+    $('#loginBtn').addEventListener('click', doLogin);
+    $('#loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    $('#loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') $('#loginPass').focus(); });
+
+    $('#togglePass').addEventListener('click', () => {
+      const inp = $('#loginPass');
+      const icon = $('#togglePassIcon');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      icon.innerHTML = `<use href="${inp.type === 'password' ? '#i-eye' : '#i-eye-off'}"/>`;
+    });
+
+    $('#logoutBtn').addEventListener('click', () => {
+      if (confirm('Đăng xuất khỏi trang admin?')) {
+        localStorage.removeItem(SESSION_KEY);
+        showLogin();
+        $('#loginUser').value = '';
+        $('#loginPass').value = '';
+      }
+    });
+
+    if (isLoggedIn()) showAdmin(); else showLogin();
+
+    // ============================================
+    // FIREBASE INIT
+    // ============================================
+    const firebaseConfig = {
+      databaseURL: "https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const appsRef = db.ref('apps');
+    const metaRef = db.ref('meta');
+
+    db.ref('.info/connected').on('value', snap => {
+      console.log(snap.val() === true ? '✅ Firebase: connected' : '❌ Firebase: disconnected');
+    });
+
+    // ============================================
+    // QUẢN LÝ APP
+    // ============================================
+    let apps = [];
+    let firebaseReady = false;
+    let isSaving = false;
+
+    function toast(msg, isError) {
+      const t = $('#toast');
+      t.innerHTML = `<svg class="icon"><use href="${isError ? '#i-alert' : '#i-check'}"/></svg><span>${msg}</span>`;
+      t.className = 'toast show' + (isError ? ' error' : '');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    function setSyncStatus(state, text) {
+      const el = $('#syncStatus');
+      el.className = 'sync-status ' + (state === 'ok' ? '' : state);
+      $('#syncText').textContent = text;
+    }
+
+    // Lắng nghe realtime từ Firebase
+    appsRef.on('value', async snap => {
+      const data = snap.val();
+
+      if (!data) {
+        apps = [];
+        if (!firebaseReady) {
+          firebaseReady = true;
+          let hasSeeded = false;
+          try {
+            const seededSnap = await metaRef.child('seeded').get();
+            hasSeeded = seededSnap.exists() && seededSnap.val() === true;
+          } catch (e) {}
+          if (!hasSeeded) {
+            setSyncStatus('ok', 'Lần đầu • Tạo app mẫu...');
+            await seedDefaults();
+            return; 
+          } else {
+            setSyncStatus('ok', 'Đã kết nối • 0 app');
+          }
+        } else {
+          setSyncStatus('ok', 'Đã kết nối • 0 app');
+        }
+      } else {
+        apps = normalizeApps(data);
+        firebaseReady = true;
+        setSyncStatus('ok', `Đã kết nối • ${apps.length} app`);
+      }
+      render();
+    }, err => {
+      console.error('Firebase error:', err);
+      setSyncStatus('error', 'Lỗi: ' + err.code);
+      toast('Lỗi Firebase: ' + err.message, true);
+    });
+
+    function normalizeApps(data) {
+      if (!data) return [];
+      if (Array.isArray(data)) return data.filter(Boolean);
+      return Object.keys(data).map(k => data[k]).filter(Boolean);
+    }
+
+    async function saveApps() {
+      if (isSaving) return;
+      isSaving = true;
+      const saveBtn = $('#saveBtn');
+      if (saveBtn) saveBtn.disabled = true;
+
+      try {
+        setSyncStatus('syncing', 'Đang lưu...');
+        if (apps.length === 0) {
+          await appsRef.remove();
+        } else {
+          await appsRef.set(apps);
+        }
+        setSyncStatus('ok', `Đã lưu • ${apps.length} app`);
+        toast('Đã lưu lên Firebase');
+      } catch (err) {
+        console.error('❌ Save error:', err);
+        setSyncStatus('error', 'Lỗi lưu: ' + err.code);
+        toast('LỖI LƯU: ' + err.message, true);
+        alert('KHÔNG LƯU ĐƯỢC LÊN FIREBASE!\n\nLỗi: ' + err.code + '\n' + err.message);
+      } finally {
+        isSaving = false;
+        if (saveBtn) saveBtn.disabled = false;
+      }
+    }
+
+    const DEFAULT_APPS = [
+      { name: 'Facebook', version: 'v400.0', size: '250 MB', type: 'ipa', url: 'https://example.com/files/facebook.ipa', isNew: true, icon: '#logo-facebook', slug: 'facebook', desc: 'Mạng xã hội phổ biến nhất thế giới.', features: ['Bảng tin & story', 'Messenger tích hợp', 'Live stream', 'Marketplace', 'Bảo mật 2 lớp'] },
+      { name: 'TikTok', version: 'v30.5', size: '180 MB', type: 'tipa', url: 'https://example.com/files/tiktok.tipa', icon: '#logo-tiktok', slug: 'tiktok', desc: 'Nền tảng video ngắn hàng đầu.', features: ['Video ngắn', 'Hiệu ứng độc đáo', 'Âm nhạc bản quyền', 'Live stream'] },
+      { name: 'Spotify Premium', version: 'v8.9', size: '80 MB', type: 'apk', url: 'https://example.com/files/spotify.apk', isNew: true, icon: '#logo-spotify', slug: 'spotify', desc: 'Nghe nhạc không quảng cáo.', features: ['Không quảng cáo', 'Tải offline', 'Chất lượng cao'] },
+    ];
+
+    async function seedDefaults() {
+      try {
+        const now = new Date().toISOString();
+        apps = JSON.parse(JSON.stringify(DEFAULT_APPS)).map(a => ({...a, createdAt: now}));
+        await appsRef.set(apps);
+        await metaRef.child('seeded').set(true);
+      } catch (err) {
+        console.error('Seed error:', err);
+        toast('Lỗi seed app mẫu: ' + err.message, true);
+      }
+    }
+
+    function iconHtml(icon) {
+      if (!icon) return '<svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>';
+      const isSvg = icon.startsWith('#');
+      return isSvg ? `<svg><use href="${icon}"/></svg>` : `<img src="${icon}" alt="">`;
+    }
+
+    function render() {
+      const counts = { all: apps.length, ipa: 0, tipa: 0, apk: 0, deb: 0 };
+      apps.forEach(a => { if (counts[a.type] !== undefined) counts[a.type]++; });
+      $('#stats').innerHTML = `
+        <div class="stat"><div class="stat-label">Tổng cộng</div><div class="stat-value">${counts.all}</div></div>
+        <div class="stat"><div class="stat-label">IPA</div><div class="stat-value blue">${counts.ipa}</div></div>
+        <div class="stat"><div class="stat-label">TIPA</div><div class="stat-value orange">${counts.tipa}</div></div>
+        <div class="stat"><div class="stat-label">APK</div><div class="stat-value green">${counts.apk}</div></div>
+        <div class="stat"><div class="stat-label">DEB</div><div class="stat-value red">${counts.deb}</div></div>
+      `;
+
+      if (!apps.length) {
+        $('#appList').innerHTML = `
+          <div class="empty">
+            <svg class="icon"><use href="#i-inbox"/></svg>
+            <p>Chưa có app nào. Bấm "+ Thêm app" để bắt đầu.</p>
+          </div>
+        `;
+        return;
+      }
+      $('#appList').innerHTML = apps.map((app, i) => `
+        <div class="app-row">
+          <div class="app-icon">${iconHtml(app.icon)}</div>
+          <div class="app-info">
+            <div class="app-name">${app.name} ${app.isNew ? '<span class="badge" style="background:#f43f5e;color:#fff;">MỚI</span>' : ''}</div>
+            <div class="app-meta">
+              <span class="badge ${app.type}">${app.type.toUpperCase()}</span>
+              <span>${app.version || ''}</span>
+              ${app.size ? `<span>•</span><span>${app.size}</span>` : ''}
+              <span>•</span>
+              <span style="color:#3b82f6;">/${app.slug}</span>
+            </div>
+          </div>
+          <div class="app-actions">
+            <button class="btn btn-ghost btn-sm" data-edit="${i}">
+              <svg class="icon"><use href="#i-edit"/></svg>
+              Sửa
+            </button>
+            <button class="btn btn-danger btn-sm" data-del="${i}">
+              <svg class="icon"><use href="#i-trash"/></svg>
+              Xóa
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    $('#appList').addEventListener('click', async e => {
+      const edit = e.target.closest('[data-edit]');
+      const del = e.target.closest('[data-del]');
+      if (edit) openEdit(+edit.dataset.edit);
+      if (del) {
+        const idx = +del.dataset.del;
+        if (confirm(`Xóa app "${apps[idx].name}"?`)) {
+          apps.splice(idx, 1);
+          render();       
+          await saveApps();
+        }
+      }
+    });
+
+    function openEdit(index) {
+      const isNew = index === -1;
+      const titleIcon = isNew ? '#i-plus' : '#i-edit';
+      const titleText = isNew ? 'Thêm app mới' : 'Sửa app';
+      $('#modalTitle').innerHTML = `<svg class="icon"><use href="${titleIcon}"/></svg><span>${titleText}</span>`;
+      const app = isNew ? { name:'', slug:'', version:'', size:'', type:'ipa', url:'', icon:'', desc:'', features:[], isNew:false } : apps[index];
+      $('#f-index').value = index;
+      $('#f-name').value = app.name || '';
+      $('#f-slug').value = app.slug || '';
+      $('#f-slug').dataset.touched = isNew ? '' : '1';
+      $('#f-version').value = app.version || '';
+      $('#f-size').value = app.size || '';
+      $('#f-type').value = app.type || 'ipa';
+      $('#f-url').value = app.url || '';
+      $('#f-icon').value = app.icon || '';
+      $('#f-desc').value = app.desc || '';
+      $('#f-features').value = (app.features || []).join('\n');
+      $('#f-isNew').checked = !!app.isNew;
+      updatePreview();
+      $('#editModal').classList.add('active');
+    }
+
+    function closeModal() { $('#editModal').classList.remove('active'); }
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#cancelBtn').addEventListener('click', closeModal);
+    $('#editModal').addEventListener('click', e => { if (e.target.id === 'editModal') closeModal(); });
+    $('#addBtn').addEventListener('click', () => openEdit(-1));
+
+    function updatePreview() {
+      $('#previewIcon').innerHTML = iconHtml($('#f-icon').value.trim());
+      $('#previewName').textContent = $('#f-name').value || 'Tên app';
+      $('#previewMeta').textContent = ($('#f-version').value || 'v1.0') + ' • ' + $('#f-type').value.toUpperCase();
+    }
+
+    ['#f-name','#f-version','#f-type','#f-icon'].forEach(sel => {
+      $(sel).addEventListener('input', updatePreview);
+      $(sel).addEventListener('change', updatePreview);
+    });
+
+    $('#f-name').addEventListener('input', e => {
+      const slugEl = $('#f-slug');
+      if (slugEl.dataset.touched !== '1') {
+        slugEl.value = e.target.value
+          .toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+    });
+    $('#f-slug').addEventListener('input', e => { e.target.dataset.touched = '1'; });
+
+    $('#appForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const index = +$('#f-index').value;
+      const now = new Date().toISOString();
+      const oldApp = index !== -1 ? apps[index] : null;
+      
+      const newApp = {
+        name: $('#f-name').value.trim(),
+        slug: $('#f-slug').value.trim().replace(/^\/+/, ''),
+        version: $('#f-version').value.trim(),
+        size: $('#f-size').value.trim(),
+        type: $('#f-type').value,
+        url: $('#f-url').value.trim(),
+        icon: $('#f-icon').value.trim(),
+        desc: $('#f-desc').value.trim(),
+        features: $('#f-features').value.split('\n').map(s => s.trim()).filter(Boolean),
+        isNew: $('#f-isNew').checked,
+        createdAt: oldApp ? (oldApp.createdAt || now) : now
+      };
+
+      if (!newApp.name || !newApp.slug || !newApp.url) {
+        toast('Vui lòng nhập đủ Tên, Slug và Link tải', true);
+        return;
+      }
+
+      const dup = apps.findIndex((a, i) => a.slug === newApp.slug && i !== index);
+      if (dup !== -1) {
+        toast('Slug đã tồn tại, chọn slug khác', true);
+        return;
+      }
+
+      if (index === -1) apps.push(newApp);
+      else apps[index] = newApp;
+
+      await saveApps();
+      closeModal();
+    });
+  </script>
+</body>
+</html>
