@@ -427,7 +427,7 @@
 const $=s=>document.querySelector(s);
 function toast(msg){const t=$('#toast');$('#toastText').textContent=msg;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2000)}
 
-firebase.initializeApp({databaseURL:"https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"});
+firebase.initializeApp({databaseURL:"https://biokhoipa-default-rtdb.firebaseio.com"});
 const db=firebase.database(), appsRef=db.ref('apps'), configRef=db.ref('config');
 
 // ===== ĐỌC CONFIG BIO TỪ FIREBASE =====
