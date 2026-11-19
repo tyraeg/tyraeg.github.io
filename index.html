@@ -324,8 +324,8 @@
 </div>
 
 <div class="splash" id="splash">
-  <div class="splash-logo">LT</div>
-  <div class="splash-text">Lê Trung</div>
+  <div class="splash-logo" id="splashLogo">LT</div>
+  <div class="splash-text" id="splashText">Lê Trung</div>
   <div class="splash-sub"><svg class="icon"><use href="#i-sparkle"/></svg>Nhấn để vào</div>
 </div>
 
@@ -333,25 +333,25 @@
   <div class="bio-card" id="bioCard">
     <div class="avatar-section">
       <div class="avatar-wrapper">
-        <div class="avatar"></div>
+        <div class="avatar" id="bioAvatar"></div>
         <div class="online-badge"></div>
       </div>
-      <h1 class="bio-name">Lê Trung <span class="verified"><svg class="icon"><use href="#i-check"/></svg></span></h1>
+      <h1 class="bio-name"><span id="bioName">Lê Trung</span> <span class="verified"><svg class="icon"><use href="#i-check"/></svg></span></h1>
       <div class="bio-tagline"><svg class="icon"><use href="#i-code"/></svg><span id="typewriterText"></span></div>
     </div>
     <div class="info-grid">
-      <div class="info-card"><div class="info-label"><svg class="icon"><use href="#i-location"/></svg>Vị trí</div><div class="info-value">Gia Lai, VN</div></div>
+      <div class="info-card"><div class="info-label"><svg class="icon"><use href="#i-location"/></svg>Vị trí</div><div class="info-value" id="bioLocation">Gia Lai, VN</div></div>
       <div class="info-card"><div class="info-label"><svg class="icon"><use href="#i-clock"/></svg>Bây giờ</div><div class="info-value"><span id="liveClock">--:--:--</span></div></div>
-      <div class="info-card wide"><div class="info-label"><svg class="icon"><use href="#i-mail"/></svg>Email</div><div class="info-value"><a href="mailto:lebaotrungtqt2011@gmail.com">lebaotrungtqt2011@gmail.com</a></div></div>
-      <div class="info-card wide quote-card">Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt</div>
+      <div class="info-card wide"><div class="info-label"><svg class="icon"><use href="#i-mail"/></svg>Email</div><div class="info-value"><a id="bioEmail" href="mailto:lebaotrungtqt2011@gmail.com">lebaotrungtqt2011@gmail.com</a></div></div>
+      <div class="info-card wide quote-card" id="bioQuote">Anh vốn dĩ không phải người tốt, chỉ vì yêu em nên anh mới trở thành người tốt</div>
     </div>
     <div class="socials">
-      <a href="https://www.facebook.com/share/14vDd2fvqQP/" target="_blank" class="social-btn"><svg class="icon icon-lg"><use href="#i-facebook"/></svg></a>
-      <a href="https://instagram.com/@tyraeg_" target="_blank" class="social-btn"><svg class="icon icon-lg"><use href="#i-instagram"/></svg></a>
-      <a href="https://www.tiktok.com/@tyraeg_" target="_blank" class="social-btn"><svg class="icon icon-lg"><use href="#i-tiktok"/></svg></a>
-      <a href="https://locket.cam/tyraeg16" target="_blank" class="social-btn"><svg class="icon icon-lg"><use href="#i-locket"/></svg></a>
-      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" class="social-btn"><svg class="icon icon-lg"><use href="#i-spotify"/></svg></a>
-      <a href="https://discord.com/@paw162" target="_blank" class="social-btn"><svg class="icon icon-lg"><use href="#i-discord"/></svg></a>
+      <a href="https://www.facebook.com/share/14vDd2fvqQP/" target="_blank" class="social-btn" id="socialFacebook"><svg class="icon icon-lg"><use href="#i-facebook"/></svg></a>
+      <a href="https://instagram.com/@tyraeg_" target="_blank" class="social-btn" id="socialInstagram"><svg class="icon icon-lg"><use href="#i-instagram"/></svg></a>
+      <a href="https://www.tiktok.com/@tyraeg_" target="_blank" class="social-btn" id="socialTiktok"><svg class="icon icon-lg"><use href="#i-tiktok"/></svg></a>
+      <a href="https://locket.cam/tyraeg16" target="_blank" class="social-btn" id="socialLocket"><svg class="icon icon-lg"><use href="#i-locket"/></svg></a>
+      <a href="https://open.spotify.com/user/31oduhkytivxi2bhh47plpatzbxq" target="_blank" class="social-btn" id="socialSpotify"><svg class="icon icon-lg"><use href="#i-spotify"/></svg></a>
+      <a href="https://discord.com/@paw162" target="_blank" class="social-btn" id="socialDiscord"><svg class="icon icon-lg"><use href="#i-discord"/></svg></a>
       <button class="social-btn" id="bankBtn"><svg class="icon icon-lg"><use href="#i-wallet"/></svg></button>
     </div>
 
@@ -393,7 +393,7 @@
 
   <div class="download-page" id="downloadPage"></div>
 
-  <footer class="copyright">© 2026 <strong>Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.</footer>
+  <footer class="copyright">© 2026 <strong id="copyrightName">Lê Bảo Trung</strong>. Bản quyền thuộc về tác giả.</footer>
 </div>
 
 <div class="modal" id="qrModal">
@@ -428,7 +428,49 @@ const $=s=>document.querySelector(s);
 function toast(msg){const t=$('#toast');$('#toastText').textContent=msg;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2000)}
 
 firebase.initializeApp({databaseURL:"https://bio-app-92915-default-rtdb.asia-southeast1.firebasedatabase.app"});
-const db=firebase.database(), appsRef=db.ref('apps');
+const db=firebase.database(), appsRef=db.ref('apps'), configRef=db.ref('config');
+
+// ===== ĐỌC CONFIG BIO TỪ FIREBASE =====
+let CONFIG = {};
+configRef.on('value', snap=>{
+  CONFIG = snap.val() || {};
+  if(!CONFIG.name && !CONFIG.tagline && !CONFIG.email) return; // chưa cấu hình
+
+  if(CONFIG.name){
+    $('#bioName').textContent = CONFIG.name;
+    $('#splashText').textContent = CONFIG.name;
+    $('#splashLogo').textContent = CONFIG.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    $('#copyrightName').textContent = CONFIG.name;
+    document.title = 'Bio • ' + CONFIG.name;
+  }
+  if(CONFIG.tagline){
+    // Reset typewriter với text mới
+    window.__typewriterText = CONFIG.tagline;
+    if(window.startType){ window.__typewriterStarted = false; window.startType(); }
+  }
+  if(CONFIG.location) $('#bioLocation').textContent = CONFIG.location;
+  if(CONFIG.email){
+    const a = $('#bioEmail');
+    a.textContent = CONFIG.email;
+    a.href = 'mailto:' + CONFIG.email;
+  }
+  if(CONFIG.quote) $('#bioQuote').textContent = CONFIG.quote;
+  if(CONFIG.facebook) $('#socialFacebook').href = CONFIG.facebook;
+  if(CONFIG.instagram) $('#socialInstagram').href = CONFIG.instagram;
+  if(CONFIG.tiktok) $('#socialTiktok').href = CONFIG.tiktok;
+  if(CONFIG.locket) $('#socialLocket').href = CONFIG.locket;
+  if(CONFIG.spotify) $('#socialSpotify').href = CONFIG.spotify;
+  if(CONFIG.discord) $('#socialDiscord').href = CONFIG.discord;
+  if(CONFIG.musicUrl){
+    const audio = $('#bgAudio');
+    const src = audio.querySelector('source');
+    if(src.src !== CONFIG.musicUrl){
+      src.src = CONFIG.musicUrl;
+      audio.load();
+    }
+  }
+  if(CONFIG.musicName) $('#trackName').textContent = CONFIG.musicName;
+});
 
 // Audio
 const bgAudio=$('#bgAudio'), playIcon=$('#playIcon'), musicInfo=$('#musicInfo'), playBtn=$('#playPauseBtn');
@@ -448,7 +490,22 @@ setInterval(()=>{const p=!bgAudio.paused;document.querySelectorAll('.vis-bar').f
 
 $('#splash').addEventListener('click',()=>{$('#splash').classList.add('hidden');$('#bioCard').classList.add('show');bgAudio.volume=1;bgAudio.muted=false;bgAudio.play().catch(()=>{});setTimeout(()=>window.startType?.(),400)});
 
-(function(){const el=$('#typewriterText'),text='Student & Developer';let i=0,started=false;window.startType=()=>{if(started)return;started=true;(function t(){el.textContent=text.substring(0,i);i++;if(i<=text.length)setTimeout(t,65)})()}})();
+(function(){
+  const el=$('#typewriterText');
+  window.__typewriterStarted = false;
+  window.startType = ()=>{
+    if(window.__typewriterStarted) return;
+    window.__typewriterStarted = true;
+    const text = window.__typewriterText || 'Student & Developer';
+    let i=0;
+    el.textContent='';
+    (function t(){
+      el.textContent = text.substring(0, i);
+      i++;
+      if(i <= text.length) setTimeout(t, 65);
+    })();
+  };
+})();
 (function(){const c=$('#liveClock');const t=()=>{c.textContent=new Date().toLocaleTimeString('vi-VN',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})};t();setInterval(t,1000)})();
 (function(){const btn=$('#darkBtn'),icon=$('#darkIcon');const s=localStorage.getItem('soft_dark');if(s==='1'){document.body.classList.add('dark');icon.setAttribute('href','#i-sun')}btn.addEventListener('click',()=>{document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');icon.setAttribute('href',d?'#i-sun':'#i-moon');localStorage.setItem('soft_dark',d?'1':'0')})})();
 (function(){const m=$('#qrModal');$('#qrBtn').addEventListener('click',e=>{e.stopPropagation();const u=window.location.href;$('#qrcodeContainer').innerHTML=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(u)}" alt="QR" width="220" height="220">`;$('#qrUrl').textContent=u;m.classList.add('active')});const c=()=>m.classList.remove('active');$('#qrModalClose').addEventListener('click',c);m.addEventListener('click',e=>{if(e.target===m)c()});$('#qrCopyBtn').addEventListener('click',()=>navigator.clipboard.writeText(window.location.href).then(()=>toast('Đã copy!')))})();
@@ -489,38 +546,40 @@ function v(app,key,def=''){return app[key]||def}
 function compatBadge(app,type){const label=app.compat||({ipa:'iOS 16.0+',apk:'Android 16+',tipa:'iOS 16.0+',deb:'iOS 14.0+'}[type]);return `<span class="compat-badge ${type}"><svg><use href="#i-phone"/></svg>${esc(label)}</span>`}
 function featureIcon(){return `<div class="dl-feature-icon"><svg><use href="#i-check"/></svg></div>`}
 
+// ========= TRACKING LƯỢT TẢI =========
+function trackDownload(slug){
+  if(!slug) return;
+  try {
+    db.ref('apps/' + slug + '/downloadCount').transaction(current => (current || 0) + 1)
+      .catch(err => console.warn('Track error:', err));
+  } catch(e){ console.warn(e); }
+}
+
 // ========= RENDER DOWNLOAD PAGES =========
 function renderIPA(app){
   const dev=v(app,'devName','Lê Bảo Trung'), devTitle=v(app,'devTitle','Nhà P.Triển'), build=v(app,'buildNumber','1'),
         reqs=app.requirements?app.requirements.filter(Boolean):[];
-
-  // ===== LOGIC CÀI ĐẶT TRỰC TIẾP QUA ITMS-SERVICES =====
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
   const bundleId = v(app, 'bundleId', '');
   const ipaLink = app.ipaDirectUrl || app.url;
-  
-  // Nếu là iOS + Safari + có Bundle ID -> Tạo link cài đặt trực tiếp
   let installUrl = esc(app.url);
   let targetAttr = 'target="_blank" rel="noopener"';
   let warningHtml = '';
-  
   if (isIOS && isSafari && bundleId) {
     const manifestUrl = `https://ipa-manifest.lebaotrungtqt2011.workers.dev/?ipa=${encodeURIComponent(ipaLink)}&bundleId=${encodeURIComponent(bundleId)}&version=${encodeURIComponent(v(app,'version','1.0'))}&name=${encodeURIComponent(app.name)}&icon=${encodeURIComponent(v(app,'icon',''))}`;
     installUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestUrl)}`;
-    targetAttr = ''; // Không mở tab mới
+    targetAttr = '';
   } else if (isIOS && !isSafari) {
     warningHtml = `<div style="margin-top:12px;font-size:12px;color:#fbbf24;text-align:center;line-height:1.5;">⚠️ Mở bằng Safari để cài đặt trực tiếp</div>`;
   }
-  // =======================================================
-
   return `<div class="dl-page tf">
     <div class="dl-nav"><button class="dl-nav-btn" id="dlBackBtn"><svg><use href="#i-arrow-left"/></svg></button><button class="dl-nav-btn" id="dlShareBtn"><svg><use href="#i-share"/></svg></button></div>
     <div class="dl-hero">
       <div class="dl-appicon">${iconHtml(app)}</div>
       <div class="dl-name">${esc(app.name)}</div>
       <div class="dl-sub">${esc(v(app,'version','1.0'))} • ${esc(v(app,'size','Đang cập nhật'))}</div>
-      <a href="${installUrl}" ${targetAttr} class="dl-cta" id="dlMainBtn"><svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Tải xuống'))}</a>
+      <a href="${installUrl}" ${targetAttr} class="dl-cta" id="dlMainBtn" data-slug="${esc(app.slug)}"><svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Tải xuống'))}</a>
       ${warningHtml}
     </div>
     <div class="dl-body">
@@ -564,7 +623,7 @@ function renderAPK(app){
           </div>
         </div>
       </div>
-      <a href="${esc(app.url)}" target="_blank" rel="noopener" class="dl-cta" style="margin-top:18px" id="dlMainBtn"><svg style="width:16px;height:16px;fill:currentColor;stroke:none"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Cài đặt'))}</a>
+      <a href="${esc(app.url)}" target="_blank" rel="noopener" class="dl-cta" style="margin-top:18px" id="dlMainBtn" data-slug="${esc(app.slug)}"><svg style="width:16px;height:16px;fill:currentColor;stroke:none"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Cài đặt'))}</a>
     </div>
     <div class="dl-body">
       ${app.features&&app.features.length?`<div class="dl-title">${esc(v(app,'featuresTitle','Tính năng'))}</div><div class="dl-card"><div class="dl-chips">${app.features.filter(Boolean).map(f=>`<span class="dl-chip">${esc(f)}</span>`).join('')}</div></div>`:''}
@@ -592,7 +651,7 @@ function renderTIPA(app){
       <div class="dl-appicon"><div class="dl-appicon-inner">${iconHtml(app)}</div></div>
       <div class="dl-name">${esc(app.name)}</div>
       <div class="dl-sub">${esc(v(app,'storeTag','TrollStore'))} • ${esc(v(app,'version','1.0'))}</div>
-      <a href="${esc(app.url)}" target="_blank" rel="noopener" class="dl-cta" id="dlMainBtn"><svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Cài đặt TIPA'))}</a>
+      <a href="${esc(app.url)}" target="_blank" rel="noopener" class="dl-cta" id="dlMainBtn" data-slug="${esc(app.slug)}"><svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Cài đặt TIPA'))}</a>
     </div>
     <div class="dl-body">
       <div class="dl-stats">
@@ -641,7 +700,7 @@ function renderDEB(app){
           </div>
         </div>
       </div>
-      <a href="${esc(app.url)}" target="_blank" rel="noopener" class="dl-cta" id="dlMainBtn"><svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Tải & Cài đặt'))}</a>
+      <a href="${esc(app.url)}" target="_blank" rel="noopener" class="dl-cta" id="dlMainBtn" data-slug="${esc(app.slug)}"><svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5"><use href="#i-download"/></svg>${esc(v(app,'ctaLabel','Tải & Cài đặt'))}</a>
     </div>
     <div class="dl-body">
       <div class="dl-title">Package Info</div>
@@ -682,15 +741,16 @@ function renderDownloadPage(app){
   downloadPage.innerHTML=html;
   downloadPage.querySelector('#dlBackBtn')?.addEventListener('click',e=>{e.preventDefault();navigate('/')});
   downloadPage.querySelector('#dlShareBtn')?.addEventListener('click',()=>{if(navigator.share)navigator.share({title:app.name,url:window.location.href}).catch(()=>{});else navigator.clipboard.writeText(window.location.href).then(()=>toast('Đã copy link!'))});
-  
-  // Xử lý click nút tải
+
+  // Xử lý click nút tải + tracking
   downloadPage.querySelector('#dlMainBtn')?.addEventListener('click',e=>{
+    // Track download
+    trackDownload(app.slug);
+
     const href=e.currentTarget.getAttribute('href')||'';
     if(href.startsWith('itms-services://')){
-      // Cài trực tiếp qua iOS
-      return; // Không chặn hành vi mặc định
+      return; // Cài trực tiếp iOS
     }
-    // Fallback: mở tab mới tải file
     e.preventDefault();
     const w=window.open(href,'_blank','noopener,noreferrer');
     if(!w)toast('Trình duyệt đã chặn popup!');
